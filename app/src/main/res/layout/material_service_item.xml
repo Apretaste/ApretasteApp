@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/service_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="80dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+        <ImageView
+            android:layout_marginBottom="2dp"
+            android:id="@+id/service_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/noicon"
+            android:scaleType="fitCenter"
+            android:layout_centerHorizontal="true"/>
+        <ImageView
+            android:id="@+id/srvice_new"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="-40dp"
+            android:layout_toRightOf="@id/service_image"
+            app:srcCompat="@drawable/new_ribbon"/>
+        <TextView
+            android:id="@+id/service_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="-5dp"
+            android:layout_centerHorizontal="true"
+android:layout_below="@id/service_image"
+            android:text="Piropazo"
+            tools:ignore="HardcodedText" />
+</RelativeLayout>

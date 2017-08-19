@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.apretaste">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_new"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppWithBar">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/App" />
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/App">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Settings.Settings_buzon"
+            android:label="Cambiar buzón personal"
+            android:parentActivityName=".Settings.SettingsActivity" />
+        <activity
+            android:name=".Settings.Settings_nauta"
+            android:configChanges="orientation|screenSize"
+            android:label="Configuración de nauta"
+            android:parentActivityName=".Settings.SettingsActivity" />
+        <activity
+            android:name=".Settings.Settings_auto_resfrescar"
+            android:parentActivityName=".Settings.SettingsActivity" />
+        <activity
+            android:name=".Settings.Settings_about"
+            android:label="Acerca de..."
+            android:parentActivityName=".Settings.SettingsActivity" />
+        <activity
+            android:name=".Settings.SettingsActivity"
+            android:label="Ajustes"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".NotificationsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Notificaciones"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".RecentActivity"
+            android:label="Historial"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ProfileActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Perfil"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ServiceDetails"
+            android:label="Detalles"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/App" />
+
+    </application>
+
+</manifest>

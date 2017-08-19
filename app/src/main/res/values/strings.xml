@@ -1,0 +1,286 @@
+<resources>
+    <string name="app_name">Apretaste</string>
+    <string name="title_activity_settings">Settings</string>
+
+
+    <string-array name="sex_array">
+        <item>Sexo</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+
+    <string-array name="orientac_sex_array">
+        <item>Orientación Sexual</item>
+        <item>Hetero</item>
+        <item>Gay</item>
+        <item>Bisexual</item>
+    </string-array>
+
+    <string-array name="type_body_array">
+        <item>Tipo Cuerpo</item>
+        <item>Delgado</item>
+        <item>Media</item>
+        <item>Extra</item>
+        <item>Atlético</item>
+    </string-array>
+    <string-array name="eyes_array">
+        <item>Color de Ojos</item>
+        <item>Negros</item>
+        <item>Carmelitas</item>
+        <item>Verdes</item>
+        <item>Azules</item>
+        <item>Avellana</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string-array name="pelo_array">
+        <item>Color de Pelo</item>
+        <item>Trigueño</item>
+        <item>Castaño</item>
+        <item>Rubio</item>
+        <item>Negro</item>
+        <item>Rojo</item>
+        <item>Blanco</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string-array name="piel_array">
+        <item>Color de Piel</item>
+        <item>Blanca</item>
+        <item>Negra</item>
+        <item>Mestiza</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string-array name="state_civil_array">
+        <item>Estado civil</item>
+        <item>Soltero</item>
+        <item>Saliendo</item>
+        <item>Compremetido</item>
+        <item>Casado</item>
+    </string-array>
+
+    <string-array name="nivel_escolar_array">
+        <item>Nivel Escolar</item>
+        <item>Primaria</item>
+        <item>Secundaria</item>
+        <item>Técnico</item>
+        <item>Universitario</item>
+        <item>Posgrado</item>
+        <item>Doctorado</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string-array name="province_array">
+        <item>Provincia</item>
+        <item>Pinar del Río</item>
+        <item>Artemisa</item>
+        <item>La Habana</item>
+        <item>Mayabeque</item>
+        <item>Matanzas</item>
+        <item>Las Villas</item>
+        <item>Cienfuegos</item>
+        <item>Santi Spíritus</item>
+        <item>Ciego Avila</item>
+        <item>Camagüey</item>
+        <item>Las Tunas</item>
+        <item>Holguín</item>
+        <item>Granma</item>
+        <item>Santiago</item>
+        <item>Guantánamo</item>
+        <item>Isla de la Juventud</item>
+    </string-array>
+
+    <string-array name="religion_array">
+        <item>Religión</item>
+        <item>Ateísmo</item>
+        <item>Secularismo</item>
+        <item>Agnosticismo</item>
+        <item>Catolicismo</item>
+        <item>Cristianismo</item>
+        <item>Islam</item>
+        <item>Raftafarismo</item>
+        <item>Judaismo</item>
+        <item>Espiritismo</item>
+        <item>Sijismo</item>
+        <item>Budismo</item>
+        <item>Otra</item>
+    </string-array>
+    <string name="msg_login">Introduzaca su email y contraseña de Nauta</string>
+    <string name="text_error">Error</string>
+    <string name="no_connection_nauta">No hemos podido establecer comunicación.Asegúrese que sus datos son correctos e intente nuevamente</string>
+    <string name="connection_success">Su cuenta ha sido configurada correctamente.Puede seguir usando Apretaste</string>
+    <string name="loading_dates_profile">Estamos cargando su perfil.Este proceso debe tomar unos minutos.Por favor sea paciente y no cierre la aplicación</string>
+    <string name="text_email">Email</string>
+    <string name="text_password">Contraseña</string>
+    <string name="profile_update_success">Su perfil se ha guardado correctamente</string>
+    <string name="loading_services">Estamos buscando nuevos servicios , chats , notificaciones y cambios en su perfil.Por favor sea paciente y no cierre la aplicación</string>
+    <string name="session_termiante">Si termina su sessión no recibirá mas notificaciones y otros usuarios no podrán contactarle</string>
+    <string name="text_auto_sync">Auto Resfrescar</string>
+    <string name="description_auto_sync">Mientras más bajo el tiempo de resfrescado , mas rápido le llegaran nuevos servicios y notificaciones. También tendrá que conectarse con el servidor mas seguido y le consumirá un poco mas de saldo</string>
+    <string name="text_buzon_personal">Cambiar buzón personal</string>
+    <string name="desc_buzon_personal">Si no logra conectar con Apretaste , puede que necesite cambiar su buzón personal</string>
+    <string name="text_config_nauta">Configuración de Nauta</string>
+    <string name="des_config_nauta">Configure su cuenta de Nauta para conectar con Apretaste</string>
+    <string name="btn_accept">Aceptar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_close">Cerrar</string>
+    <string name="btn_acceder">Acceder</string>
+    <string name="loading_information">Estamos cargando información, sea paciente y no cierre la aplicación</string>
+    <string name="hint_et_buzon">Buzón Personal</string>
+    <string name="hint_et_email">Email</string>
+    <string name="hint_et_password">Contraseña</string>
+    <string name="server_smtp">Servidor SMTP</string>
+    <string name="server_imap">Servidor SMTP</string>
+    <string name="puerto">Puerto</string>
+    <string name="apretaste">Apretaste!</string>
+    <string name="introduzca_su_email_y_contrase_a_de_nauta">Introduzca su email y contraseña de Nauta</string>
+    <string name="email">Email</string>
+    <string name="contras_a">Contraseña</string>
+    <string name="servidor_smtp">Servidor SMTP</string>
+    <string name="smtp_nauta_cu">smtp.nauta.cu</string>
+    <string name="_25">25</string>
+    <string name="sin_seguridad">Sin seguridad</string>
+    <string name="imap_nauta_cu">imap.nauta.cu</string>
+    <string name="_143">143</string>
+    <string name="siguiente">Siguiente</string>
+    <string name="no_hay_notificaciones_disponibles_intente_refrescar_la_aplicaci_n">No hay notificaciones disponibles, Intente refrescar la aplicación.</string>
+    <string name="nombre">Nombre</string>
+    <string name="fecha_de_naciemiento">Fecha de naciemiento</string>
+    <string name="sexo">Sexo</string>
+    <string name="orientacion_sexual">Orientacion Sexual</string>
+    <string name="celular">Celular</string>
+    <string name="cuerpo">Cuerpo</string>
+    <string name="ojos">Ojos</string>
+    <string name="pelo">Pelo</string>
+    <string name="piel">Piel</string>
+    <string name="estado_civil">Estado Civil</string>
+    <string name="nivel_escolar">Nivel Escolar</string>
+    <string name="profesion">Profesión</string>
+    <string name="ciudad">Ciudad</string>
+    <string name="provincia">Provincia</string>
+    <string name="intereses">Intereses</string>
+    <string name="religion">Religión</string>
+    <string name="guardar">GUARDAR</string>
+    <string name="no_hay_resultados_guardados_intente_acceder_a_un_servicio">No hay resultados guardados, Intente acceder a un servicio.</string>
+    <string name="web">Web</string>
+    <string name="esta_es_la_descripcion_del_servicio">Esta es la descripción del servicio</string>
+    <string name="categor_a">Categoría</string>
+    <string name="ltima_versi_n">Última versión</string>
+    <string name="creador">Creador</string>
+    <string name="salvar">Salvar</string>
+    <string name="about">About</string>
+    <string name="about_text">&lt;!DOCTYPE html>
+&lt;html>
+&lt;body style="text-align:justify">
+&lt;p>Hola @%1$s,&lt;/p>
+&lt;p>Gracias por usar Apretaste. Nuestra app es una colección de servicios gratuitos cuya meta es ofrecerle herramientas productivas, mantenerle más informado y entretenido. Esperamos que Apretaste sea de su agrado y esté a la altura de sus necesidades.&lt;/p>
+&lt;p>Seguramente le surgirán dudas y sugerencias. Escríbanos al soporte y le responderemos en 72 horas. La gran mayoría de nuestras ideas vienen de usuarios como usted. Si tiene una buena idea, no dude en compartirla y nosotros la haremos realidad.&lt;/p>
+&lt;p>La mayoría de nuestros servicios son creados por voluntarios que gustan de este proyecto y desean engrandecerlo. Si sabe PHP le invitamos a que ayude implementando servicios que pueden mejorar la vida de otros. Es bien sencillo, escríbanos al soporte si tiene interés.&lt;/p>
+&lt;p>Esta app adquiere información personal para ofrecerle un mejor servicio, por ejemplo su localización y contraseña de Nauta. Esta información nunca será compartida con nuestros voluntarios, institución o estado alguno, y siempre se encriptará con los estándares más seguros del mercado. Si desea cerrar su cuenta, su información personal será eliminada.&lt;/p>
+¡Gracias nuevamente por usar Apretaste!
+&lt;/body>
+&lt;/html>
+</string>
+    <string name="sobre_esta_app">Sobre esta app</string>
+    <string name="tiempo_de_refrescar">Tiempo de refrescar</string>
+    <string name="cerrar_session">Cerrar sessión</string>
+    <string name="acci_n_realizada">Acción realizada.</string>
+    <string name="ok">Ok</string>
+    <string name="pizarra">Pizarra</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+
+
+</resources>
+

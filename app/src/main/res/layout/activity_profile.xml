@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF"
+    style="@style/App"
+    tools:context="com.example.apretaste.ProfileActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scroll_view">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="20dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pfl"
+                    android:padding="4dp"
+                    android:background="@drawable/white_circle">
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:scaleType="fitXY"
+                        android:padding="1dp"
+                        android:elevation="1dp"
+                        android:id="@+id/ib_profile_photo"
+                        android:background="@drawable/white_circle"/>
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_add"/>
+
+                </RelativeLayout>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tb_profile_name"
+                    android:textSize="18sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nombre" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fecha_de_naciemiento"
+                android:inputType="datetime"
+                android:focusable="false"
+                app:drawableRightCompat="@drawable/ic_date_range_black_24dp" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_sexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/sexo" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_orientsexu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/orientacion_sexual" />
+
+            <EditText
+                android:id="@+id/et_profile_celular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/celular"
+                android:inputType="phone" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_typebody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/cuerpo" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_eyes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/ojos" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_pelo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/pelo" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+
+                android:id="@+id/et_profile_piel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/piel" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/estado_civil" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_nivel_escolar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:focusable="false"
+                android:hint="@string/nivel_escolar" />
+
+            <EditText
+                android:id="@+id/et_profile_profesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/profesion" />
+
+            <EditText
+                android:id="@+id/et_profile_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ciudad" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_province"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:layout_height="wrap_content"
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:hint="@string/provincia" />
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                android:id="@+id/et_profile_intereses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:hint="@string/intereses"
+                app:drawableRightCompat="@drawable/ic_edit_black_24dp">
+
+            </com.example.apretaste.AssetDrawableCompatEditText>
+
+            <com.example.apretaste.AssetDrawableCompatEditText
+                app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                android:id="@+id/et_profile_religion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:layout_marginBottom="75dp"
+                android:hint="@string/religion" />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/save_button"
+        style="@style/FabTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:elevation="8dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_save_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        tools:ignore="RtlHardcoded"
+        android:onClick="open_activitys"
+        />
+</RelativeLayout>

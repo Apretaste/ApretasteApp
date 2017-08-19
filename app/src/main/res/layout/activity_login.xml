@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF"
+
+    style="@style/App"
+    tools:context="com.example.apretaste.LoginActivity">
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <ImageView
+                android:src="@mipmap/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apretaste"
+                android:textColor="#000"
+                android:textSize="50sp"
+                android:layout_marginBottom="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="2"
+                android:gravity="center"
+                android:text="@string/introduzca_su_email_y_contrase_a_de_nauta"
+                android:textColor="#444"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/mailfield"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/passfield"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contras_a"
+                android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
+            <CheckBox
+                android:id="@+id/cb_show"
+                android:layout_width="wrap_content"
+                android:text="Mostrar Contraseña"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/hiden_layout"
+                android:visibility="gone">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/smtp_server"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/servidor_smtp"
+                    android:text="@string/smtp_nauta_cu"/>
+                </android.support.design.widget.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/smtp_port"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/puerto"
+                        android:text="@string/_25"
+                        android:gravity="center_horizontal"
+                        android:inputType="number"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <com.example.apretaste.AssetDrawableCompatEditText
+                        android:id="@+id/smtp_ssl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                        android:text="@string/sin_seguridad" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/imap_server"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/servidor_smtp"
+                    android:text="@string/imap_nauta_cu"/>
+                </android.support.design.widget.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/imap_port"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:hint="@string/puerto"
+                        android:inputType="number"
+                        android:text="@string/_143" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <com.example.apretaste.AssetDrawableCompatEditText
+                        android:id="@+id/imap_ssl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                        android:text="@string/sin_seguridad"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_arrow_downward_black_24dp"
+                    android:id="@+id/togle_button"/>
+                <Button
+                    android:id="@+id/next_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/siguiente"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+</LinearLayout>

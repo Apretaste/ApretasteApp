@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF"
+    android:padding="10dp"
+    style="@style/App"
+    tools:context="com.example.apretaste.Settings.Settings_about">
+            <WebView
+                android:id="@+id/about_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="#444"
+                android:textSize="15sp"
+                />
+</LinearLayout>

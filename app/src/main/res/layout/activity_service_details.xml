@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.example.apretaste.ServiceDetails">
+        <ImageView
+            android:layout_marginTop="40dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:id="@+id/service_image"
+            android:layout_marginBottom="40dp"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/web"
+                            android:textSize="22sp"
+                            android:textColor="#000"
+                            android:id="@+id/service_name" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textSize="17sp"
+                            android:text="@string/esta_es_la_descripcion_del_servicio"
+                            android:id="@+id/service_description"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/categor_a"
+                            android:textSize="22sp"
+                            android:textColor="#000"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="sdsdf"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="17sp"
+                            android:id="@+id/service_category"
+                            tools:ignore="HardcodedText"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ltima_versi_n"
+                            android:textSize="22sp"
+                            android:textColor="#000"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="sdsdf"
+                            android:ellipsize="end"
+                            android:textSize="17sp"
+                            android:id="@+id/service_version"
+                            tools:ignore="HardcodedText"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/creador"
+                            android:textSize="22sp"
+                            android:textColor="#000"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="sdsdf"
+                            android:ellipsize="end"
+                            android:textSize="17sp"
+                            android:maxLines="1"
+                            android:id="@+id/service_creator"
+                            tools:ignore="HardcodedText" />
+                </LinearLayout>
+        </ScrollView>
+
+</LinearLayout>
