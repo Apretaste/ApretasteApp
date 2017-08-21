@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/home/salvipascual/AndroidStudioProjects/ApretasteApp/javaMailAndroid/build/intermediates/incremental/mergeReleaseResources/merged.dir/values/values.xml",
+        "outputFile": "E:\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 124
                 },
                 "from": {
-                    "file": "/home/salvipascual/AndroidStudioProjects/ApretasteApp/javaMailAndroid/src/main/res/values/strings.xml",
+                    "file": "E:\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 192
                 },
                 "from": {
-                    "file": "/home/salvipascual/AndroidStudioProjects/ApretasteApp/javaMailAndroid/src/main/res/values/strings.xml",
+                    "file": "E:\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,

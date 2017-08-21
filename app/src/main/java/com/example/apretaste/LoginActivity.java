@@ -1,13 +1,18 @@
 package com.example.apretaste;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -49,22 +54,18 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
     public static final String PASS = "pass";
     public static final String USER = "user";
     public static String demo = "user";
+    Context context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  startActivity(new Intent(this,ScrollingActivity.class));
-        //finish();
 
-       // String prof=new Gson().toJson( new ProfileInfo());
-        //PreferenceManager.getDefaultSharedPreferences(this).edit().putString(RESP,prof).apply();
-        if(PreferenceManager.getDefaultSharedPreferences(this).getString(RESP,null) !=null) {
+            ///Comprueba que si ya hay datos de un usuario , si hay entra directo al main
+            if(PreferenceManager.getDefaultSharedPreferences(this).getString(RESP,null) !=null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));//e inicia la activity principal
-            finish();
-            return;
-
-        }
+           finish();
+            return; }
         //Carga el layout de esta activity
         setContentView(R.layout.activity_login);
 
@@ -79,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
         final EditText smtp_ssl=(EditText)findViewById(R.id.smtp_ssl);
         CheckBox checkbox = (CheckBox)findViewById(R.id.cb_show);
 
+
         PrefsWatcher.bindWatcher(this,user, USER,"");
         PrefsWatcher.bindWatcher(this,pass, PASS,"");
         PrefsWatcher.bindWatcher(this,imap_server, IMAP_SERVER, IMAP_NAUTA_CU);
@@ -91,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
         final View hidenLayout=findViewById(R.id.hiden_layout);
         final ImageButton togleButton=(ImageButton)findViewById(R.id.togle_button);
 
+        //Boton Mostrar
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -102,9 +105,6 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
             }
         });
 
-        //=====================================================================================
-        //                Anclamos los eventos a las views
-        //=====================================================================================
 
         //Boton siguiente
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
@@ -119,11 +119,9 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
                     mailer.setAppendPassword(true);
                     mailer.setCustomText(ESTAMOS_CARGANDO_SU_PERFIL_ESTE_PROCESO_DEBE_TOMAR_VARIOS_MINUTOS_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION);
                     mailer.setShowCommand(false);
-                    //mailer.setShowCancelButton(false);
-                  //  mailer.setShowStatus(false);
                     mailer.execute();//ejecuta la tarea de login
 
-                    //Toast.makeText(getBaseContext(),get_email(user.getText().toString()),Toast.LENGTH_SHORT).show();
+
                 }
                 else
                     Toast.makeText(LoginActivity.this, EMAIL_NO_VÁLIDO, Toast.LENGTH_LONG).show();
@@ -168,7 +166,19 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE +e.toString()).setPositiveButton(OK, null).show();
+             //   new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE ).setPositiveButton(OK, null).show();
+              // new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(e.toString()).setPositiveButton(OK, null).show();
+                Log.i("errorlogin",e.toString());
+                if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
+
+                    new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage("Su correo electronico o contraseña es incorrecto , verifiquelo y vuelvelo a intentar").setPositiveButton(OK, null).show();
+                }else{
+                    new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage("No hemos podido establecer comunicación , asegurese que los datos moviles esten encendidos , de lo contrario es problema de conexion con los servidores nauta , intentelo más tarde nuevamente.").setPositiveButton(OK, null).show();
+                }
+                /*EditText pass = (EditText) findViewById(R.id.passfield);
+                pass.setText(e.toString());*/
+
+
             }
         });
 
@@ -192,4 +202,14 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
         String finish = s+"+"+EmailAddressValidator.getM(username)+"@gmail.com";
         return  finish;
     }
+    @Override
+    protected void onStart() {
+
+        Connection connection = new Connection();
+        connection.haveConn(this , "Usted debe enceder los datos moviles o conectarse a una red wifi para poder autentificarse en nuestra aplicación");
+        super.onStart();
+
+
+    }
+
 }

@@ -1,13 +1,18 @@
 package com.example.apretaste;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -135,6 +140,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     public static final String CANCELLED = "cancelled";
     public static final String MAILER1 = "mailer";
     public static final String CANCELLING = "cancelling";
+    Context context;
     private IMAPStore store;
     SMTPTransport transport;
     private IMAPFolder inbox;
@@ -380,11 +386,11 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     @Override
     protected Void doInBackground(Void[] params) {
         Log.e(MAILER, DIB);
-        try {
-            //envia el correo con el comando profile status
-            sendMail();
-        } catch (Exception e) {
-            setCurrentStatus(E_GET_MESSAGE, CONECTANDO);
+            try {
+           sendMail();
+
+            } catch (Exception e) {
+           // setCurrentStatus(E_GET_MESSAGE, CONECTANDO);
             mailerlistener.onError(e);
             finished2=true;
             Log.e("mailer","DIB error:"+e.getMessage());
@@ -411,6 +417,11 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     //Esta funcion envia el correo y luego se queda esperando
     private void sendMail() throws MessagingException, UnsupportedEncodingException {
+
+
+
+
+
         try
         {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -421,16 +432,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             if (!noreply) {
                 Properties properties = new Properties();
                 boolean imapSsl=!preferences.getString(IMAP_SSL, SIN_SEGURIDAD).equalsIgnoreCase(SIN_SEGURIDAD);
-          /*  if(imapSsl)
-                properties.put("mail.store.protocol","imaps");
-            properties.put("mail.imap.host", preferences.getString("imap_server","imap.nauta.cu") );
-            properties.put("mail.imaps.host", preferences.getString("imap_server","imap.nauta.cu") );
-            properties.put("mail.imap.port", Integer.valueOf(preferences.getString("imap_port","143")));
-            properties.put("mail.imaps.port", Integer.valueOf(preferences.getString("imap_port","143")));*/
-                // properties.put("mail.imap.connectionpooltimeout", 25);
-                //properties.put("mail.imaps.connectionpooltimeout", 25);
-                // properties.put("mail.imap.starttls.enable", String.valueOf(imapSsl));
-                //  properties.put("mail.imap.ssl.enable", String.valueOf(imapSsl));
+
                 Session imapSession = Session.getInstance(properties);
 
                 setCurrentStatus(CREANDO_SESION_IMAP, CONECTANDO);
@@ -478,17 +480,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             //****************************************************
             Properties props = new Properties();
             boolean smtpSsl=!preferences.getString(SMTP_SSL, SIN_SEGURIDAD).equalsIgnoreCase(SIN_SEGURIDAD);
-       /* if(smtpSsl)
-            props.put("mail.transport.protocol", "smtps");
-        props.put("mail.smtp.host", preferences.getString("smtp_server","smtp.nauta.cu"));
-        props.put("mail.smtps.host", preferences.getString("smtp_server","smtp.nauta.cu"));
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtps.auth", "true");
-        props.put("mail.smtp.port", Integer.valueOf(preferences.getString("smtp_port","25")));
-        props.put("mail.smtps.port", Integer.valueOf(preferences.getString("smtp_port","25")));
-       // props.put("mail.smtp.starttls.enable",String.valueOf(smtpSsl));
-        props.put("mail.smtp.ssl.enable",String.valueOf(smtpSsl));
-        props.put("mail.smtps.ssl.enable",String.valueOf(smtpSsl));*/
+
             setCurrentStatus(CREANDO_SESION_SMTP, CONECTANDO);
             Session sendSession = Session.getInstance(props);
              transport = (SMTPTransport) sendSession.getTransport(new URLName(smtpSsl? SMTPS : SMTP,
@@ -580,23 +572,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 dialog.dismiss();
                 return;
             }
-            //agregamos el listener para saber cuando el corre se envie
-       /* transport.addTransportListener(new TransportListener() {
-            @Override
-            public void messageDelivered(TransportEvent e) {
-              //  setCurrentStatus("Correo enviado","Esperando respuesta");
-            }
 
-            @Override
-            public void messageNotDelivered(TransportEvent e) {
-                setCurrentStatus("Error al enviar","Conectando");
-            }
-
-            @Override
-            public void messagePartiallyDelivered(TransportEvent e) {
-                publishProgress("par " + e.getMessage());
-            }
-        });*/
             setCurrentStatus(ENVIANDO_MENSAJE, CONECTANDO);//enviamos el mensaje
             String mailbox = preferences.getString(MAILBOX, APP_MAILGUN_APRETASTE_COM);//"rarteaga@nauta.cu";
             if(isCancelled())
@@ -622,13 +598,13 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             //ahor enviamos el comand idle para esperar una respuesta. esto se hace en un ciclo para
             //que siga esperando en caso de que el correo q llega no es el que se espera.
             // Una vez q haya respuesta se rompe el ciclo y se cierra
+
+            /*Verifica si la peticion llevaba respuesta en caso de que no da un mensaje */
             if (noreply) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                   /* TypedValue outValue = new TypedValue();
-                    activity.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.alertDialogTheme, outValue, true);
-                    int themeId= outValue.resourceId;*/
+
                         View v=activity.getLayoutInflater().inflate(R.layout.done_dialog_layout,null);
                         new AlertDialog.Builder(activity).setView(v).setPositiveButton("Aceptar",null).show();
                     }
@@ -663,6 +639,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
 
     }
+
 
     private Object idleLock=new Object();
     private void sendIdleCommand() throws MessagingException {
@@ -886,4 +863,6 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         String w3=words[random.nextInt(words.length)];
         return w1+" "+w2+" "+w3;
     }
+
+
 }

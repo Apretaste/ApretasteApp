@@ -280,6 +280,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="noConn">Usted debe estar conectado a los datos moviles o a una wifi para poder solicitar el servicio</string>
+    <string name="error">Error</string>
+    <string name="toSettings">Ir Ajustes</string>
 
 
 </resources>

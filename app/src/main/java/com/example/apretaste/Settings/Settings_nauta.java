@@ -117,14 +117,7 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
         });
 
 
-        /*PrefsWatcher.bindWatcher(this,et_email, USER,"");
-        PrefsWatcher.bindWatcher(this,et_password, PASS,"");
-        PrefsWatcher.bindWatcher(this,et_server_imap, IMAP_SERVER, IMAP_NAUTA_CU);
-        PrefsWatcher.bindWatcher(this,et_port_imap, IMAP_PORT,"143");
-        PrefsWatcher.bindWatcher(this,et_security_imap, IMAP_SSL, SIN_SEGURIDAD);
-        PrefsWatcher.bindWatcher(this,et_server_smtp, SMTP_SERVER, SMTP_NAUTA_CU);
-        PrefsWatcher.bindWatcher(this,et_port_smtp, SMTP_PORT,"25");
-        PrefsWatcher.bindWatcher(this,et_security_smtp, SMTP_SSL, SIN_SEGURIDAD);*/
+
     }
 
     @Override

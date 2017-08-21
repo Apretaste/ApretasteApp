@@ -5,13 +5,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.audiofx.BassBoost;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String SIMPLE_DATE_FORMAT = "SimpleDateFormat";
     public static final String OK = "Ok";
-    public static final String NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE = "No hemos podido establecer comunicación. Asegúrese que sus datos son correctos e intente nuevamente. ";
+    public static final String NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE = "No hemos podido establecer comunicación , asegurese que los datos moviles esten encendidos , de lo contrario es problema de conexion con los servidores nauta , intentelo más tarde nuevamente";
     public static final String ERROR = "Error";
     public static boolean pressed = false;
 
@@ -163,9 +168,22 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(MainActivity.this).setTitle(ERROR).setMessage(NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE +e.toString()).setPositiveButton(OK, null).show();
+                //   new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE ).setPositiveButton(OK, null).show();
+                // new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(e.toString()).setPositiveButton(OK, null).show();
+                Log.i("errorlogin",e.toString());
+                if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
+
+                    new AlertDialog.Builder(MainActivity.this).setTitle(ERROR).setMessage("Su correo electronico o contraseña es incorrecto , verifiquelo y vuelvelo a intentar").setPositiveButton(OK, null).show();
+                }else{
+                    new AlertDialog.Builder(MainActivity.this).setTitle(ERROR).setMessage("No hemos podido establecer comunicación , asegurese que los datos moviles esten encendidos , de lo contrario es problema de conexion con los servidores nauta , intentelo más tarde nuevamente").setPositiveButton(OK, null).show();
+                }
+                /*EditText pass = (EditText) findViewById(R.id.passfield);
+                pass.setText(e.toString());*/
+
+
             }
         });
+
     }
 
     @Override
@@ -449,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 String extra=((EditText)v.findViewById(R.id.command_text)).getText().toString();
-                                                new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name+" "+extra,false,pro.services[position].description,MainActivity.this).execute();//ejecuta la tarea de login
+                                                new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name+" "+extra,false,pro.services[position].description,MainActivity.this).execute();
                                             }
                                         }).setNegativeButton("Cancelar",null).show();
                             }break;
@@ -580,7 +598,10 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
     @Override
     protected void onStart() {
         pressed = false;
+        Connection connection = new Connection();
+        connection.haveConn(this,"Ustede debe enceder los datos moviles o conectarse a una wifi para poder hacer uso de los servicios");
         super.onStart();
+
 
     }
 
@@ -664,24 +685,10 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
             return rl;
         }
 
-        // references to our images
-       /* private Integer[] mThumbIds = {
-                R.drawable.sample_2, R.drawable.sample_3,
-                R.drawable.sample_4, R.drawable.sample_5,
-                R.drawable.sample_6, R.drawable.sample_7,
-                R.drawable.sample_0, R.drawable.sample_1,
-                R.drawable.sample_2, R.drawable.sample_3,
-                R.drawable.sample_4, R.drawable.sample_5,
-                R.drawable.sample_6, R.drawable.sample_7,
-                R.drawable.sample_0, R.drawable.sample_1,
-                R.drawable.sample_2, R.drawable.sample_3,
-                R.drawable.sample_4, R.drawable.sample_5,
-                R.drawable.sample_6, R.drawable.sample_7
-        };*/
+
     }
 
 
-    //comprime un txt con el comando dentro de un archivo
 
 
 }
