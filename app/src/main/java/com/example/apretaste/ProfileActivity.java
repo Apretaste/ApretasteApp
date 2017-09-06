@@ -32,6 +32,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.apretaste.email.Mailer;
+import com.example.apretaste.email.Mailerlistener;
+import com.example.apretaste.util.Connection;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -47,6 +50,7 @@ import java.util.List;
 public class ProfileActivity extends AppCompatActivity implements Mailerlistener {
 
     private static final int REQUEST_IMAGE_GET=0;
+    public static  ProfileInfo profileI;
     public static final String SIZE = "Size ";
     public static final String RESP = "resp";
     public static final String PROFILE_PNG = "profile.png";
@@ -148,7 +152,9 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
     public static final String IMAGE = "image/*";
 
     ImageView profilePict;
+    Connection conn = new Connection();
     Profile tempProfile;
+    ProfileInfo profileInfo;
     Uri fullPhotoUri=null;
     Bitmap newBitmap=null;
 
@@ -214,8 +220,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         profilePict=((ImageView)findViewById(R.id.ib_profile_photo));
-        final TextView nameTV=(TextView)findViewById(R.id.tb_profile_name);
-        nameTV.setText("@"+MainActivity.pro.username);
+
 
 
         /**
@@ -224,7 +229,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
          * querying from other Activities
          */
         ViewCompat.setTransitionName(profilePict, VIEW_NAME_HEADER_IMAGE);
-        ViewCompat.setTransitionName(nameTV, VIEW_NAME_HEADER_TITLE);
+
 
 
 
@@ -245,7 +250,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
         else
             profilePict.setImageResource(R.drawable.ic_person_black_24dp);
 
-
+        final EditText username = (EditText) findViewById(R.id.et_username);
         final EditText name=(EditText)findViewById(R.id.et_profile_name);
         final EditText cell=(EditText)findViewById(R.id.et_profile_celular);
         final EditText profesion=(EditText)findViewById(R.id.et_profile_profesion);
@@ -286,12 +291,15 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
             }
         });
 
+        username.setText(MainActivity.pro.username);
         name.setText(MainActivity.pro.profile.full_name);
         cell.setText(MainActivity.pro.profile.phone);
         profesion.setText(MainActivity.pro.profile.occupation);
         ciudad.setText(MainActivity.pro.profile.city);
 
         tempProfile=MainActivity.pro.profile.clone();
+
+
 
 
         String interests="";
@@ -412,6 +420,31 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
             public void onClick(View v) {
                 HashMap<String,String> bulkInfo=new HashMap<>();
                 String text;
+
+                if(!(text=username.getText().toString()).equals(MainActivity.pro.username) && !text.isEmpty())
+                {
+
+
+
+
+                    if (text.length() > 15){
+                        Toast.makeText(getBaseContext(),"El nombre de usuario debe tener menos de 10 carateres",Toast.LENGTH_SHORT).show();
+                    }else{
+
+                        if (conn.haveConn(ProfileActivity.this)){
+                            MainActivity.pro.change_un(text);
+                            bulkInfo.put("username",text);
+                        }else{
+                            Toast.makeText(getBaseContext(),"No hay conexion activa",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+
+
+
+
+                }
+
                 if(!(text=name.getText().toString()).equals(MainActivity.pro.profile.full_name) && !text.isEmpty())
                 {
                     bulkInfo.put(NOMBRE,text);
@@ -516,6 +549,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                     tempProfile.religion=text;
                 }
 
+
                 if(newBitmap!=null)
                 {
                     bulkInfo.put(FOTO, PROFILE_PNG);
@@ -527,6 +561,8 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                     String json=new Gson().toJson(bulkInfo);
                     Mailer mailer=new Mailer(ProfileActivity.this,null, PERFIL_BULK +json,true, SE_HAN_GUARDADO_SUS_DATOS_DE_PERFIL,ProfileActivity.this).setCustomText("Estamos guardando su perfil. Sea paciente y no cierre la aplicación.").setShowCommand(false);
                     mailer.setAttachedbitmap(newBitmap);
+                    mailer.setAppendPassword(true);
+
                     mailer.execute();
                 }
                 else {
@@ -690,49 +726,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
         relig.setOnClickListener(religionListener);
 
         final CollapsingToolbarLayout ctl= (CollapsingToolbarLayout) findViewById(R.id.colltoolbar);
-       // AppBarLayout appbar = (AppBarLayout) findViewById(R.id.flexible_example_appbar);
-      /*  appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int mMaxScrollSize = appBarLayout.getTotalScrollRange();
 
-                int currentScrollPercentage = (Math.abs(verticalOffset)) * 100
-                        / mMaxScrollSize;
-                    ctl.setTitleEnabled(currentScrollPercentage == 100);
-
-                if (currentScrollPercentage >= 60) {
-                    {
-                        if (!mIsImageHidden) {
-                            mIsImageHidden = true;
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                            {
-                                AnimatorSet as=new AnimatorSet();
-                                as.setDuration(200);
-                                as.playTogether( ObjectAnimator.ofFloat(nameTV, "scaleY", 1,0),
-                                        ObjectAnimator.ofFloat(nameTV, "scaleX", 1,0),
-                                        ObjectAnimator.ofFloat(nameTV, "translationY", 0,-mMaxScrollSize));
-                                as.start();
-                            }
-
-                        }
-                    }}
-
-                if (currentScrollPercentage < 60) {
-                    if (mIsImageHidden) {
-                        mIsImageHidden = false;
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB)
-                        {
-                            AnimatorSet as=new AnimatorSet();
-                            as.setDuration(200);
-                            as.playTogether( ObjectAnimator.ofFloat(nameTV, "scaleY", 0,1),
-                                    ObjectAnimator.ofFloat(nameTV, "scaleX", 0,1),
-                                    ObjectAnimator.ofFloat(nameTV, "translationY", -mMaxScrollSize,0));
-                            as.start();
-                        }
-                    }
-                    }
-                }
-        });*/
     }
 
     @Override

@@ -1,18 +1,13 @@
 package com.example.apretaste;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -20,14 +15,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.apretaste.Settings.EmailAddressValidator;
-import com.google.gson.Gson;
+import com.example.apretaste.email.Mailer;
+import com.example.apretaste.email.Mailerlistener;
+import com.example.apretaste.util.Connection;
+import com.example.apretaste.util.Dialog;
+import com.example.apretaste.util.EmailAddressValidator;
+import com.example.apretaste.util.PrefsWatcher;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
-public class LoginActivity extends AppCompatActivity implements Mailerlistener{
+public class LoginActivity extends AppCompatActivity implements Mailerlistener {
 
     public static final String LASTUPD = "lastupd";
     public static final String RESP = "resp";
@@ -55,11 +52,15 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
     public static final String USER = "user";
     public static String demo = "user";
     Context context;
+    Connection connection = new Connection();
+    Dialog dialog = new Dialog();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
             ///Comprueba que si ya hay datos de un usuario , si hay entra directo al main
             if(PreferenceManager.getDefaultSharedPreferences(this).getString(RESP,null) !=null) {
@@ -166,14 +167,13 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-             //   new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE ).setPositiveButton(OK, null).show();
-              // new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(e.toString()).setPositiveButton(OK, null).show();
-                Log.i("errorlogin",e.toString());
-                if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
+                if (!connection.haveConn(LoginActivity.this)){
+                    dialog.simpleAlert(LoginActivity.this,"Error","Usted debe enceder los datos moviles o conectarse a una red wifi para poder autentificarse en nuestra aplicación");
+                }else if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
 
                     new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage("Su correo electronico o contraseña es incorrecto , verifiquelo y vuelvelo a intentar").setPositiveButton(OK, null).show();
                 }else{
-                    new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage("No hemos podido establecer comunicación , asegurese que los datos moviles esten encendidos , de lo contrario es problema de conexion con los servidores nauta , intentelo más tarde nuevamente.").setPositiveButton(OK, null).show();
+                    new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage("No hemos podido establecer comunicación , asegurese que los datos moviles esten encendidos , de lo contrario es problema de conexion con los servidores nauta , intentelo más tarde nuevamente").setPositiveButton(OK, null).show();
                 }
                 /*EditText pass = (EditText) findViewById(R.id.passfield);
                 pass.setText(e.toString());*/
@@ -183,7 +183,6 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
         });
 
     }
-
     public static boolean needsNormalization=false;
 
     @Override
@@ -205,8 +204,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener{
     @Override
     protected void onStart() {
 
-        Connection connection = new Connection();
-        connection.haveConn(this , "Usted debe enceder los datos moviles o conectarse a una red wifi para poder autentificarse en nuestra aplicación");
+
         super.onStart();
 
 

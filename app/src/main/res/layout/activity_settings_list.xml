@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFF"
     style="@style/App"
-    tools:context="com.example.apretaste.Settings.SettingsActivity">
+    tools:context="com.example.apretaste.settings.SettingsActivity">
     <ScrollView
 
         android:layout_width="match_parent"
@@ -26,97 +26,111 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.example.apretaste.AssetDrawableCompatTextView
-                    app:drawableRightCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                <com.example.apretaste.util.AssetDrawableCompatTextView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/sobre_esta_app"
-                    android:textSize="20sp" />
+                    android:textColor="#000"
+                    android:textSize="18sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
+
 
             <LinearLayout
+                android:layout_marginTop="30dp"
                 android:id="@+id/ll_config_nauta"
                 android:onClick="open_activitys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.example.apretaste.AssetDrawableCompatTextView
-                    app:drawableRightCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                <com.example.apretaste.util.AssetDrawableCompatTextView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text_config_nauta"
-                    android:textSize="20sp"/>
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
+
 
             <LinearLayout
+                android:layout_marginTop="30dp"
                 android:id="@+id/ll_buzon"
                 android:onClick="open_activitys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.example.apretaste.AssetDrawableCompatTextView
-                    app:drawableRightCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+
+
+
+                <com.example.apretaste.util.AssetDrawableCompatTextView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000"
                     android:text="@string/text_buzon_personal"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
             </LinearLayout>
-            <LinearLayout
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
 
             <LinearLayout
+                android:layout_marginTop="30dp"
+                android:id="@+id/ll_cache"
                 android:onClick="open_activitys"
-                android:id="@+id/ll_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+                <com.example.apretaste.util.AssetDrawableCompatTextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:text="Borrar data guardada"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="30dp"
+
+                android:id="@+id/ll_mailer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone">
-                <com.example.apretaste.AssetDrawableCompatTextView
-                    app:drawableRightCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+
+              >
+
+                <Switch
+                    android:id="@+id/sw_mailer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/tiempo_de_refrescar"
-                    android:textSize="20sp"
-                    />
+                    android:checked="true"
+                    android:text="Suscribirse a la lista de correos"
+                    android:textSize="18sp" />
+
+
+
             </LinearLayout>
-            <LinearLayout
-                android:visibility="gone"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#000"/>
+
 
 
 
             <LinearLayout
+                android:layout_marginTop="30dp"
                 android:onClick="open_activitys"
 
                 android:id="@+id/ll_cerrar_sesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/cerrar_session"
-                    android:textSize="20sp"
-                    />
+                    android:textColor="#000"
+                    android:textSize="18sp" />
 
             </LinearLayout>
         </LinearLayout>

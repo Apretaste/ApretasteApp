@@ -13,6 +13,7 @@
             android:id="@+id/service_image"
             android:layout_marginBottom="40dp"/>
         <ScrollView
+            android:padding="25px"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
                 <LinearLayout
@@ -33,11 +34,13 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:textSize="17sp"
+
                             android:text="@string/esta_es_la_descripcion_del_servicio"
                             android:id="@+id/service_description"
                             android:layout_marginBottom="10dp"/>
 
                         <TextView
+                            android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/categor_a"
@@ -55,6 +58,7 @@
                             android:layout_marginBottom="10dp"/>
 
                         <TextView
+                            android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/ltima_versi_n"
@@ -72,6 +76,7 @@
                             android:layout_marginBottom="10dp"/>
 
                         <TextView
+                            android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/creador"

@@ -13,13 +13,18 @@ import java.util.Set;
  * Created by Raymond Arteaga on 10/07/2017.
  */
 
-public class ProfileInfo {
+public class ProfileInfo  {
     public String username;
     public String timestamp="";
     public float credit;
     public Profile profile=new Profile();
     public Notifications notifications[]=new Notifications[]{};
     public Services services[]=new Services[]{};
+    public void change_un(String us){
+        this.username = us;
+
+    }
+
 
     public class Notifications
     {
@@ -53,6 +58,7 @@ public class ProfileInfo {
         {
             used=true;
         }
+
         public boolean isUsed()
         {
             return used==null?false:used;
@@ -99,4 +105,6 @@ public class ProfileInfo {
         profile.humanizeData();
         Log.e("pro","finish update 2");
     }
+
+
 }

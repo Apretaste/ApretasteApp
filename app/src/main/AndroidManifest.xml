@@ -5,8 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +13,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppWithBar">
+
+
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
@@ -29,23 +31,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Settings.Settings_buzon"
+            android:name=".settings.Settings_buzon"
             android:label="Cambiar buzón personal"
-            android:parentActivityName=".Settings.SettingsActivity" />
+            android:parentActivityName=".settings.SettingsActivity" />
         <activity
-            android:name=".Settings.Settings_nauta"
+            android:name=".settings.Settings_nauta"
             android:configChanges="orientation|screenSize"
             android:label="Configuración de nauta"
-            android:parentActivityName=".Settings.SettingsActivity" />
+            android:parentActivityName=".settings.SettingsActivity" />
         <activity
-            android:name=".Settings.Settings_auto_resfrescar"
-            android:parentActivityName=".Settings.SettingsActivity" />
+            android:name=".settings.Settings_about"
+            android:label="Sobre esta app"
+            android:parentActivityName=".settings.SettingsActivity" />
         <activity
-            android:name=".Settings.Settings_about"
-            android:label="Acerca de..."
-            android:parentActivityName=".Settings.SettingsActivity" />
-        <activity
-            android:name=".Settings.SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:label="Ajustes"
             android:parentActivityName=".MainActivity" />
         <activity
@@ -70,7 +69,7 @@
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/App" />
-
+        <activity android:name=".Welcome"></activity>
     </application>
 
 </manifest>

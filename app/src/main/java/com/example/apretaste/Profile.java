@@ -27,6 +27,8 @@ public class Profile implements Cloneable {
             religion,
             picture;
     String[] interests=new String[]{};
+
+
     public void humanizeData()
     {
         Log.e("pro","humanizing data");

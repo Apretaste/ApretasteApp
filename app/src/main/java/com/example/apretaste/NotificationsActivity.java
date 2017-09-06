@@ -1,6 +1,5 @@
 package com.example.apretaste;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -15,18 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.example.apretaste.Settings.SettingsActivity;
+import com.example.apretaste.email.Mailer;
+import com.example.apretaste.email.Mailerlistener;
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static com.example.apretaste.MainActivity.NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE;
 import static com.example.apretaste.MainActivity.OK;

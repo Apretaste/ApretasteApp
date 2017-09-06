@@ -1,23 +1,15 @@
 package com.example.apretaste;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.audiofx.BassBoost;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -37,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,16 +36,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.example.apretaste.Settings.SettingsActivity;
+import com.example.apretaste.db.DataBaseManager;
+import com.example.apretaste.email.Mailer;
+import com.example.apretaste.email.Mailerlistener;
+import com.example.apretaste.settings.SettingsActivity;
+import com.example.apretaste.util.Connection;
+import com.example.apretaste.util.DataUtil;
+import com.example.apretaste.util.Dialog;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements HistoryManager.HistoryListener, Mailerlistener{
+public class MainActivity extends AppCompatActivity implements HistoryManager.HistoryListener, Mailerlistener {
     public static final String PRESIONE_NUEVAMENTE_PARA_SALIR = "Presione nuevamente para salir";
     public static final String BOTON_ACTULIZAR = "Botón actulizar";
     public static final String HISTORYURL = "historyurl";
@@ -95,7 +93,12 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
     ServicesAdapter adapter;
     String mailbox, user, password;
     TextView notifCount;
+    DataUtil datautil = new DataUtil();
     GridView gridview;
+    Connection connection = new Connection();
+    Dialog dialog = new Dialog();
+
+    DataUtil dataUtil = new DataUtil();
     
     FloatingActionButton fabSync, fabNotifications, fabSettings, fabHistory;
 
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
         }
         vsw.setDisplayedChild(0);
         fabSync.setVisibility(View.VISIBLE);
-//        profileLayout.setVisibility(View.VISIBLE);
+
         showHomeButton(false);
     }
 
@@ -130,31 +133,7 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
     private void showHomeButton(final boolean show)
     {
         isShowingHome=show;
-      /*  if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            AnimatorSet as=new AnimatorSet();
-            if(show)
-            {
-                as.setDuration(80);
-                as.playTogether(
-                        ObjectAnimator.ofFloat(profilePict,"scaleX",1,0),
-                        ObjectAnimator.ofFloat(profilePict,"scaleY",1,0),
-                        ObjectAnimator.ofFloat(fabSettings,"scaleY",1,0),
-                        ObjectAnimator.ofFloat(profilePict,"scaleY",1,0),
 
-                );
-            }
-            else
-            {
-                as.setDuration(120);
-                as.playTogether(
-                        ObjectAnimator.ofFloat(profilePict,"scaleY",1,0.65f),
-                        ObjectAnimator.ofFloat(profileLayout,"alpha",1,0.4f),
-                        ObjectAnimator.ofFloat(profilePict,"scaleX",1,0)
-                );
-            }
-            as.start();
-        }
-        else*/
         {
             profilePict.setVisibility(show?View.GONE:View.VISIBLE);
             profileLayout.setVisibility(show?View.GONE:View.VISIBLE);
@@ -168,10 +147,9 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //   new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE ).setPositiveButton(OK, null).show();
-                // new AlertDialog.Builder(LoginActivity.this).setTitle(ERROR).setMessage(e.toString()).setPositiveButton(OK, null).show();
-                Log.i("errorlogin",e.toString());
-                if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
+                if (!connection.haveConn(MainActivity.this)){
+                    dialog.simpleAlert(MainActivity.this,"Error","Usted debe enceder los datos moviles o conectarse a una red wifi para poder usar nuestra app");
+                }else if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
 
                     new AlertDialog.Builder(MainActivity.this).setTitle(ERROR).setMessage("Su correo electronico o contraseña es incorrecto , verifiquelo y vuelvelo a intentar").setPositiveButton(OK, null).show();
                 }else{
@@ -243,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
             return;
         }
 
+
         File file = new File(response);
         final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), mailer.getResponseTimestamp());
             runOnUiThread(new Runnable() {
@@ -252,7 +231,19 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
                     HistoryManager.getSingleton().setCurrentPage(entry);
                 }
             });
+
+
+        if (mailer.mincache != ""){
+
+            DataBaseManager manager = new DataBaseManager(MainActivity.this);
+
+            manager.insertar((command.toLowerCase()).trim(),datautil.addMinutes(mailer.mincache),file.toURI().toString());
+            Log.i("trymio",(command.toLowerCase()).trim());
+
+        }
+
     }
+
 
     @SuppressWarnings("unused")
     private class JSI
@@ -272,19 +263,72 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
                     if(type.equalsIgnoreCase(TRUE))
                     {
                         final View v=getLayoutInflater().inflate(R.layout.dialog_prompt,null);
-                        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).setView(v).setMessage("Escriba un texto para ejecutar dentro del servicio")
+/*
+                        TextView tv1 = (TextView) v.findViewById(R.id.tvct12);
+                        tv1.setText("Escriba el numero de telefono");
+
+                       TextView tv2 = (TextView) v.findViewById(R.id.tvct2);
+                        tv2.setText("Escriba el text a enviar");
+*/
+                        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                                .setView(v)
+                                .setMessage(help)
                                 .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        DataBaseManager manager = new DataBaseManager(MainActivity.this);
                                         String extra=((EditText)v.findViewById(R.id.command_text)).getText().toString();
-                                        new Mailer(MainActivity.this, command.split(" ")[0],command+" "+extra,!waiting,help,MainActivity.this).execute();//ejecuta la tarea de login
+                                        String peticion = (command+" "+extra).toLowerCase();
+                                       // Log.i("peticion",peticion);
+                                        if (!manager.getAll(peticion,"peticion").equals("")){
+
+
+
+                                            try {
+                                                if (dataUtil.compareTwoDates(dataUtil.getNowDateTime(),manager.getAll(peticion,"cache"))){
+                                                    Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                                    final HistoryEntry entry = new HistoryEntry(peticion, null, manager.getAll(peticion,"path"),  null);
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+
+                                                            HistoryManager.getSingleton().setCurrentPage(entry);
+                                                        }
+                                                    });
+
+
+                                                }else{
+                                                    Log.i("llamar","llamar servicios y borra el cache");
+                                                       manager.eliminar(manager.getAll(peticion,"id"));
+                                                    Mailer mailer = new Mailer(MainActivity.this, command.split(" ")[0],command+" "+extra,!waiting,help,MainActivity.this);
+                                                    mailer.setAppendPassword(true);
+                                                    mailer.execute();
+                                                }
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }else{
+                                            Log.i("llamar","El servicio no esta en cache");
+
+                                            Mailer mailer = new Mailer(MainActivity.this, command.split(" ")[0],command+" "+extra,!waiting,help,MainActivity.this);
+                                            mailer.setAppendPassword(true);
+                                            mailer.execute();
+
+                                        }
+
+
                                     }
-                                }).setNegativeButton("Cancelar",null).create();
+                                })
+                                .setNegativeButton("Cancelar",null)
+                                .create();
                         alertDialog.show();
                     }
                     else
                     {
-                        new Mailer(MainActivity.this, command.split(" ")[0],command,!waiting,help,MainActivity.this).execute();
+
+                        Mailer mailer= new Mailer(MainActivity.this, command.split(" ")[0],command,!waiting,help,MainActivity.this);
+                        mailer.setAppendPassword(true);
+                        mailer.execute();
                     }
                 }
             });
@@ -369,9 +413,10 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
                             public void onClick(DialogInterface dialog, int which) {
                                 Mailer mailer=new Mailer(MainActivity.this, null, PERFIL_STATUS +pro.timestamp, false, null, MainActivity.this);
                                 mailer.setReturnContent(true).setSaveInternal(true);
-                               // mailer.setCustomText(ESTAMOS_BUSCANDO_NUEVO_SERVICIOS_CHATS_NOTIFICACIONES_Y_CAMBIOS_EN_SU_PERFIL_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION);
+
                                 mailer.setShowCommand(false);
-                                //mailer.setShowStatus(false);
+                                mailer.setAppendPassword(true);
+
                                 mailer.execute();
                             }
                         }
@@ -445,36 +490,120 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
                             case 0:{
                                 if(!pro.services[position].isUsed())
                                 {
-                                    pro.services[position].setUsed();
+                                   pro.services[position].setUsed();
                                     adapter.notifyDataSetChanged();
                                     String pro=new Gson().toJson( MainActivity.pro);
                                     PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putString(RESP,pro).apply();
+
                                 }
 
-                                new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name,false,pro.services[position].description,MainActivity.this).execute();//ejecuta la tarea de login
+                                DataBaseManager manager = new DataBaseManager(MainActivity.this);
+                                String peticion = (pro.services[position].name).toLowerCase();
+
+                //          Log.i("todo",manager.Read());
+
+                               if (!manager.getAll(peticion,"peticion").equals("")){
+
+
+                                   try {
+                                       if (dataUtil.compareTwoDates(dataUtil.getNowDateTime(),manager.getAll(peticion,"cache"))){
+                                           Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                           final HistoryEntry entry = new HistoryEntry(peticion, null, manager.getAll(peticion,"path"),  null);
+                                           runOnUiThread(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                               //    HistoryManager.getSingleton().addToHistory(entry);
+                                                   HistoryManager.getSingleton().setCurrentPage(entry);
+                                               }
+                                           });
+
+                                       }else{
+                                           Log.i("llamar","llamar servicios y borra el cache");
+                                           manager.eliminar(manager.getAll(peticion,"id"));
+
+                                           Mailer mailer = new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name,false,pro.services[position].description,MainActivity.this);
+                                           mailer.setAppendPassword(true);
+                                           mailer.execute();
+                                       }
+                                   } catch (ParseException e) {
+                                       e.printStackTrace();
+                                   }
+                               }else{
+                                    Log.i("llamar","El servicio no esta en cache");
+
+                                   Mailer mailer =  new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name,false,pro.services[position].description,MainActivity.this);
+                                   mailer.setAppendPassword(true);
+                                   mailer.execute();
+                               }
+
+
+
+
+
+
+
+
                             }break;
                             case 1:{
                                 if(!pro.services[position].isUsed())
                                 {
                                     pro.services[position].setUsed();
                                     adapter.notifyDataSetChanged();
-                                    String pro=new Gson().toJson( MainActivity.pro);
+                                   String pro=new Gson().toJson( MainActivity.pro);
                                     PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putString(RESP,pro).apply();
                                 }
+
                                 final View v=getLayoutInflater().inflate(R.layout.dialog_prompt,null);
-                                final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).setView(v).setMessage("Escriba un texto para ejecutar dentro del servicio")
+                               final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).setView(v).setMessage("Escriba un texto para ejecutar dentro del servicio")
                                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 String extra=((EditText)v.findViewById(R.id.command_text)).getText().toString();
-                                                new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name+" "+extra,false,pro.services[position].description,MainActivity.this).execute();
+
+                                                DataBaseManager manager = new DataBaseManager(MainActivity.this);
+                                               String peticion = ((pro.services[position].name+" "+extra).toLowerCase()).trim();
+
+                                               if (!manager.getAll(peticion,"peticion").equals("")){
+
+
+                                                    try {
+                                                        if (dataUtil.compareTwoDates(dataUtil.getNowDateTime(),manager.getAll(peticion,"cache"))){
+                                                            Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                                            final HistoryEntry entry = new HistoryEntry(peticion, null, manager.getAll(peticion,"path"),  null);
+                                                            runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    //    HistoryManager.getSingleton().addToHistory(entry);
+                                                                    HistoryManager.getSingleton().setCurrentPage(entry);
+                                                                }
+                                                            });
+
+                                                        }else{
+                                                            Log.i("llamar","llamar servicios y borra el cache");
+                                                            //    manager.eliminar(manager.getAll(peticion,"id"));
+                                                            Mailer mailer = new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name+" "+extra,false,pro.services[position].description,MainActivity.this);
+                                                            mailer.setAppendPassword(true);
+                                                            mailer.execute();
+                                                        }
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }else{
+                                                    Log.i("llamar","El servicio no esta en cache");
+                                                    Mailer mailer = new Mailer(MainActivity.this, pro.services[position].name,pro.services[position].name+" "+extra,false,pro.services[position].description,MainActivity.this);
+                                                   mailer.setAppendPassword(true);
+                                                   mailer.execute();
+                                                }
+                                           ///  Log.i("todo",manager.Read());
+
+
                                             }
                                         }).setNegativeButton("Cancelar",null).show();
                             }break;
                             case 2:{
                                 selectedService=pro.services[position];
                                 startActivity(new Intent(MainActivity.this,ServiceDetails.class));
-                                //new AlertDialog.Builder(MainActivity.this).setMessage(pro.services[position].description).show();
+
                             }break;
                         }
                     }
@@ -490,7 +619,9 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
         wv=(WebView)findViewById(R.id.mainWebView);
         profileLayout=(LinearLayout)findViewById(R.id.profile_text_layout);
         wv.getSettings().setJavaScriptEnabled(true);
+
         //noinspection SpellCheckingInspection
+
         wv.addJavascriptInterface(new JSI(), APRETASTE);
         if(HistoryManager.getSingleton().currentUrl==null)
             loadhome();
@@ -598,8 +729,8 @@ public class MainActivity extends AppCompatActivity implements HistoryManager.Hi
     @Override
     protected void onStart() {
         pressed = false;
-        Connection connection = new Connection();
-        connection.haveConn(this,"Ustede debe enceder los datos moviles o conectarse a una wifi para poder hacer uso de los servicios");
+       // Connection connection = new Connection();
+     //   connection.haveConn(this,"Ustede debe enceder los datos moviles o conectarse a una wifi para poder hacer uso de los servicios");
         super.onStart();
 
 
