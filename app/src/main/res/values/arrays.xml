@@ -1,243 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="words">
-<item>abajo</item>
-<item>abandonar</item>
-<item>abrir</item>
-<item>abrir</item>
-<item>absoluto</item>
-<item>abuelo</item>
-<item>acabar</item>
-<item>acabar</item>
-<item>acaso</item>
-<item>accion</item>
-<item>aceptar</item>
-<item>aceptar</item>
-<item>acercar</item>
-<item>acompanar</item>
-<item>acordar</item>
-<item>actitud</item>
-<item>actividad</item>
-<item>acto</item>
-<item>actual</item>
-<item>actuar</item>
-<item>acudir</item>
-<item>acuredo</item>
-<item>adelante</item>
-<item>ademas</item>
-<item>adquirir</item>
-<item>advertir</item>
-<item>afectar</item>
-<item>afirmar</item>
-<item>agua</item>
-<item>ahora</item>
-<item>aire</item>
-<item>alcanzar</item>
-<item>alejar</item>
-<item>aleman</item>
-<item>algo</item>
-<item>alguien</item>
-<item>alguno</item>
-<item>algun</item>
-<item>alla</item>
-<item>alli</item>
-<item>alma</item>
-<item>alto</item>
-<item>altura</item>
-<item>amr</item>
-<item>ambos</item>
-<item>americano</item>
-<item>amigo</item>
-<item>amor</item>
-<item>amplio</item>
-<item>anadir</item>
-<item>analisis</item>
-<item>andar</item>
-<item>animal</item>
-<item>ante</item>
-<item>anterior</item>
-<item>antes</item>
-<item>antiguo</item>
-<item>anunciar</item>
-<item>aparecer</item>
-<item>aparecer</item>
-<item>apenas</item>
-<item>aplicar</item>
-<item>apoyar</item>
-<item>aprender</item>
-<item>aprovechar</item>
-<item>aquel</item>
-<item>aquello</item>
-<item>aqui</item>
-<item>arbol</item>
-<item>arma</item>
-<item>arriba</item>
-<item>arte</item>
-<item>asegurar</item>
-<item>asi</item>
-<item>aspecto</item>
-<item>asunto</item>
-<item>atencion</item>
-<item>atras</item>
-<item>atreverse</item>
-<item>aumentar</item>
-<item>aunque</item>
-<item>autentico</item>
-<item>autor</item>
-<item>autoridad</item>
-<item>avanzar</item>
-<item>ayer</item>
-<item>ayuda</item>
-<item>ayudar</item>
-<item>azul</item>
-<item>bajar</item>
-<item>bajo</item>
-<item>barcelona</item>
-<item>barrio</item>
-<item>base</item>
-<item>bastante</item>
-<item>bastar</item>
-<item>beber</item>
-<item>bien</item>
-<item>lanco</item>
-<item>boca</item>
-<item>brazo</item>
-<item>buen</item>
-<item>buscar</item>
-<item>buscar</item>
-<item>caballo</item>
-<item>caber</item>
-<item>cabeza</item>
-<item>cabo</item>
-<item>cada</item>
-<item>cadena</item>
-<item>cae</item>
-<item>caer</item>
-<item>calle</item>
-<item>cama</item>
-<item>cambiar</item>
-<item>cambiar</item>
-<item>cambio</item>
-<item>caminar</item>
-<item>camino</item>
-<item>campana</item>
-<item>campo</item>
-<item>cantar</item>
-<item>cantidad</item>
-<item>capacidad</item>
-<item>capaz</item>
-<item>capital</item>
-<item>cara</item>
-<item>caracter</item>
-<item>carne</item>
-<item>carrera</item>
-<item>carta</item>
-<item>casa</item>
-<item>casar</item>
-<item>cas</item>
-<item>caso</item>
-<item>catalan</item>
-<item>causa</item>
-<item>celebrar</item>
-<item>celula</item>
-<item>central</item>
-<item>centro</item>
-<item>cerebro</item>
-<item>cerrar</item>
-<item>ciones</item>
-<item>comenzar</item>
-<item>como</item>
-<item>comprender</item>
-<item>conocer</item>
-<item>conseguir</item>
-<item>considerar</item>
-<item>contar</item>
-<item>convertir</item>
-<item>correr</item>
-<item>crear</item>
-<item>cree</item>
-<item>cumplir</item>
-<item>deber</item>
-<item>decir</item>
-<item>dejar</item>
-<item>descubrir</item>
-<item>dirigir</item>
-<item>empezar</item>
-<item>encontrar</item>
-<item>entender</item>
-<item>entrar</item>
-<item>scribir</item>
-<item>escuchar</item>
-<item>esperar</item>
-<item>estar</item>
-<item>estudiar</item>
-<item>existir</item>
-<item>explicar</item>
-<item>formar</item>
-<item>ganar</item>
-<item>gustar</item>
-<item>habe</item>
-<item>hablar</item>
-<item>hacer</item>
-<item>intentar</item>
-<item>jugar</item>
-<item>leer</item>
-<item>levantar</item>
-<item>llamar</item>
-<item>llegar</item>
-<item>llevar</item>
-<item>lograr</item>
-<item>mana</item>
-<item>mantener</item>
-<item>mirar</item>
-<item>nacer</item>
-<item>necesitar</item>
-<item>ocurrir</item>
-<item>ofrecer</item>
-<item>paces</item>
-<item>pagar</item>
-<item>parecer</item>
-<item>partir</item>
-<item>pasar</item>
-<item>pedir</item>
-<item>pensar</item>
-<item>perder</item>
-<item>permitir</item>
-<item>plia</item>
-<item>poder</item>
-<item>poner</item>
-<item>preguntar</item>
-<item>presentar</item>
-<item>producir</item>
-<item>quedar</item>
-<item>querer</item>
-<item>racteres</item>
-<item>realizar</item>
-<item>recibir</item>
-<item>reconocer</item>
-<item>recordar</item>
-<item>resultar</item>
-<item>saber</item>
-<item>scar</item>
-<item>salir</item>
-<item>seguir</item>
-<item>sentir</item>
-<item>servir</item>
-<item>suponer</item>
-<item>tener</item>
-<item>terminar</item>
-<item>tocar</item>
-<item>tomar</item>
-<item>trabajar</item>
-<item>trae</item>
-<item>tratar</item>
-<item>traves</item>
-<item>utilizar</item>
-<item>venir</item>
-<item>vivir</item>
-<item>volver</item>
+        <item>abajo</item>
+        <item>abandonar</item>
+        <item>abrir</item>
+        <item>abrir</item>
+        <item>absoluto</item>
+        <item>abuelo</item>
+        <item>acabar</item>
+        <item>acabar</item>
+        <item>acaso</item>
+        <item>accion</item>
+        <item>aceptar</item>
+        <item>aceptar</item>
+        <item>acercar</item>
+        <item>acompanar</item>
+        <item>acordar</item>
+        <item>actitud</item>
+        <item>actividad</item>
+        <item>acto</item>
+        <item>actual</item>
+        <item>actuar</item>
+        <item>acudir</item>
+        <item>acuredo</item>
+        <item>adelante</item>
+        <item>ademas</item>
+        <item>adquirir</item>
+        <item>advertir</item>
+        <item>afectar</item>
+        <item>afirmar</item>
+        <item>agua</item>
+        <item>ahora</item>
+        <item>aire</item>
+        <item>alcanzar</item>
+        <item>alejar</item>
+        <item>aleman</item>
+        <item>algo</item>
+        <item>alguien</item>
+        <item>alguno</item>
+        <item>algun</item>
+        <item>alla</item>
+        <item>alli</item>
+        <item>alma</item>
+        <item>alto</item>
+        <item>altura</item>
+        <item>amr</item>
+        <item>ambos</item>
+        <item>americano</item>
+        <item>amigo</item>
+        <item>amor</item>
+        <item>amplio</item>
+        <item>anadir</item>
+        <item>analisis</item>
+        <item>andar</item>
+        <item>animal</item>
+        <item>ante</item>
+        <item>anterior</item>
+        <item>antes</item>
+        <item>antiguo</item>
+        <item>anunciar</item>
+        <item>aparecer</item>
+        <item>aparecer</item>
+        <item>apenas</item>
+        <item>aplicar</item>
+        <item>apoyar</item>
+        <item>aprender</item>
+        <item>aprovechar</item>
+        <item>aquel</item>
+        <item>aquello</item>
+        <item>aqui</item>
+        <item>arbol</item>
+        <item>arma</item>
+        <item>arriba</item>
+        <item>arte</item>
+        <item>asegurar</item>
+        <item>asi</item>
+        <item>aspecto</item>
+        <item>asunto</item>
+        <item>atencion</item>
+        <item>atras</item>
+        <item>atreverse</item>
+        <item>aumentar</item>
+        <item>aunque</item>
+        <item>autentico</item>
+        <item>autor</item>
+        <item>autoridad</item>
+        <item>avanzar</item>
+        <item>ayer</item>
+        <item>ayuda</item>
+        <item>ayudar</item>
+        <item>azul</item>
+        <item>bajar</item>
+        <item>bajo</item>
+        <item>barcelona</item>
+        <item>barrio</item>
+        <item>base</item>
+        <item>bastante</item>
+        <item>bastar</item>
+        <item>beber</item>
+        <item>bien</item>
+        <item>lanco</item>
+        <item>boca</item>
+        <item>brazo</item>
+        <item>buen</item>
+        <item>buscar</item>
+        <item>buscar</item>
+        <item>caballo</item>
+        <item>caber</item>
+        <item>cabeza</item>
+        <item>cabo</item>
+        <item>cada</item>
+        <item>cadena</item>
+        <item>cae</item>
+        <item>caer</item>
+        <item>calle</item>
+        <item>cama</item>
+        <item>cambiar</item>
+        <item>cambiar</item>
+        <item>cambio</item>
+        <item>caminar</item>
+        <item>camino</item>
+        <item>campana</item>
+        <item>campo</item>
+        <item>cantar</item>
+        <item>cantidad</item>
+        <item>capacidad</item>
+        <item>capaz</item>
+        <item>capital</item>
+        <item>cara</item>
+        <item>caracter</item>
+        <item>carne</item>
+        <item>carrera</item>
+        <item>carta</item>
+        <item>casa</item>
+        <item>casar</item>
+        <item>cas</item>
+        <item>caso</item>
+        <item>catalan</item>
+        <item>causa</item>
+        <item>celebrar</item>
+        <item>celula</item>
+        <item>central</item>
+        <item>centro</item>
+        <item>cerebro</item>
+        <item>cerrar</item>
+        <item>ciones</item>
+        <item>comenzar</item>
+        <item>como</item>
+        <item>comprender</item>
+        <item>conocer</item>
+        <item>conseguir</item>
+        <item>considerar</item>
+        <item>contar</item>
+        <item>convertir</item>
+        <item>correr</item>
+        <item>crear</item>
+        <item>cree</item>
+        <item>cumplir</item>
+        <item>deber</item>
+        <item>decir</item>
+        <item>dejar</item>
+        <item>descubrir</item>
+        <item>dirigir</item>
+        <item>empezar</item>
+        <item>encontrar</item>
+        <item>entender</item>
+        <item>entrar</item>
+        <item>scribir</item>
+        <item>escuchar</item>
+        <item>esperar</item>
+        <item>estar</item>
+        <item>estudiar</item>
+        <item>existir</item>
+        <item>explicar</item>
+        <item>formar</item>
+        <item>ganar</item>
+        <item>gustar</item>
+        <item>habe</item>
+        <item>hablar</item>
+        <item>hacer</item>
+        <item>intentar</item>
+        <item>jugar</item>
+        <item>leer</item>
+        <item>levantar</item>
+        <item>llamar</item>
+        <item>llegar</item>
+        <item>llevar</item>
+        <item>lograr</item>
+        <item>mana</item>
+        <item>mantener</item>
+        <item>mirar</item>
+        <item>nacer</item>
+        <item>necesitar</item>
+        <item>ocurrir</item>
+        <item>ofrecer</item>
+        <item>paces</item>
+        <item>pagar</item>
+        <item>parecer</item>
+        <item>partir</item>
+        <item>pasar</item>
+        <item>pedir</item>
+        <item>pensar</item>
+        <item>perder</item>
+        <item>permitir</item>
+        <item>plia</item>
+        <item>poder</item>
+        <item>poner</item>
+        <item>preguntar</item>
+        <item>presentar</item>
+        <item>producir</item>
+        <item>quedar</item>
+        <item>querer</item>
+        <item>racteres</item>
+        <item>realizar</item>
+        <item>recibir</item>
+        <item>reconocer</item>
+        <item>recordar</item>
+        <item>resultar</item>
+        <item>saber</item>
+        <item>scar</item>
+        <item>salir</item>
+        <item>seguir</item>
+        <item>sentir</item>
+        <item>servir</item>
+        <item>suponer</item>
+        <item>tener</item>
+        <item>terminar</item>
+        <item>tocar</item>
+        <item>tomar</item>
+        <item>trabajar</item>
+        <item>trae</item>
+        <item>tratar</item>
+        <item>traves</item>
+        <item>utilizar</item>
+        <item>venir</item>
+        <item>vivir</item>
+        <item>volver</item>
     </string-array>
-
 
     <string-array name="email">
         <item>interwebcuba</item>
@@ -255,12 +254,11 @@
         <item>manuelgustav818</item>
         <item>rondonorigoberto</item>
         <item>aparentesoledad</item>
-        <item>gonzalezhominstall</item>
+        <item>gonzalezhomstall</item>
         <item>rumianteapartado</item>
         <item>josefinakallma</item>
         <item>holsamoller</item>
         <item>goulsmaloy</item>
         <item>lafonsehorrs</item>
-
-        </string-array>
+    </string-array>
 </resources>
