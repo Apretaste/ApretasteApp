@@ -1,14 +1,6 @@
 [
     {
-        "merged": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
-        "source": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "E:\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
-        "source": "E:\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
-        "source": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+        "merged": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/release/drawable-hdpi-v4/ic_launcher.png",
+        "source": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/src/main/res/drawable-hdpi/ic_launcher.png"
     }
 ]

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFF"
     style="@style/App"
-    tools:context="com.example.apretaste.settings.SettingsActivity">
+    tools:context="apretaste.settings.SettingsActivity">
     <ScrollView
 
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.example.apretaste.util.AssetDrawableCompatTextView
+                <apretaste.Helper.AssetDrawableCompatTextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:onClick="open_activitys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <com.example.apretaste.util.AssetDrawableCompatTextView
+                <apretaste.Helper.AssetDrawableCompatTextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
 
 
 
-                <com.example.apretaste.util.AssetDrawableCompatTextView
+                <apretaste.Helper.AssetDrawableCompatTextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
 
 
 
-                <com.example.apretaste.util.AssetDrawableCompatTextView
+                <apretaste.Helper.AssetDrawableCompatTextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -56,12 +56,6 @@ public class SettingsActivity extends AppCompatActivity {
             case R.id.ll_buzon:
                 startActivity(new Intent(SettingsActivity.this, Settings_buzon.class ));
                 break;
-            case R.id.ll_time:
-            {
-                Toast.makeText(this, "Disponible pronto!", Toast.LENGTH_LONG).show();
-                //startActivity(new Intent(SettingsActivity.this, Settings_auto_resfrescar.class ));
-            }
-                break;
             case R.id.ll_cerrar_sesion:
             {
                 new AlertDialog.Builder(this).setMessage(SI_TERMINA_SU_SESION_NO_RECIBIRA_MAS_NOTIFICACIONES_Y_OTROS_USUARIOS_NO_PODRAN_CONTACTARLE).setPositiveButton(ACEPTAR, new DialogInterface.OnClickListener() {

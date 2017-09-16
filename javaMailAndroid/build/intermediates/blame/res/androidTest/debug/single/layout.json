@@ -1,14 +1,6 @@
 [
     {
-        "merged": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\main.xml",
-        "source": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\build\\intermediates\\bundles\\debug\\res\\layout\\main.xml"
-    },
-    {
-        "merged": "E:\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\main.xml",
-        "source": "E:\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\bundles\\debug\\res\\layout\\main.xml"
-    },
-    {
-        "merged": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\main.xml",
-        "source": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\bundles\\debug\\res\\layout\\main.xml"
+        "merged": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/layout/main.xml",
+        "source": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/build/intermediates/bundles/debug/res/layout/main.xml"
     }
 ]

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFF"
     style="@style/App"
-    tools:context="com.example.apretaste.ProfileActivity">
+    tools:context="com.example.apretaste.com.apretaste.apretaste.ProfileActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/nombre" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 android:focusable="false"
                 app:drawableRightCompat="@drawable/ic_date_range_black_24dp" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_sexo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:focusable="false"
                 android:hint="@string/sexo" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_orientsexu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
                 android:hint="@string/celular"
                 android:inputType="phone" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_typebody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                 android:focusable="false"
                 android:hint="@string/cuerpo" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_eyes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 android:focusable="false"
                 android:hint="@string/ojos" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_pelo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                 android:focusable="false"
                 android:hint="@string/pelo" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
 
                 android:id="@+id/et_profile_piel"
                 android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                 android:focusable="false"
                 android:hint="@string/piel" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                 android:focusable="false"
                 android:hint="@string/estado_civil" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_nivel_escolar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/ciudad" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_province"
                 android:layout_width="match_parent"
                 android:focusable="false"
@@ -173,7 +173,7 @@
                 app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
                 android:hint="@string/provincia" />
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 android:id="@+id/et_profile_intereses"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,9 +181,9 @@
                 android:hint="@string/intereses"
                 app:drawableRightCompat="@drawable/ic_edit_black_24dp">
 
-            </com.example.apretaste.util.AssetDrawableCompatEditText>
+            </apretaste.Helper.AssetDrawableCompatEditText>
 
-            <com.example.apretaste.util.AssetDrawableCompatEditText
+            <apretaste.Helper.AssetDrawableCompatEditText
                 app:drawableRightCompat="@drawable/ic_arrow_drop_down_black_24dp"
                 android:id="@+id/et_profile_religion"
                 android:layout_width="match_parent"

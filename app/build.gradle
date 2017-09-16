@@ -7,10 +7,10 @@ android {
         applicationId 'com.apretaste.apretaste'
         minSdkVersion 9
         targetSdkVersion 25
-        versionName '2.3'
+        versionName '2.4'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        versionCode 1
+        versionCode 5
     }
     buildTypes {
         release {

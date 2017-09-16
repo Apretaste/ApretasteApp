@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFF"
     style="@style/App"
-    tools:context="com.example.apretaste.RecentActivity">
+    tools:context="com.example.apretaste.com.apretaste.apretaste.RecentActivity">
     <ViewSwitcher
         android:layout_width="match_parent"
         android:layout_height="match_parent"
