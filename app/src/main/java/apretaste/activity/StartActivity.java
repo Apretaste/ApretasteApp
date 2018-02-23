@@ -1,9 +1,13 @@
 package apretaste.activity;
 
+import android.content.Context;
 import android.content.Intent;
+
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.apretaste.R;
@@ -13,7 +17,7 @@ import apretaste.Helper.PrefsManager;
 import static apretaste.activity.LoginActivity.RESP;
 
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

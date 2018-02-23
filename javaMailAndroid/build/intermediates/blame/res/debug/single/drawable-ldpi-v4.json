@@ -40,6 +40,10 @@
         "source": "D:\\Work\\apretaste-app\\javaMailAndroid\\src\\main\\res\\drawable-ldpi\\ic_launcher.png"
     },
     {
+        "merged": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\ic_launcher.png",
+        "source": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\src\\main\\res\\drawable-ldpi\\ic_launcher.png"
+    },
+    {
         "merged": "D:\\Work\\apretaste-3.0\\javaMailAndroid\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\ic_launcher.png",
         "source": "D:\\Work\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\drawable-ldpi\\ic_launcher.png"
     }

@@ -3,11 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apretaste-app.iml" filepath="$PROJECT_DIR$/apretaste-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/apretaste-app-android.iml" filepath="$PROJECT_DIR$/apretaste-app-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/ca.psiphon/ca.psiphon.iml" filepath="$PROJECT_DIR$/ca.psiphon/ca.psiphon.iml" />
       <module fileurl="file://$PROJECT_DIR$/gson-2.5/gson-2.5.iml" filepath="$PROJECT_DIR$/gson-2.5/gson-2.5.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaMailAndroid/javaMailAndroid.iml" filepath="$PROJECT_DIR$/javaMailAndroid/javaMailAndroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/volley-1.1.0/volley-1.1.0.iml" filepath="$PROJECT_DIR$/volley-1.1.0/volley-1.1.0.iml" />
     </modules>
   </component>
 </project>

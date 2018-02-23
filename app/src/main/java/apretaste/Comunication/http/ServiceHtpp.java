@@ -46,7 +46,7 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
     private boolean showCommand = true;
     private String CONECTANDO = "Conectando";
     private String CARGANDO = "Cargando";
-    private Handler handler;
+
 
     public void setCustomText(String customText) {
         this.customText = customText;
@@ -130,38 +130,37 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
         else
             ((TextView)v.findViewById(R.id.command)).setText(command);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setView(v);
 
         builder.setCancelable(false);
 
         builder.setNegativeButton("Cancelar", null);
 
-        dialog=builder.create();
-        handler=new Handler();
-
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog=builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 
             @Override
             public void onShow(DialogInterface d) {
 
                 final Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 b.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View view) {
                         b.setVisibility(View.GONE);
-
-                            cancel(true);
-
-
-                        }
+                        cancel(true);
+                    }
 
                 });
             }
         });
-        dialog.show();
+                dialog.show();
+            }
+        });
 
     }
 

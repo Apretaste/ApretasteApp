@@ -10,18 +10,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
+
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.DbHelper;
 import apretaste.Helper.PrefsManager;
 import apretaste.ProfileInfo;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.ServiceHtpp;
-import apretaste.Comunication.http.SimpleRequest;
 
 
 public class CodeVerificationActivity extends AppCompatActivity implements Httplistener {
@@ -58,7 +58,10 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
                     String url = new Comunication().domain+"auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
                  //  String url = "http://192.168.137.1/android/auth.php?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
                     Log.e("url",url);
-                    new SimpleRequest(CodeVerificationActivity.this,url,"Verificando Código de activacion",CodeVerificationActivity.this).execute();
+                   /* new SimpleRequest(CodeVerificationActivity.this,url,"Verificando Código de activacion",CodeVerificationActivity.this).execute();*/
+
+                    SimpleHttp simpleHttp = new SimpleHttp(CodeVerificationActivity.this,url,CodeVerificationActivity.this);
+                    simpleHttp.execute();
 
                 }
             }
@@ -70,7 +73,7 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
 
 
     @Override
-    public void onErrorHttp(VolleyError error) {
+    public void onErrorHttp(String error) {
 
     }
 

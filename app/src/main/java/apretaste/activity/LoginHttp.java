@@ -7,17 +7,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.android.volley.VolleyError;
+
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.ServiceHtpp;
-import apretaste.Comunication.http.SimpleRequest;
 
 
 public class LoginHttp extends AppCompatActivity implements Httplistener {
@@ -33,6 +33,8 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
         gson= new Gson();
         etMail = (EditText) findViewById(R.id.etMail);
+
+
 
 
         findViewById(R.id.btn_b_http).setOnClickListener(new View.OnClickListener() {
@@ -51,7 +53,9 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
                     String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
                   // String url =  "http://192.168.137.1/android/start.php?email="+etMail.getText().toString();
                     Log.e("url",url);
-                        new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
+                      //  new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
+                    SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this,url,LoginHttp.this);
+                    simpleHttp.execute();
                     email = etMail.getText().toString();
 
                 }else{
@@ -70,7 +74,7 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     }
 
     @Override
-    public void onErrorHttp(VolleyError error) {
+    public void onErrorHttp(String error) {
 
     }
 

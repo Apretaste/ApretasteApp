@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.android.volley.VolleyError;
+
 import com.example.apretaste.R;
 
 import apretaste.Comunication.Comunication;
@@ -175,7 +175,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
 
 
     @Override
-    public void onErrorHttp(VolleyError error) {
+    public void onErrorHttp(String error) {
 
     }
 

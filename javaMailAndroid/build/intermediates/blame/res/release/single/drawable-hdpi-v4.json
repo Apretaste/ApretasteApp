@@ -40,6 +40,10 @@
         "source": "D:\\MI PC\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     },
     {
+        "merged": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
         "merged": "D:\\damaris\\Javier\\android\\wordk\\apretaste\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_launcher.png",
         "source": "D:\\damaris\\Javier\\android\\wordk\\apretaste\\apretaste\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     }

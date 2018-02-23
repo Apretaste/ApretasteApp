@@ -1,6 +1,6 @@
 package apretaste.Comunication.http;
 
-import com.android.volley.VolleyError;
+
 
 
 /**
@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
  */
 public interface Httplistener {
 
-    void onErrorHttp(VolleyError error);
+    void onErrorHttp(String error);
 
     void onResponseSimpleHttp(String response);
 

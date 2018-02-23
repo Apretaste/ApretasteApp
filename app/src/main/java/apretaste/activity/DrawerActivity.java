@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.UtilHelper;
 import apretaste.ProfileInfo;
 import android.os.Bundle;
@@ -58,7 +59,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-import com.android.volley.VolleyError;
+
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -159,6 +160,9 @@ public class DrawerActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
+        SimpleHttp simpleHttp = new SimpleHttp(this,"http://10.20.29.31/android/start.php?email=cjam@netlab.snet",DrawerActivity.this);
+
+        simpleHttp.execute();
         Log.e("token",new PrefsManager().getData("token",this));
         dbh =    DbHelper.getSingleton(this);
 
@@ -1001,14 +1005,14 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
-    public void onErrorHttp(VolleyError error) {
+    public void onErrorHttp(String error) {
 
     }
 
     /*Metodo que gestiona la respuesta de peticiones simple*/
     @Override
     public void onResponseSimpleHttp(String response) {
-
+    Log.e("response drawe",response);
     }
 
     @Override

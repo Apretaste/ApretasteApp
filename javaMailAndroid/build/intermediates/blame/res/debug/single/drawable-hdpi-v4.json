@@ -28,6 +28,10 @@
         "source": "D:\\Work\\ad\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     },
     {
+        "merged": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
         "merged": "D:\\MI PC\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
         "source": "D:\\MI PC\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
     },

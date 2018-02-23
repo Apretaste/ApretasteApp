@@ -12,6 +12,10 @@
         "source": "D:\\damaris\\Javier\\android\\wordk\\apretaste\\apretaste\\javaMailAndroid\\src\\main\\res\\layout\\main.xml"
     },
     {
+        "merged": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\layout\\main.xml",
+        "source": "D:\\Work\\apretaste-app-android\\javaMailAndroid\\src\\main\\res\\layout\\main.xml"
+    },
+    {
         "merged": "D:\\Work\\ad\\apretaste-3.0\\javaMailAndroid\\build\\intermediates\\res\\merged\\release\\layout\\main.xml",
         "source": "D:\\Work\\ad\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\layout\\main.xml"
     },

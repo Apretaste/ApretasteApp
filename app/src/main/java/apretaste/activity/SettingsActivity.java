@@ -23,7 +23,7 @@ import apretaste.Comunication.http.ServiceHtpp;
 import apretaste.Helper.PrefsManager;
 import apretaste.HistoryManager;
 
-import com.android.volley.VolleyError;
+
 import com.example.apretaste.R;
 
 import apretaste.Helper.DbHelper;
@@ -382,7 +382,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
 
     @Override
-    public void onErrorHttp(VolleyError error) {
+    public void onErrorHttp(String error) {
 
     }
 
