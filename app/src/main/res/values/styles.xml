@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+
     <style name="FabTheme" parent="Widget.Design.FloatingActionButton">
         <item name="backgroundTint">#FFF</item>
     </style>
@@ -34,15 +35,17 @@
 
     <style name="App.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="CollapsingTextAppearance" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title"/>
-    <style name="CollapsingTextAppearance.Inverse" >
+    <style name="CollapsingTextAppearance" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+    <style name="CollapsingTextAppearance.Inverse">
         <item name="android:textSize">30sp</item>
     </style>
+
     <style name="ToolBarWithNavigationBack" parent="AppTheme">
         <item name="navigationIcon">@drawable/white_back</item>
     </style>
 
-    <style name="TextComponent"/>
+    <style name="TextComponent" />
 
     <style name="TextComponent.ItemRow">
         <item name="android:gravity">center_vertical</item>
@@ -50,7 +53,8 @@
     </style>
 
 
-    <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
+    <style name="TextAppearance" parent="TextAppearance.AppCompat" />
+
     <style name="TextAppearance.Header">
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -63,6 +67,14 @@
         <item name="android:textColor">#5f5f5f</item>
     </style>
 
+    <style name="AppWithBar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppWithBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppWithBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

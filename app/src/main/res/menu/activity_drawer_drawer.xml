@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/nav_noti"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/ic_noti"
+            android:title="Notificaciones" />
+        <item
+            android:id="@+id/nav_recent"
+            android:icon="@drawable/historial"
+            android:title="Recientes" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings"
+            android:title="Opciones" />
+
+    </group>
+
+    <item android:title="Destacados">
+        <menu>
+            <item
+                android:id="@+id/nav_retos"
+                android:icon="@drawable/retos"
+                android:title="Retos" />
+            <item
+                android:id="@+id/nav_invitar"
+                android:icon="@drawable/referir_y_ganar"
+                android:title="Referir y ganar" />
+        </menu>
+    </item>
+
+    <item android:title="Otros">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/info"
+                android:title="Acerca de" />
+
+        </menu>
+    </item>
+
+</menu>

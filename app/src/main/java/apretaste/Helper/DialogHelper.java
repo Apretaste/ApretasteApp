@@ -13,7 +13,7 @@ public class DialogHelper {
 
     public void simpleAlert(Context context , String title, String msg){
         new AlertDialog.Builder(context)
-                .setTitle(title)
+
                 .setMessage(msg)
                 .setNegativeButton("OK", null)
                 .setCancelable(false)

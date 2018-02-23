@@ -22,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -36,8 +37,8 @@ import com.example.apretaste.R;
 
 import apretaste.Profile;
 import apretaste.ProfileInfo;
-import apretaste.email.Mailer;
-import apretaste.email.Mailerlistener;
+import apretaste.Comunication.email.Mailer;
+import apretaste.Comunication.email.Mailerlistener;
 import apretaste.Helper.NetworkHelper;
 import com.google.gson.Gson;
 
@@ -161,8 +162,6 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
     ProfileInfo profileInfo;
     Uri fullPhotoUri=null;
     Bitmap newBitmap=null;
-
-
     private final static int REQUEST_STORAGE_PERMISSION=1;
 
     boolean mIsImageHidden;
@@ -227,11 +226,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
 
 
 
-        /**
-         * Set the name of the view's which will be transition to, using the static values above.
-         * This could be done in the layout XML, but exposing it via static variables allows easy
-         * querying from other Activities
-         */
+
         ViewCompat.setTransitionName(profilePict, VIEW_NAME_HEADER_IMAGE);
 
 
@@ -239,10 +234,10 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
 
 
 
-        if(MainActivity.pro.profile.picture!=null && !MainActivity.pro.profile.picture.isEmpty())
+        if(DrawerActivity.pro.profile.picture!=null && !DrawerActivity.pro.profile.picture.isEmpty())
         {
             try {
-                RoundedBitmapDrawable dr= RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeFile(new File(getFilesDir(),MainActivity.pro.profile.picture).getPath()));
+                RoundedBitmapDrawable dr= RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeFile(new File(getFilesDir(), DrawerActivity.pro.profile.picture).getPath()));
                 dr.setCircular(true);
                 profilePict.setImageDrawable(dr);
             }
@@ -295,22 +290,22 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
             }
         });
 
-        username.setText(MainActivity.pro.username);
-        name.setText(MainActivity.pro.profile.full_name);
-        cell.setText(MainActivity.pro.profile.phone);
-        profesion.setText(MainActivity.pro.profile.occupation);
-        ciudad.setText(MainActivity.pro.profile.city);
+        username.setText(DrawerActivity.pro.username);
+        name.setText(DrawerActivity.pro.profile.full_name);
+        cell.setText(DrawerActivity.pro.profile.phone);
+        profesion.setText(DrawerActivity.pro.profile.occupation);
+        ciudad.setText(DrawerActivity.pro.profile.city);
 
-        tempProfile=MainActivity.pro.profile.clone();
+        tempProfile= DrawerActivity.pro.profile.clone();
 
 
 
 
         String interests="";
         final List<String> ints = new ArrayList<String>();
-        if(MainActivity.pro.profile.interests!=null && MainActivity.pro.profile.interests.length>0)
+        if(DrawerActivity.pro.profile.interests!=null && DrawerActivity.pro.profile.interests.length>0)
         {
-            Collections.addAll(ints, MainActivity.pro.profile.interests);
+            Collections.addAll(ints, DrawerActivity.pro.profile.interests);
             for (String val :
                     ints) {
                 interests+=val+",";
@@ -407,17 +402,17 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
             }
         });
 
-        sex.setText(MainActivity.pro.profile.gender);
-        birthday.setText(MainActivity.pro.profile.date_of_birth);
-        orientation.setText(MainActivity.pro.profile.sexual_orientation);
-        typebody.setText(MainActivity.pro.profile.body_type);
-        eyes.setText(MainActivity.pro.profile.eyes);
-        hair.setText(MainActivity.pro.profile.hair);
-        skin.setText(MainActivity.pro.profile.skin);
-        state.setText(MainActivity.pro.profile.marital_status);
-        scolar.setText(MainActivity.pro.profile.highest_school_level);
-        province.setText(MainActivity.pro.profile.province);
-        relig.setText(MainActivity.pro.profile.religion);
+        sex.setText(DrawerActivity.pro.profile.gender);
+        birthday.setText(DrawerActivity.pro.profile.date_of_birth);
+        orientation.setText(DrawerActivity.pro.profile.sexual_orientation);
+        typebody.setText(DrawerActivity.pro.profile.body_type);
+        eyes.setText(DrawerActivity.pro.profile.eyes);
+        hair.setText(DrawerActivity.pro.profile.hair);
+        skin.setText(DrawerActivity.pro.profile.skin);
+        state.setText(DrawerActivity.pro.profile.marital_status);
+        scolar.setText(DrawerActivity.pro.profile.highest_school_level);
+        province.setText(DrawerActivity.pro.profile.province);
+        relig.setText(DrawerActivity.pro.profile.religion);
 
         findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -425,10 +420,8 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                 HashMap<String,String> bulkInfo=new HashMap<>();
                 String text;
 
-                if(!(text=username.getText().toString()).equals(MainActivity.pro.username) && !text.isEmpty())
+                if(!(text=username.getText().toString()).equals(DrawerActivity.pro.username) && !text.isEmpty())
                 {
-
-
 
 
                     if (text.length() > 15){
@@ -436,7 +429,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                     }else{
 
                         if (conn.haveConn(ProfileActivity.this)){
-                            MainActivity.pro.change_un(text);
+                            DrawerActivity.pro.change_un(text);
                             bulkInfo.put("username",text);
                         }else{
                             Toast.makeText(getBaseContext(),"No hay conexion activa",Toast.LENGTH_SHORT).show();
@@ -444,90 +437,87 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                     }
 
 
-
-
-
                 }
 
-                if(!(text=name.getText().toString()).equals(MainActivity.pro.profile.full_name) && !text.isEmpty())
+                if(!(text=name.getText().toString()).equals(DrawerActivity.pro.profile.full_name) && !text.isEmpty())
                 {
                     bulkInfo.put(NOMBRE,text);
                     tempProfile.full_name=text;
                 }
 
-                if(!(text=sex.getText().toString()).equals(MainActivity.pro.profile.gender) && !text.isEmpty())
+                if(!(text=sex.getText().toString()).equals(DrawerActivity.pro.profile.gender) && !text.isEmpty())
                 {
                     bulkInfo.put(SEXO1,getParallelValue(sexo,sexoVal,text));
                     tempProfile.gender=text;
                 }
 
-                if(!(text=orientation.getText().toString()).equals(MainActivity.pro.profile.sexual_orientation) && !text.isEmpty())
+                if(!(text=orientation.getText().toString()).equals(DrawerActivity.pro.profile.sexual_orientation) && !text.isEmpty())
                 {
                     bulkInfo.put(ORIENTACION,getParallelValue(orientacion,orientacionVal,text));
                     tempProfile.sexual_orientation=text;
                 }
 
-                if(!(text=cell.getText().toString()).equals(MainActivity.pro.profile.phone) && !text.isEmpty())
+                if(!(text=cell.getText().toString()).equals(DrawerActivity.pro.profile.phone) && !text.isEmpty())
                 {
                     bulkInfo.put(PHONE,text);
                     tempProfile.phone =text;
                 }
 
-                if(!(text=birthday.getText().toString()).equals(MainActivity.pro.profile.date_of_birth) && !text.isEmpty())
+                if(!(text=birthday.getText().toString()).equals(DrawerActivity.pro.profile.date_of_birth) && !text.isEmpty())
                 {
                     bulkInfo.put(CUMPLEANOS,text);
                     tempProfile.date_of_birth=text;
                 }
 
-                if(!(text=typebody.getText().toString()).equals(MainActivity.pro.profile.body_type) && !text.isEmpty())
+                if(!(text=typebody.getText().toString()).equals(DrawerActivity.pro.profile.body_type) && !text.isEmpty())
                 {
                     bulkInfo.put(CUERPO1,getParallelValue(cuerpo,cuerpoVal,text));
                     tempProfile.body_type=text;
                 }
 
-                if(!(text=eyes.getText().toString()).equals(MainActivity.pro.profile.eyes) && !text.isEmpty())
+                if(!(text=eyes.getText().toString()).equals(DrawerActivity.pro.profile.eyes) && !text.isEmpty())
                 {
                     bulkInfo.put(OJOS1,getParallelValue(ojos,ojosVal,text));
                     tempProfile.eyes=text;
                 }
 
-                if(!(text=hair.getText().toString()).equals(MainActivity.pro.profile.hair) && !text.isEmpty())
+                if(!(text=hair.getText().toString()).equals(DrawerActivity.pro.profile.hair) && !text.isEmpty())
                 {
                     bulkInfo.put(PELO1,getParallelValue(pelo,peloVal,text));
                     tempProfile.hair=text;
                 }
 
-                if(!(text=skin.getText().toString()).equals(MainActivity.pro.profile.skin) && !text.isEmpty())
+                if(!(text=skin.getText().toString()).equals(DrawerActivity.pro.profile.skin) && !text.isEmpty())
                 {
                     bulkInfo.put(PIEL1,getParallelValue(piel,pielVal,text));
                     tempProfile.skin=text;
                 }
 
-                if(!(text=state.getText().toString()).equals(MainActivity.pro.profile.marital_status) && !text.isEmpty())
+                if(!(text=state.getText().toString()).equals(DrawerActivity.pro.profile.marital_status) && !text.isEmpty())
                 {
                     bulkInfo.put(ESTADO,getParallelValue(estadocivil,estadocivilVal,text));
                     tempProfile.marital_status=text;
                 }
 
-                if(!(text=scolar.getText().toString()).equals(MainActivity.pro.profile.highest_school_level) && !text.isEmpty())
+                if(!(text=scolar.getText().toString()).equals(DrawerActivity.pro.profile.highest_school_level) && !text.isEmpty())
                 {
                     bulkInfo.put(NIVEL,getParallelValue(nivelescolar,nivelescolarVal,text));
                     tempProfile.highest_school_level=text;
                 }
 
-                if(!(text=profesion.getText().toString()).equals(MainActivity.pro.profile.occupation) && !text.isEmpty())
+                if(!(text=profesion.getText().toString()).equals(DrawerActivity.pro.profile.occupation) && !text.isEmpty())
                 {
                     bulkInfo.put(PROFESION,text);
                     tempProfile.occupation=text;
                 }
 
-                if(!(text=ciudad.getText().toString()).equals(MainActivity.pro.profile.city) && !text.isEmpty())
+                if(!(text=ciudad.getText().toString()).equals(DrawerActivity.pro.profile.city) && !text.isEmpty())
                 {
                     bulkInfo.put(CIUDAD,text);
                     tempProfile.city=text;
                 }
 
-                if(!(text=province.getText().toString()).equals(MainActivity.pro.profile.province) && !text.isEmpty())
+                if(!(text=province.getText().toString()).equals(DrawerActivity.pro.profile.province) && !text.isEmpty())
                 {
                     bulkInfo.put(PROVINCIA1,getParallelValue(provincia,provinciaVal,text));
                     tempProfile.province=text;
@@ -536,7 +526,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                 String interests="";
                 if(ints.size()>0)
                     for (String val :
-                            MainActivity.pro.profile.interests) {
+                            DrawerActivity.pro.profile.interests) {
                         interests += val + ",";
                     }
                 if(interests.length()>0)
@@ -547,7 +537,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                     tempProfile.interests=text.split(",");
                 }
 
-                if(!(text=relig.getText().toString()).equals(MainActivity.pro.profile.religion) && !text.isEmpty())
+                if(!(text=relig.getText().toString()).equals(DrawerActivity.pro.profile.religion) && !text.isEmpty())
                 {
                     bulkInfo.put(RELIGION1,getParallelValue(religion,religionVal,text));
                     tempProfile.religion=text;
@@ -563,7 +553,8 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                 if(bulkInfo.size()>0)
                 {
                     String json=new Gson().toJson(bulkInfo);
-                    Mailer mailer=new Mailer(ProfileActivity.this,null, PERFIL_BULK +json,true, SE_HAN_GUARDADO_SUS_DATOS_DE_PERFIL,ProfileActivity.this).setCustomText("Estamos guardando su perfil. Sea paciente y no cierre la aplicación.").setShowCommand(false);
+                    Mailer mailer=new Mailer(ProfileActivity.this,null, PERFIL_BULK +json,true, SE_HAN_GUARDADO_SUS_DATOS_DE_PERFIL,ProfileActivity.this,false).setCustomText("Estamos guardando su perfil. Sea paciente y no cierre la aplicación.")
+                            .setShowCommand(false);
                     mailer.setAttachedbitmap(newBitmap);
                     mailer.setAppendPassword(true);
 
@@ -751,9 +742,9 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
 
             }
         }
-        MainActivity.needsReload=true;
-        MainActivity.pro.profile=tempProfile;
-        String pro=new Gson().toJson( MainActivity.pro);
+       DrawerActivity.needsReload=true;
+        DrawerActivity.pro.profile=tempProfile;
+        String pro=new Gson().toJson( DrawerActivity.pro);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(RESP,pro).apply();
     }
 
@@ -807,6 +798,17 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //You can do whatever you want here
+                onBackPressed();
+
+                return true;
+        }
+        return false;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {

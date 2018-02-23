@@ -34,14 +34,21 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_et_email"
                 android:enabled="false"
+
                 android:id="@+id/et_settings_email"
                 android:inputType="textEmailAddress"/>
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_et_password"
-                android:id="@+id/et_settings_password"
-                android:inputType="textPassword" />
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/et_settings_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/contras_a"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
 
             <EditText
                 android:layout_width="match_parent"

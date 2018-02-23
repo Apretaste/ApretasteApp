@@ -36,7 +36,7 @@ public class HistoryManager {
         singleton = new HistoryManager();
     }
 
-    private HistoryManager() {
+    public HistoryManager() {
 
     }
 

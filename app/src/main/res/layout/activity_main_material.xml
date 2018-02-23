@@ -19,140 +19,132 @@
 		app:titleTextColor="#FFF">
 
 	</android.support.v7.widget.Toolbar>
-		<LinearLayout
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:id="@+id/supbar"
+		android:layout_height="55dp"
+		android:paddingRight="15dp"
+		android:orientation="horizontal"
+		android:gravity="right|center_vertical">
+		<RelativeLayout
+			android:layout_width="wrap_content"
+			android:layout_height="55dp"
+			>
+			<android.support.design.widget.FloatingActionButton
+				android:id="@+id/ib_notifications_main"
+				style="@style/FabTheme"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:elevation="8dp"
+				android:layout_centerVertical="true"
+				android:onClick="open_activitys"
+				app:fabSize="mini"
+				app:srcCompat="@drawable/ic_notifications_black_24dp"
+				tools:ignore="RtlHardcoded" />
+			<TextView
+				android:id="@+id/notifCunter"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingLeft="3dp"
+				android:paddingRight="3dp"
+				android:layout_marginTop="1dp"
+				android:text="0"
+				android:elevation="8dp"
+				android:textColor="#FFF"
+				android:textSize="12sp"
+				android:background="@drawable/badge"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true" />
+		</RelativeLayout>
+
+		<android.support.design.widget.FloatingActionButton
+			android:id="@+id/ib_recent_main"
+			style="@style/FabTheme"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:elevation="8dp"
+			android:layout_marginLeft="5dp"
+			android:onClick="open_activitys"
+			app:fabSize="mini"
+			app:srcCompat="@drawable/ic_history_black_24dp"
+			tools:ignore="RtlHardcoded"
+			/>
+
+
+		<android.support.design.widget.FloatingActionButton
+			android:id="@+id/ib_settings_main"
+			style="@style/FabTheme"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:elevation="8dp"
+			android:layout_marginLeft="5dp"
+			android:onClick="open_activitys"
+			app:fabSize="mini"
+			app:srcCompat="@drawable/ic_settings_black_24dp"
+			tools:ignore="RtlHardcoded"
+			/>
+
+
+	</LinearLayout>
+
+
+
+
+
+
+	<LinearLayout
+		android:id="@+id/ll_latest"
+		android:layout_marginTop="50dp"
+		android:layout_width="match_parent"
+		android:background="@color/red"
+		android:visibility="gone"
+		android:layout_height="20dp">
+
+		<TextView
+			android:layout_marginLeft="100dp"
+			android:text="@string/text_latest"
+		android:textColor="#FFFFFF"
 				android:layout_width="match_parent"
-				android:id="@+id/supbar"
-				android:layout_height="55dp"
-			android:paddingRight="15dp"
-				android:orientation="horizontal"
-				android:gravity="right|center_vertical">
-			<RelativeLayout
-				android:layout_width="wrap_content"
-				android:layout_height="55dp"
-				>
-				<android.support.design.widget.FloatingActionButton
-					android:id="@+id/ib_notifications_main"
-					style="@style/FabTheme"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:elevation="8dp"
-					android:layout_centerVertical="true"
-					android:onClick="open_activitys"
-					app:fabSize="mini"
-					app:srcCompat="@drawable/ic_notifications_black_24dp"
-					tools:ignore="RtlHardcoded" />
-				<TextView
-					android:id="@+id/notifCunter"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:paddingLeft="3dp"
-					android:paddingRight="3dp"
-					android:layout_marginTop="1dp"
-					android:text="0"
-					android:elevation="8dp"
-					android:textColor="#FFF"
-					android:textSize="12sp"
-					android:background="@drawable/badge"
-					android:layout_alignParentTop="true"
-					android:layout_centerHorizontal="true" />
-			</RelativeLayout>
-
-			<android.support.design.widget.FloatingActionButton
-				android:id="@+id/ib_recent_main"
-				style="@style/FabTheme"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:elevation="8dp"
-				android:layout_marginLeft="5dp"
-				android:onClick="open_activitys"
-				app:fabSize="mini"
-				app:srcCompat="@drawable/ic_history_black_24dp"
-				tools:ignore="RtlHardcoded"
-				/>
-
-
-			<android.support.design.widget.FloatingActionButton
-				android:id="@+id/ib_settings_main"
-				style="@style/FabTheme"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:elevation="8dp"
-				android:layout_marginLeft="5dp"
-				android:onClick="open_activitys"
-				app:fabSize="mini"
-				app:srcCompat="@drawable/ic_settings_black_24dp"
-				tools:ignore="RtlHardcoded"
-				/>
-
-
-			</LinearLayout>
-
-
-
+			android:layout_height="match_parent" />
+	</LinearLayout>
 
 
 	<ViewSwitcher
+
 		android:id="@+id/homeSwitcher"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_below="@+id/supbar">
-		<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+
+		<GridView
+
+
 			android:id="@+id/gridview"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:clipToPadding="false"
 			android:columnWidth="90dp"
-			android:numColumns="auto_fit"
-			android:verticalSpacing="10dp"
 			android:horizontalSpacing="10dp"
-			android:stretchMode="columnWidth"
+			android:numColumns="auto_fit"
 			android:paddingBottom="85dp"
-			android:paddingTop="10dp"
-			android:paddingRight="5dp"
 			android:paddingLeft="5dp"
-			android:clipToPadding="false" />
+			android:paddingRight="5dp"
+			android:paddingTop="10dp"
+			android:stretchMode="columnWidth"
+			android:verticalSpacing="10dp" />
+
 		<WebView
+			android:id="@+id/mainWebView"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/mainWebView"></WebView>
+			android:layout_height="match_parent"></WebView>
 	</ViewSwitcher>
-
-	<!--android.support.v4.widget.NestedScrollView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:scrollbars="none"
-		app:behavior_overlapTop="28dp"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		-->
-
-					<!--ViewSwitcher
-						android:id="@+id/homeSwitcher"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent">
-						<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-							android:id="@+id/gridview"
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:columnWidth="90dp"
-							android:numColumns="auto_fit"
-							android:verticalSpacing="10dp"
-							android:horizontalSpacing="10dp"
-							android:stretchMode="columnWidth"
-							android:paddingBottom="15dp"
-							android:clipToPadding="false"
-							/>
-						<WebView
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:id="@+id/mainWebView"></WebView>
-					</ViewSwitcher-->
-	<!--/android.support.v4.widget.NestedScrollView-->
 
 
 
 
 <android.support.design.widget.FloatingActionButton
 android:id="@+id/ib_sync_main"
-style="@style/FabTheme"
+	style="@style/FabTheme"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:layout_margin="20dp"
@@ -182,10 +174,12 @@ android:onClick="open_activitys"
 		android:id="@+id/profile_text_layout"
 		android:layout_width="wrap_content"
 		android:layout_height="55dp"
-		android:layout_toRightOf="@id/profile_pict"
 		android:gravity="center_vertical"
 		android:orientation="vertical"
-		android:padding="5dp">
+		android:padding="5dp"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/profile_pict"
+		android:layout_toEndOf="@+id/profile_pict">
 
 		<TextView
 			android:id="@+id/profile_name"

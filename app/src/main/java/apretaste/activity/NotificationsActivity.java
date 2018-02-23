@@ -1,14 +1,18 @@
 package apretaste.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,43 +20,105 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.android.volley.VolleyError;
 import com.example.apretaste.R;
 
+import apretaste.Comunication.Comunication;
+import apretaste.Comunication.http.Httplistener;
+import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Helper.DataHelper;
+import apretaste.Helper.DbHelper;
+import apretaste.Helper.PrefsManager;
+import apretaste.Helper.StringHelper;
+import apretaste.Helper.UtilHelper;
 import apretaste.HistoryEntry;
 import apretaste.HistoryManager;
-import apretaste.email.Mailer;
-import apretaste.email.Mailerlistener;
+import apretaste.Comunication.email.Mailer;
+import apretaste.Comunication.email.Mailerlistener;
+import apretaste.Notifications;
+import apretaste.ProfileInfo;
+
 import com.google.gson.Gson;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class NotificationsActivity extends AppCompatActivity implements Mailerlistener {
+public class NotificationsActivity extends AppCompatActivity implements Mailerlistener , Httplistener {
 
     public static final String RESP = "resp";
+    public ArrayList<Notifications> listNoti;//aki
+    DbHelper db;
+    DataHelper dataHelper = new DataHelper();
+    RecyclerView rv;
+    private Comunication comunication = new Comunication();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notifications);
-        if(MainActivity.pro.notifications.length>0)
-        {
+        Toolbar tbn = (Toolbar) findViewById(R.id.tbn);
+        tbn.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(NotificationsActivity.this, DrawerActivity.class));
+                finish();
+            }
+        });
+        tbn.setTitle("Notificaciones");
+
+        findViewById(R.id.del_all).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(NotificationsActivity.this)
+
+                        .setMessage("¿Desea eliminar todas las notificaciones ?")
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                ((ViewSwitcher) findViewById(R.id.notifSwitcher)).setDisplayedChild(0);
+
+                                db.deleteAllTable("notifications");
+
+
+
+
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .setCancelable(false)
+                        .show();
+            }
+        });
+
+        db = new DbHelper(this);
+
+
+
+
+        listNoti= db.getAllNotifications();
+        if (listNoti.size() > 0){
             ((ViewSwitcher)findViewById(R.id.notifSwitcher)).setDisplayedChild(1);
-            RecyclerView rv=(RecyclerView)findViewById(R.id.notifRV);
+            rv=(RecyclerView)findViewById(R.id.notifRV);
             rv.setLayoutManager(new LinearLayoutManager(this));
-            RvAdapter adapter=new RvAdapter();
+            MyAdapter adapter=new MyAdapter(listNoti);
             rv.setAdapter(adapter);
+
         }
+
+
     }
+
+
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        MainActivity.needsReload=true;
-        String pro=new Gson().toJson( MainActivity.pro);
+        String pro=new Gson().toJson( DrawerActivity.pro);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(RESP,pro).apply();
     }
 
@@ -66,13 +132,14 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(NotificationsActivity.this).setTitle("Error").setMessage(MainActivity.NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE +e.toString()).setPositiveButton(MainActivity.OK, null).show();
+                new AlertDialog.Builder(NotificationsActivity.this).setTitle("Error").setMessage(DrawerActivity.NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE +e.toString()).setPositiveButton("OK", null).show();
             }
         });
     }
 
     @Override
     public void onResponseArrived(String service, String command, String response, Mailer mailer) {
+
         File file = new File(response);
         final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), mailer.getResponseTimestamp());
         runOnUiThread(new Runnable() {
@@ -83,11 +150,89 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                 finish();
             }
         });
+
+        if (mailer.mincache !=null) {
+            db.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(mailer.mincache), new File(response).toURI().toString());
+        }
+
+        if (mailer.ext != null) {
+
+            ProfileInfo pi = new Gson().fromJson( mailer.ext,ProfileInfo.class);
+
+                /*Accion para anadir notifiaciones */
+            if (pi.notifications.length > 0){
+                db.addNotification(pi.notifications);
+
+
+
+            }
+
+            new PrefsManager(). saveData("mailbox", NotificationsActivity.this, pi.mailbox);
+            new PrefsManager(). saveData("type_img", NotificationsActivity.this, pi.img_quality);
+        }
     }
 
-    private class RvAdapter extends RecyclerView.Adapter
+
+
+    @Override
+    public void onErrorHttp(VolleyError error) {
+
+    }
+
+    @Override
+    public void onResponseSimpleHttp(String response) {
+
+    }
+
+    @Override
+    public void onResponseArrivedHttp(String service, String command, String response, ServiceHtpp serviceHtpp) {
+
+
+        File file = new File(response);
+        final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), serviceHtpp.getResponseTimestamp());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                HistoryManager.getSingleton().addToHistory(entry);
+                HistoryManager.getSingleton().setCurrentPage(entry);
+                finish();
+            }
+        });
+
+        if (serviceHtpp.mincache !=null) {
+            db.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(serviceHtpp.mincache), new File(response).toURI().toString());
+        }
+
+        if (serviceHtpp.ext != null) {
+
+            ProfileInfo pi = new Gson().fromJson( serviceHtpp.ext,ProfileInfo.class);
+
+                /*Accion para anadir notifiaciones */
+            if (pi.notifications.length > 0){
+                db.addNotification(pi.notifications);
+
+
+
+            }
+
+            new PrefsManager(). saveData("mailbox", NotificationsActivity.this, pi.mailbox);
+            new PrefsManager(). saveData("type_img", NotificationsActivity.this, pi.img_quality);
+        }
+    }
+
+
+    private class MyAdapter extends RecyclerView.Adapter
     {
 
+        ArrayList<Notifications> notiList;//esta
+
+
+
+
+
+        public  MyAdapter(ArrayList<Notifications> listNoti){
+            this.notiList = listNoti;
+        }
         public static final String DD_MM_YYYY_HH_MMAA = "dd/MM/yyyy hh:mmaa";
         public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd hh:mm:ss";
 
@@ -96,18 +241,19 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             final View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.notif_item, parent, false);
 
-            RvAdapter.RecentHolder vh = new RvAdapter.RecentHolder(v);
+            MyAdapter.RecentHolder vh = new MyAdapter.RecentHolder(v);
             vh.type =(TextView)v.findViewById(R.id.entry_type);
             vh.date=(TextView)v.findViewById(R.id.entry_date);
             vh.title= (TextView) v.findViewById(R.id.entry_title);
-            vh.readBtn = (ImageView) v.findViewById(R.id.read);
+            vh.dlbtn = (ImageView) v.findViewById(R.id.dlbtn);
             return vh;
-            
+
         }
 
         @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-            String timeStamp=MainActivity.pro.notifications[position].received;
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            final Notifications fdb = listNoti.get(holder.getAdapterPosition());//aki
+            String timeStamp=fdb.getReceived();
             try {
                 Date dateTime = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).parse(timeStamp);
                 timeStamp = new SimpleDateFormat(DD_MM_YYYY_HH_MMAA).format(dateTime);
@@ -115,64 +261,126 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                 e.printStackTrace();
             }
 
-            ((RvAdapter.RecentHolder)holder).date.setText(timeStamp.toLowerCase());
-            String mystring=MainActivity.pro.notifications[position].service.split(" ")[0].toLowerCase();
-            ((RvAdapter.RecentHolder)holder).type.setText(mystring.substring(0,1).toUpperCase() + mystring.substring(1));
-
-           // ((RvAdapter.RecentHolder)holder).type.setText(MainActivity.pro.notifications[position].service.split(" ")[0].toUpperCase());
-            final SpannableStringBuilder sb = new SpannableStringBuilder(MainActivity.pro.notifications[position].text);
+            ((MyAdapter.RecentHolder)holder).date.setText(timeStamp.toLowerCase());
+            String mystring=fdb.getService().split(" ")[0].toLowerCase();
+            ((MyAdapter.RecentHolder)holder).type.setText(mystring.substring(0,1).toUpperCase() + mystring.substring(1));
 
 
-            ((RvAdapter.RecentHolder)holder).title.setOnClickListener(new View.OnClickListener() {
+            final SpannableStringBuilder sb = new SpannableStringBuilder(fdb.getText());
+
+
+            ((MyAdapter.RecentHolder)holder).title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(MainActivity.pro.notifications[holder.getAdapterPosition()].link!=null && !MainActivity.pro.notifications[holder.getAdapterPosition()].link.isEmpty())
-                    new Mailer(NotificationsActivity.this,MainActivity.pro.notifications[holder.getAdapterPosition()].link,MainActivity.pro.notifications[holder.getAdapterPosition()].link,false,MainActivity.pro.notifications[holder.getAdapterPosition()].link,NotificationsActivity.this).execute();//ejecuta la tarea de login
-                    MainActivity.pro.notifications[holder.getAdapterPosition()].setRead();
-                    notifyDataSetChanged();
-                }
-            });
+                    if(fdb.getLink()!=null && !fdb.getLink().isEmpty()) {
 
-            if(MainActivity.pro.notifications[position].isRead())
-            {
-                ((RecentHolder)holder).readBtn.setImageResource(R.drawable.ic_mail_outline_black_24dp);
-                ((RvAdapter.RecentHolder)holder).title.setText(sb);
-            }
-          else
-            {
-                ((RecentHolder)holder).readBtn.setImageResource(R.drawable.ic_mail_black_24dp);
-               final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
-               sb.setSpan(bss, 0, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
-                ((RvAdapter.RecentHolder)holder).title.setText(sb);
-            }
-            ((RvAdapter.RecentHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   //MainActivity.pro.notifications[holder.getAdapterPosition()].service;
-                }
-            });
-            ((RvAdapter.RecentHolder)holder).readBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   MainActivity.pro.notifications[holder.getAdapterPosition()].toggleRead();
+
+
+
+
+                        if (!db.getAllCache(fdb.getService(),"peticion").equals("")){
+
+
+                            try {
+                                if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),db.getAllCache(fdb.getService(),"cache"))){
+                                    Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                    final HistoryEntry entry = new HistoryEntry(fdb.getService(), null, db.getAllCache(fdb.getService(),"path"),  null);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            HistoryManager.getSingleton().setCurrentPage(entry);
+                                            DrawerActivity.open = true;
+
+                                        }
+                                    });
+
+                                }else{
+                                    Log.i("llamar","llamar servicios y borra el cache");
+                                    db.delBy("cache","_id",db.getAllCache(fdb.getService(),"id"));
+
+                                 /*   Mailer mailer = new  Mailer(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this, false);
+                                    mailer.setAppendPassword(true);
+                                    mailer.execute();*/
+
+
+                                    comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this,NotificationsActivity.this);
+
+
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            Log.i("llamar","El servicio no esta en cache");
+
+                          /*  Mailer mailer = new  Mailer(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this, false);
+                            mailer.setAppendPassword(true);
+                            mailer.execute();*/
+
+                            comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this,NotificationsActivity.this);
+
+                        }
+
+                    }
+                    db.setRead(String.valueOf(fdb.getId()));
+                    listNoti.get(holder.getAdapterPosition()).setRead("1");
                     notifyItemChanged(holder.getAdapterPosition());
+
+                   /// notifyDataSetChanged();
+
+
+
+                }
+            });
+
+            if(fdb.getRead().equals("1"))
+            {
+
+                ((MyAdapter.RecentHolder)holder).title.setText(sb);
+            }
+            else
+            {
+
+                final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+                sb.setSpan(bss, 0, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
+                ((MyAdapter.RecentHolder)holder).title.setText(sb);
+            }
+            ((MyAdapter.RecentHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            ((MyAdapter.RecentHolder)holder).dlbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                  db.delBy("notifications","_id", String.valueOf(fdb.getId()));
+
+                    listNoti.remove(holder.getAdapterPosition());
+                    notifyItemRemoved(holder.getAdapterPosition());
+
+
+
                 }
             });
         }
 
+
         @Override
         public int getItemCount() {
-            return MainActivity.pro.notifications.length;
+            return listNoti.size();
         }
         private class RecentHolder extends RecyclerView.ViewHolder
         {
             TextView type, date, title;
-            ImageView readBtn;
+            ImageView dlbtn;
             RecentHolder(View itemView) {
                 super(itemView);
             }
         }
     }
-
 
 }

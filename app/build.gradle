@@ -4,13 +4,13 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId 'com.apretaste.apretaste'
-        minSdkVersion 9
+        applicationId 'com.apretaste.apretaste.b3'
+        minSdkVersion 15
         targetSdkVersion 25
-        versionName '2.4'
+        versionName '3.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        versionCode 6
+        versionCode 2
     }
     buildTypes {
         release {
@@ -28,7 +28,9 @@ dependencies {
     compile project(':javaMailAndroid')
     compile project(path: ':javaMailAndroid')
     compile project(':gson-2.5')
-    //compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    ///  compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    // compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile project(':volley-1.1.0')
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.android.support:support-vector-drawable:25.2.0'
@@ -36,4 +38,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile project(':ca.psiphon')
 }

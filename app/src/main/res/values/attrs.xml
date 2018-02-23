@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="AssetDrawableCompatEditText">
+    <declare-styleable name="demo">
         <attr name="drawableLeftCompat" format="reference"/>
         <attr name="drawableRightCompat" format="reference"/>
         <attr name="drawableTopCompat" format="reference"/>

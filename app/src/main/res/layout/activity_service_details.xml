@@ -6,91 +6,125 @@
     android:orientation="vertical"
     android:gravity="center"
     tools:context="com.example.apretaste.com.apretaste.apretaste.ServiceDetails">
+
         <ImageView
-            android:layout_marginTop="40dp"
+            android:id="@+id/service_image"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:id="@+id/service_image"
-            android:layout_marginBottom="40dp"/>
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="40dp" />
+
+
         <ScrollView
-            android:padding="25px"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="25px">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
+
                         <TextView
+                            android:id="@+id/service_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/web"
-                            android:textSize="22sp"
                             android:textColor="#000"
-                            android:id="@+id/service_name" />
+                            android:textSize="22sp" />
+
                         <TextView
+                            android:id="@+id/service_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
+
                             android:gravity="center"
-                            android:textSize="17sp"
-
                             android:text="@string/esta_es_la_descripcion_del_servicio"
-                            android:id="@+id/service_description"
-                            android:layout_marginBottom="10dp"/>
+                            android:textSize="17sp" />
 
                         <TextView
-                            android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
                             android:text="@string/categor_a"
-                            android:textSize="22sp"
-                            android:textColor="#000"/>
+                            android:textColor="#000"
+                            android:textSize="22sp" />
+
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="sdsdf"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textSize="17sp"
                             android:id="@+id/service_category"
-                            tools:ignore="HardcodedText"
-                            android:layout_marginBottom="10dp"/>
-
-                        <TextView
-                            android:layout_marginTop="20dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ltima_versi_n"
-                            android:textSize="22sp"
-                            android:textColor="#000"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:ellipsize="end"
                             android:maxLines="1"
                             android:text="sdsdf"
-                            android:ellipsize="end"
                             android:textSize="17sp"
-                            android:id="@+id/service_version"
-                            tools:ignore="HardcodedText"
-                            android:layout_marginBottom="10dp"/>
-
-                        <TextView
-                            android:layout_marginTop="20dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/creador"
-                            android:textSize="22sp"
-                            android:textColor="#000"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="sdsdf"
-                            android:ellipsize="end"
-                            android:textSize="17sp"
-                            android:maxLines="1"
-                            android:id="@+id/service_creator"
                             tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/ltima_versi_n"
+                            android:textColor="#000"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/service_version"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="sdsdf"
+                            android:textSize="17sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/creador"
+                            android:textColor="#000"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/service_creator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="sdsdf"
+                            android:textSize="17sp"
+                            tools:ignore="HardcodedText" />
+
+                        <LinearLayout
+                            android:id="@+id/btn_favorite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="27dp"
+                            android:gravity="center"
+                            android:layout_marginTop="20dp">
+
+                                <ImageView
+                                    android:id="@+id/star"
+                                    android:layout_width="25dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:src="@drawable/star_unselected" />
+
+                                <TextView
+
+                                    android:id="@+id/tvFavText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hacer Favorito"
+                                    android:textColor="#c6e324"
+
+                                    android:textSize="22sp" />
+                        </LinearLayout>
                 </LinearLayout>
         </ScrollView>
 

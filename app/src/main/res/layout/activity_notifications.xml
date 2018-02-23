@@ -1,26 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/annonce.main.coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFF"
-    style="@style/App"
-    tools:context="com.example.apretaste.com.apretaste.apretaste.NotificationsActivity">
+    tools:ignore="RtlHardcoded"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/tbn"
+        style="@style/ToolBarWithNavigationBack"
+        android:background="#5EBB47"
+        app:titleTextColor="#FFF">
+
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/supbar"
+        android:layout_height="55dp"
+        android:paddingRight="15dp"
+        android:orientation="horizontal"
+        android:gravity="right|center_vertical">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            >
+
+        </RelativeLayout>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/del_all"
+            style="@style/FabTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            android:layout_marginLeft="5dp"
+            android:onClick="open_activitys"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/ic_delete_black_24dp"
+            tools:ignore="RtlHardcoded"
+            />
+
+
+    </LinearLayout>
+
+
+
+
+
     <ViewSwitcher
+        android:id="@+id/notifSwitcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/notifSwitcher">
+        android:layout_below="@+id/tbn"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:layout_marginTop="40dp"
-            android:text="@string/no_hay_notificaciones_disponibles_intente_refrescar_la_aplicaci_n"/>
+            android:text="@string/no_hay_notificaciones_disponibles_intente_refrescar_la_aplicaci_n"
+            android:textSize="20sp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/notifRV"
             android:layout_width="match_parent"
@@ -29,4 +81,6 @@
             android:layout_marginBottom="4dp"
             tools:listitem="@layout/notif_item" />
     </ViewSwitcher>
-</LinearLayout>
+
+
+</RelativeLayout>

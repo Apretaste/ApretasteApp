@@ -19,6 +19,10 @@ public class PrefsManager {
         PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(prefName,editText.getText().toString()).apply();
 
     }
+    public  void change_value2(final  Context ctx , final String prefName , String  editText){
+        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(prefName,editText).apply();
+
+    }
 
     public String getData(String key,Context ctx){
         return  PreferenceManager.getDefaultSharedPreferences(ctx).getString(key,"");

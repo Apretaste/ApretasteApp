@@ -8,7 +8,7 @@
     android:background="#FFF"
     android:padding="10dp"
     style="@style/App"
-    tools:context="apretaste.settings.Settings_about">
+    tools:context="apretaste.activity.Settings_about">
             <WebView
                 android:id="@+id/about_text"
                 android:layout_width="match_parent"

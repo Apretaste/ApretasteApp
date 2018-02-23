@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+        "outputFile": "D:\\MI PC\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 124
                 },
                 "from": {
-                    "file": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/src/main/res/values/strings.xml",
+                    "file": "D:\\MI PC\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -30,7 +30,437 @@
                     "endOffset": 192
                 },
                 "from": {
-                    "file": "/home/salvipascual/Android/apretaste-app-android/javaMailAndroid/src/main/res/values/strings.xml",
+                    "file": "D:\\MI PC\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "F:\\Nueva carpeta\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\Work\\apretaste-3.0\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "D:\\Work\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "D:\\Work\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\damaris\\Javier\\android\\wordk\\apretaste\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "D:\\damaris\\Javier\\android\\wordk\\apretaste\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "D:\\damaris\\Javier\\android\\wordk\\apretaste\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\Work\\android\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "D:\\Work\\android\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "D:\\Work\\android\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "H:\\Work\\android\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "H:\\Work\\android\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "H:\\Work\\android\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "E:\\android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "E:\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "E:\\android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "D:\\Roxana\\Javier\\Android\\work\\apretaste\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\Work\\ad\\apretaste-3.0\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "D:\\Work\\ad\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "D:\\Work\\ad\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "D:\\Work\\apretaste-app\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "D:\\Work\\apretaste-app\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "D:\\Work\\apretaste-app\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 59,
+                        "endColumn": 67,
+                        "endOffset": 122
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "C:\\Mis Cosas\\work\\apretaste-3.0\\javaMailAndroid\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 73,
+                    "endOffset": 124
+                },
+                "from": {
+                    "file": "C:\\Mis Cosas\\work\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 128,
+                        "endColumn": 73,
+                        "endOffset": 197
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 129,
+                    "endColumn": 67,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "C:\\Mis Cosas\\work\\apretaste-3.0\\javaMailAndroid\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,

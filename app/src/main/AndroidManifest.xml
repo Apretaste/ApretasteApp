@@ -14,12 +14,70 @@
         android:supportsRtl="true"
         android:theme="@style/AppWithBar">
         <activity
-            android:name="apretaste.activity.MainActivity"
+            android:name="apretaste.activity.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.LoginActivity"
+            android:name="apretaste.activity.Settings_buzon"
+            android:label="Cambiar buzón personal"
+            android:parentActivityName="apretaste.activity.SettingsActivity" />
+        <activity
+            android:name="apretaste.activity.Settings_nauta"
             android:configChanges="orientation|screenSize"
+            android:label="Configuración de nauta"
+            android:parentActivityName="apretaste.activity.SettingsActivity" />
+        <activity
+            android:name="apretaste.activity.Settings_about"
+            android:label="Sobre esta app"
+            android:parentActivityName="apretaste.activity.SettingsActivity" />
+        <activity
+            android:name="apretaste.activity.SettingsActivity"
+            android:label="Ajustes"
+            android:parentActivityName="apretaste.activity.DrawerActivity" />
+        <activity
+            android:name="apretaste.activity.NotificationsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Notificaciones"
+            android:parentActivityName="apretaste.activity.DrawerActivity"
+            android:theme="@style/App" />
+        <activity
+            android:name="apretaste.activity.HistoryActivity"
+            android:label="Historial"
+            android:parentActivityName="apretaste.activity.DrawerActivity"
+            android:theme="@style/App" />
+        <activity
+            android:name="apretaste.activity.ProfileActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="Perfil"
+            android:parentActivityName="apretaste.activity.DrawerActivity" />
+        <activity
+            android:name="apretaste.activity.ServiceDetails"
+            android:label="Detalles"
+            android:parentActivityName="apretaste.activity.DrawerActivity" />
+        <activity
+            android:name="apretaste.activity.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/App" />
+        <activity
+            android:name="apretaste.activity.DrawerActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppWithBar.NoActionBar">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name="apretaste.activity.StartActivity"
+            android:theme="@style/App"></activity>
+        <activity
+            android:name="apretaste.activity.LoginHttp"
+            android:theme="@style/App" />
+        <activity
+            android:name="apretaste.activity.CodeVerificationActivity"
+            android:theme="@style/App" />
+        <activity
+            android:name="apretaste.activity.WelcomeActivity"
             android:theme="@style/App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,46 +85,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="apretaste.settings.Settings_buzon"
-            android:label="Cambiar buzón personal"
-            android:parentActivityName="apretaste.settings.SettingsActivity" />
-        <activity
-            android:name="apretaste.settings.Settings_nauta"
-            android:configChanges="orientation|screenSize"
-            android:label="Configuración de nauta"
-            android:parentActivityName="apretaste.settings.SettingsActivity" />
-        <activity
-            android:name="apretaste.settings.Settings_about"
-            android:label="Sobre esta app"
-            android:parentActivityName="apretaste.settings.SettingsActivity" />
-        <activity
-            android:name="apretaste.settings.SettingsActivity"
-            android:label="Ajustes"
-            android:parentActivityName="apretaste.activity.MainActivity" />
-        <activity
-            android:name="apretaste.activity.NotificationsActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Notificaciones"
-            android:parentActivityName="apretaste.activity.MainActivity" />
-        <activity
-            android:name="apretaste.activity.RecentActivity"
-            android:label="Historial"
-            android:parentActivityName="apretaste.activity.MainActivity" />
-        <activity
-            android:name="apretaste.activity.ProfileActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Perfil"
-            android:parentActivityName="apretaste.activity.MainActivity" />
-        <activity
-            android:name="apretaste.ServiceDetails"
-            android:label="Detalles"
-            android:parentActivityName="apretaste.activity.MainActivity" />
-        <activity
-            android:name="apretaste.activity.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/App" />
-
     </application>
 
 </manifest>

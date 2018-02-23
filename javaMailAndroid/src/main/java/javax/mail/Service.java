@@ -58,7 +58,7 @@ import javax.mail.event.*;
  * @version 1.33, 07/05/14
  */
 
-public abstract class Service {
+public class Service {
 
     /**
      * The session from which this service was created.
