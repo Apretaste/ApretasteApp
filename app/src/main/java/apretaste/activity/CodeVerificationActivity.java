@@ -60,7 +60,13 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
                     Log.e("url",url);
                    /* new SimpleRequest(CodeVerificationActivity.this,url,"Verificando Código de activacion",CodeVerificationActivity.this).execute();*/
 
+
                     SimpleHttp simpleHttp = new SimpleHttp(CodeVerificationActivity.this,url,CodeVerificationActivity.this);
+                    if (StartActivity.connectProxy){
+                        Log.e("proxy","running for proxy");
+                        simpleHttp.setUseProxy(true);
+                        simpleHttp.setPortProxy(StartActivity.mLocalHttpProxyPort.get());
+                    }
                     simpleHttp.execute();
 
                 }
@@ -86,10 +92,7 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
        //Log.e("token",httpInfo.message);
         if (httpInfo.code.equals("ok")){
             new PrefsManager().saveData("token",CodeVerificationActivity.this,httpInfo.token);
-
-
-
-          ServiceHtpp serviceHtpp =   new ServiceHtpp(CodeVerificationActivity.this,"perfil status","perfil status",false,"texto help",CodeVerificationActivity.this);
+            ServiceHtpp serviceHtpp =   new ServiceHtpp(CodeVerificationActivity.this,"perfil status","perfil status",false,"texto help",CodeVerificationActivity.this);
            serviceHtpp.setReturnContent(true);
             serviceHtpp.setSaveInternal(true);
             serviceHtpp.execute();
@@ -105,10 +108,8 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
     @Override
     public void onResponseArrivedHttp(String service, String command, String response,ServiceHtpp serviceHtpp) {
 
-
         new PrefsManager().saveData("type_conn",CodeVerificationActivity.this,"internet");
         new PrefsManager().saveData("mailbox",CodeVerificationActivity.this,"alexandergiogustino+ap@gmail.com");
-
         Log.e("res",response);
         PreferenceManager.getDefaultSharedPreferences(CodeVerificationActivity.this).edit().putString      (LoginActivity.RESP,response).apply();
 

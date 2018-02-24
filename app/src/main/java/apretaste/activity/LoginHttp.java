@@ -18,6 +18,7 @@ import apretaste.Helper.PrefsManager;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.ServiceHtpp;
+import ca.psiphon.PsiphonTunnel;
 
 
 public class LoginHttp extends AppCompatActivity implements Httplistener {
@@ -34,8 +35,11 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
         gson= new Gson();
         etMail = (EditText) findViewById(R.id.etMail);
 
-
-
+        try {
+            new Comunication().tunnel.startTunneling("");
+        } catch (PsiphonTunnel.Exception e) {
+            e.printStackTrace();
+        }
 
         findViewById(R.id.btn_b_http).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,11 +54,17 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
             public void onClick(View v) {
                 if (EmailAddressValidator.isValidAddress(etMail.getText().toString())){
 
-                    String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
+                  String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
                   // String url =  "http://192.168.137.1/android/start.php?email="+etMail.getText().toString();
+                   // String url = "https://ipinfo.io";
                     Log.e("url",url);
-                      //  new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
+                   // new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
                     SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this,url,LoginHttp.this);
+                    if (StartActivity.connectProxy){
+
+                        simpleHttp.setUseProxy(true);
+                        simpleHttp.setPortProxy(StartActivity.mLocalHttpProxyPort.get());
+                    }
                     simpleHttp.execute();
                     email = etMail.getText().toString();
 
@@ -67,10 +77,7 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
     @Override
     public void onBackPressed() {
-      //  super.onBackPressed();
-
-        finish();
-
+       super.onBackPressed();
     }
 
     @Override

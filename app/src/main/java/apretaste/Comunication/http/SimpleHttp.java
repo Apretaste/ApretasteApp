@@ -28,9 +28,6 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
         this.useProxy = useProxy;
     }
 
-    public void setIpProxy(String ipProxy) {
-        this.ipProxy = ipProxy;
-    }
 
     public void setPortProxy(int portProxy) {
         this.portProxy = portProxy;
@@ -57,7 +54,7 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
         if (!useProxy){
              con = (HttpURLConnection) new URL(url).openConnection();
         }else{
-             con = (HttpURLConnection) new URL("https://apretaste.com").openConnection(proxy);
+             con = (HttpURLConnection) new URL(this.url).openConnection(proxy);
         }
 
         int responseCode = con.getResponseCode();
