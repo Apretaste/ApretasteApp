@@ -21,7 +21,7 @@ import apretaste.Helper.PrefsManager;
 import apretaste.ProfileInfo;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Comunication.http.MultipartHttp;
 
 
 public class CodeVerificationActivity extends AppCompatActivity implements Httplistener {
@@ -92,10 +92,14 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
        //Log.e("token",httpInfo.message);
         if (httpInfo.code.equals("ok")){
             new PrefsManager().saveData("token",CodeVerificationActivity.this,httpInfo.token);
-            ServiceHtpp serviceHtpp =   new ServiceHtpp(CodeVerificationActivity.this,"perfil status","perfil status",false,"texto help",CodeVerificationActivity.this);
-           serviceHtpp.setReturnContent(true);
-            serviceHtpp.setSaveInternal(true);
-            serviceHtpp.execute();
+            MultipartHttp multipartHttp =   new MultipartHttp(CodeVerificationActivity.this,"perfil status","perfil status",false,"texto help",CodeVerificationActivity.this);
+            if (StartActivity.connectProxy){
+                multipartHttp.setUseProxy(true);
+                multipartHttp.setPortProxy(StartActivity.mLocalHttpProxyPort.get());
+            }
+            multipartHttp.setReturnContent(true);
+            multipartHttp.setSaveInternal(true);
+            multipartHttp.execute();
 
         }else{
             Toast.makeText(this, "Codigo de verificacion incorrecto", Toast.LENGTH_SHORT).show();
@@ -106,21 +110,16 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
     }
 
     @Override
-    public void onResponseArrivedHttp(String service, String command, String response,ServiceHtpp serviceHtpp) {
+    public void onResponseArrivedHttp(String service, String command, String response,MultipartHttp multipartHttp) {
 
         new PrefsManager().saveData("type_conn",CodeVerificationActivity.this,"internet");
         new PrefsManager().saveData("mailbox",CodeVerificationActivity.this,"alexandergiogustino+ap@gmail.com");
         Log.e("res",response);
         PreferenceManager.getDefaultSharedPreferences(CodeVerificationActivity.this).edit().putString      (LoginActivity.RESP,response).apply();
 
-
         ProfileInfo profileInfo;
-
-       profileInfo = gson.fromJson(response, ProfileInfo.class);
-
-
+        profileInfo = gson.fromJson(response, ProfileInfo.class);
         db.addService(profileInfo.services);
-
         new PrefsManager().saveData("type_img", CodeVerificationActivity.this, profileInfo.img_quality);
         db.addNotification(profileInfo.notifications);
         startActivity(new Intent(CodeVerificationActivity.this, DrawerActivity.class));

@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -27,6 +29,22 @@ public class MultipartUtility {
     private String charset;
     private OutputStream outputStream;
     private PrintWriter writer;
+    public boolean useProxy = false;
+    public String hostProxy = "localhost";
+    public int portProxy;
+
+    public void setHostProxy(String hostProxy) {
+        this.hostProxy = hostProxy;
+    }
+
+    public void setPortProxy(int portProxy) {
+        this.portProxy = portProxy;
+    }
+
+    public void setUseProxy(boolean useProxy) {
+        this.useProxy = useProxy;
+    }
+
 
     /**
      * This constructor initializes a new HTTP POST request with content type
@@ -41,9 +59,13 @@ public class MultipartUtility {
 
         // creates a unique boundary based on time stamp
         boundary = "===" + System.currentTimeMillis() + "===";
-
         URL url = new URL(requestURL);
-        httpConn = (HttpURLConnection) url.openConnection();
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(this.hostProxy, this.portProxy));
+        if (!useProxy){
+            httpConn = (HttpURLConnection) url.openConnection();
+        }else{
+            httpConn = (HttpURLConnection) new URL(requestURL).openConnection(proxy);
+        }
         httpConn.setUseCaches(false);
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);
@@ -117,42 +139,6 @@ public class MultipartUtility {
         writer.append(name + ": " + value).append(LINE_FEED);
         writer.flush();
     }
-
-    /**
-     * Completes the request and receives response from the server.
-     * @return a list of Strings as response in case the server returned
-     * status OK, otherwise an exception is thrown.
-     * @throws IOException
-     */
-    /*
-    public List<String> finish() throws IOException {
-        List<String> response = new ArrayList<String>();
-
-        writer.append(LINE_FEED).flush();
-        writer.append("--" + boundary + "--").append(LINE_FEED);
-        writer.close();
-
-        // checks server's status code first
-        int status = httpConn.getResponseCode();
-        if (status == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    httpConn.getInputStream()));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                response.add(line);
-            }
-            reader.close();
-            httpConn.disconnect();
-        } else {
-            throw new IOException("Server returned non-OK status: " + status);
-        }
-
-        return response;
-    }
-    */
-
-
-
 
     /**
      * Completes the request and receives response from the server.

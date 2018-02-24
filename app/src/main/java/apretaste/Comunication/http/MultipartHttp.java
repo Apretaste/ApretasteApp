@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -37,7 +36,7 @@ import apretaste.Comunication.email.Mailerlistener;
  * Created by cjam on 8/2/2018.
  */
 
-public class ServiceHtpp extends AsyncTask<Void, String, Void> {
+public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
     private boolean HIDE_STATUS_DETAILS = true;
     private TextView statusView;
@@ -62,7 +61,6 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
     private String help;
     private Date timestamp;
     private Bitmap profileBitmap=null;
-    private boolean appendPassword=false;
     private String service;
     private String command;
 
@@ -78,6 +76,9 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
     private HttpInfo httpInfo;
     private Gson gson = new Gson();
 
+    public boolean useProxy = false;
+    public String hostProxy = "localhost";
+    public int portProxy;
     public String getMincache() {
         return mincache;
     }
@@ -86,18 +87,31 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
         return ext;
     }
 
-    public ServiceHtpp setSaveInternal(boolean saveInternal)
+    public void setHostProxy(String hostProxy) {
+        this.hostProxy = hostProxy;
+    }
+
+    public void setPortProxy(int portProxy) {
+        this.portProxy = portProxy;
+    }
+
+    public void setUseProxy(boolean useProxy) {
+        this.useProxy = useProxy;
+    }
+
+
+    public MultipartHttp setSaveInternal(boolean saveInternal)
     {
         this.saveInternal=saveInternal;
         return this;
     }
 
-    public ServiceHtpp setReturnContent(boolean returnContent)
+    public MultipartHttp setReturnContent(boolean returnContent)
     {
         this.returnContent=returnContent;
         return this;
     }
-    public ServiceHtpp(Activity parent,  String service, String command, Boolean noreply, String help , Httplistener httplistener) {
+    public MultipartHttp(Activity parent, String service, String command, Boolean noreply, String help , Httplistener httplistener) {
         this.activity = parent;
         this.command = command;
         this.service = service;
@@ -185,6 +199,10 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
         try {
             setCurrentStatus("Abriendo conexion http", CONECTANDO);
             MultipartUtility multipartUtility = new MultipartUtility("http://apretaste.mobi/run/app","UTF-8");
+            if (this.useProxy){
+                multipartUtility.setUseProxy(true);
+                multipartUtility.setPortProxy(this.portProxy);
+            }
 
 
             setCurrentStatus("Comprimiendo", CONECTANDO);
@@ -281,7 +299,7 @@ public class ServiceHtpp extends AsyncTask<Void, String, Void> {
                     try {
                       String resp=  Decompress(inputStream);
 
-                        httplistener.onResponseArrivedHttp(service,command,resp,ServiceHtpp
+                        httplistener.onResponseArrivedHttp(service,command,resp,MultipartHttp
                         .this);
                     } catch (Exception e) {
                         e.printStackTrace();

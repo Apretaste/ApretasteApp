@@ -17,7 +17,7 @@ import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Comunication.http.MultipartHttp;
 import ca.psiphon.PsiphonTunnel;
 
 
@@ -99,7 +99,7 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     }
 
     @Override
-    public void onResponseArrivedHttp(String service, String command, String response, ServiceHtpp serviceHtpp) {
+    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
     }
 

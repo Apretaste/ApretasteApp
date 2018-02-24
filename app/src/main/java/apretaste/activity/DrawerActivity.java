@@ -14,8 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
-import apretaste.Comunication.http.SimpleHttp;
-import apretaste.Helper.UtilHelper;
 import apretaste.ProfileInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -89,7 +87,7 @@ import apretaste.Comunication.email.Mailerlistener;
 
 import apretaste.Services;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Comunication.http.MultipartHttp;
 
 
 public class DrawerActivity extends AppCompatActivity
@@ -158,11 +156,6 @@ public class DrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        SimpleHttp simpleHttp = new SimpleHttp(this,"http://10.20.29.31/android/start.php?email=cjam@netlab.snet",DrawerActivity.this);
-
-        simpleHttp.execute();
         Log.e("token",new PrefsManager().getData("token",this));
         dbh =    DbHelper.getSingleton(this);
 
@@ -1016,8 +1009,8 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResponseArrivedHttp(String service, String command, String response, ServiceHtpp serviceHtpp) {
-        if(serviceHtpp.getReturnContent())
+    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
+        if(multipartHttp.getReturnContent())
         {
             Log.e("update-reply",response);
             ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
@@ -1038,7 +1031,7 @@ public class DrawerActivity extends AppCompatActivity
         else {
             Log.e("response", response);
             final File file = new File(response);
-            final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), serviceHtpp.getResponseTimestamp());
+            final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), multipartHttp.getResponseTimestamp());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1050,16 +1043,16 @@ public class DrawerActivity extends AppCompatActivity
             });
 
             /*Si vino la cache */
-            if (serviceHtpp.mincache != null) {
-                dbh.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(serviceHtpp.mincache), new File(response).toURI().toString());
+            if (multipartHttp.mincache != null) {
+                dbh.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(multipartHttp.mincache), new File(response).toURI().toString());
             }
             /*Metodo cuando venga .ext (siempre viene)*/
-            if (serviceHtpp.ext != null) {
+            if (multipartHttp.ext != null) {
 
 
-                Log.i("ext", serviceHtpp.ext);
+                Log.i("ext", multipartHttp.ext);
 
-                ProfileInfo pi = new Gson().fromJson(serviceHtpp.ext, ProfileInfo.class);
+                ProfileInfo pi = new Gson().fromJson(multipartHttp.ext, ProfileInfo.class);
                 if (pi.services.length > 0) {
 
                     dbh.addService(pi.services);
@@ -1074,7 +1067,7 @@ public class DrawerActivity extends AppCompatActivity
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
-                update_info(serviceHtpp.ext);
+                update_info(multipartHttp.ext);
 
             }
         }

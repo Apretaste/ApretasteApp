@@ -29,9 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
-import apretaste.Comunication.http.SimpleHttp;
-import apretaste.Helper.PrefsManager;
+import apretaste.Comunication.http.MultipartHttp;
 import ca.psiphon.PsiphonTunnel;
 
 import static apretaste.activity.LoginActivity.RESP;
@@ -325,7 +323,7 @@ public class StartActivity extends AppCompatActivity implements PsiphonTunnel.Ho
     }
 
     @Override
-    public void onResponseArrivedHttp(String service, String command, String response, ServiceHtpp serviceHtpp) {
+    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
     }
 

@@ -12,7 +12,7 @@ public interface Httplistener {
 
     void onResponseSimpleHttp(String response);
 
-    void onResponseArrivedHttp(String service, String command, String response,ServiceHtpp serviceHtpp);
+    void onResponseArrivedHttp(String service, String command, String response,MultipartHttp multipartHttp);
 
 
 }

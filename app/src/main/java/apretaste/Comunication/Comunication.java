@@ -11,7 +11,7 @@ import android.widget.Toast;
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Comunication.http.MultipartHttp;
 import apretaste.Helper.NetworkHelper;
 import apretaste.Helper.PrefsManager;
 import apretaste.activity.Settings_nauta;
@@ -23,7 +23,7 @@ import ca.psiphon.PsiphonTunnel;
  */
 
 public class Comunication {
-    public String domain = "http://apretaste.mobi/api/";
+    public String domain = "http://apretaste.com/api/";
     private boolean returnContent = false;
     private boolean saveInternal = false;
     Activity activity;
@@ -87,11 +87,11 @@ public class Comunication {
                         }
 
                         case "internet": {
-                            ServiceHtpp serviceHtpp = new ServiceHtpp(activity, service, command, noreply, help, htpplistener);
+                            MultipartHttp multipartHttp = new MultipartHttp(activity, service, command, noreply, help, htpplistener);
                             if (returnContent) {
-                                serviceHtpp.setReturnContent(true);
+                                multipartHttp.setReturnContent(true);
                             }
-                            serviceHtpp.execute();
+                            multipartHttp.execute();
                             break;
                         }
 

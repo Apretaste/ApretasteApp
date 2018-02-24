@@ -19,7 +19,7 @@ import android.widget.ViewSwitcher;
 
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Comunication.http.MultipartHttp;
 import apretaste.Helper.PrefsManager;
 import apretaste.HistoryManager;
 
@@ -392,7 +392,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     }
 
     @Override
-    public void onResponseArrivedHttp(String service, String command, String response, ServiceHtpp serviceHtpp) {
+    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
     }
 }

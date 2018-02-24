@@ -25,12 +25,11 @@ import com.example.apretaste.R;
 
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.Httplistener;
-import apretaste.Comunication.http.ServiceHtpp;
+import apretaste.Comunication.http.MultipartHttp;
 import apretaste.Helper.DataHelper;
 import apretaste.Helper.DbHelper;
 import apretaste.Helper.PrefsManager;
 import apretaste.Helper.StringHelper;
-import apretaste.Helper.UtilHelper;
 import apretaste.HistoryEntry;
 import apretaste.HistoryManager;
 import apretaste.Comunication.email.Mailer;
@@ -185,11 +184,11 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
     }
 
     @Override
-    public void onResponseArrivedHttp(String service, String command, String response, ServiceHtpp serviceHtpp) {
+    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
 
         File file = new File(response);
-        final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), serviceHtpp.getResponseTimestamp());
+        final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), multipartHttp.getResponseTimestamp());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -199,13 +198,13 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             }
         });
 
-        if (serviceHtpp.mincache !=null) {
-            db.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(serviceHtpp.mincache), new File(response).toURI().toString());
+        if (multipartHttp.mincache !=null) {
+            db.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(multipartHttp.mincache), new File(response).toURI().toString());
         }
 
-        if (serviceHtpp.ext != null) {
+        if (multipartHttp.ext != null) {
 
-            ProfileInfo pi = new Gson().fromJson( serviceHtpp.ext,ProfileInfo.class);
+            ProfileInfo pi = new Gson().fromJson( multipartHttp.ext,ProfileInfo.class);
 
                 /*Accion para anadir notifiaciones */
             if (pi.notifications.length > 0){
