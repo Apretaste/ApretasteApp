@@ -19,30 +19,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="El Servicio que busca no existe en Apretaste"
+        android:text="El servicio que busca no existe en Apretaste"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/ll_l"
-        android:layout_toEndOf="@+id/ll_l"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp" />
-
-    <LinearLayout
-        android:id="@+id/ll_l"
-        android:layout_marginTop="55dp"
-        android:layout_width="match_parent"
-        android:background="@color/red"
-        android:visibility="gone"
-        android:layout_height="20dp">
-
-        <TextView
-
-            android:layout_marginLeft="100dp"
-            android:text="@string/text_latest"
-            android:textColor="#FFFFFF"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
+        android:gravity="center"
+      android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp" />
 
 
     <ViewSwitcher
