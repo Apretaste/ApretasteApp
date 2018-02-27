@@ -743,6 +743,10 @@ public class DrawerActivity extends AppCompatActivity
                 break;
             }
 
+            case R.id.nav_profile:{
+                startActivity(new Intent(this, ProfileActivity.class));
+                break;
+            }
 
             case R.id.nav_retos: {
 
@@ -750,7 +754,7 @@ public class DrawerActivity extends AppCompatActivity
                 mailer.setAppendPassword(true);
                 mailer.execute();*/
 
-                comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
+               comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
 
