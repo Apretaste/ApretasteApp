@@ -99,12 +99,12 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                 }
 
                 case "email":{
-                    type_conn.setText(" (Correo Electronico)");
+                    type_conn.setText(" (correo electrónico)");
                     break;
                 }
 
                 case "internet":{
-                    type_conn.setText(" (Internet)");
+                    type_conn.setText(" (internet)");
                     break;
                 }
 
@@ -221,7 +221,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
             case R.id.ll_type_conn:
             {
-                String[] options = {"Automática","Correo Electronico","Internet"};
+                String[] options = {"Automática","Correo electrónico","Internet"};
                 new AlertDialog.Builder(SettingsActivity.this)
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
@@ -236,13 +236,13 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
                                     case 1:{
                                         new  PrefsManager().saveData("type_conn",SettingsActivity.this,"email");
-                                        type_conn.setText(" (Correo Electronico)");
+                                        type_conn.setText(" (correo Electrónico)");
                                         break;
                                     }
 
                                     case 2:{
                                         new  PrefsManager().saveData("type_conn",SettingsActivity.this,"internet");
-                                        type_conn.setText(" (Internet)");
+                                        type_conn.setText(" (internet)");
                                         break;
                                     }
                                 }
