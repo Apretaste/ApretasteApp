@@ -193,6 +193,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                         mailer.setAppendPassword(true);
                         mailer.execute();*/
                        comunication.execute(SettingsActivity.this, null, "SUSCRIPCION EXCLUYEME", true, "Sus Datos privados han sido borrados", SettingsActivity.this, SettingsActivity.this);
+                        comunication.setNoMessage(true);
                         task = true;
 
                     }

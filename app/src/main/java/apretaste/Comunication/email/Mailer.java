@@ -157,7 +157,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         this.appendPassword = appendPassword;
     }
 
-    private boolean appendPassword=false;
+    private boolean appendPassword=true;
 
     public boolean isShowCommand() {
         return showCommand;

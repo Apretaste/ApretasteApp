@@ -27,6 +27,13 @@ public class Comunication {
     private boolean returnContent = false;
     private boolean saveInternal = false;
     Activity activity;
+    private boolean noMessage = false;
+
+    public void setNoMessage(boolean noMessage) {
+        this.noMessage = noMessage;
+    }
+
+
     NetworkHelper networkHelper = new NetworkHelper();
     public static  PsiphonTunnel tunnel;
 
@@ -62,9 +69,8 @@ public class Comunication {
                             if (!pass.equals("") && new PrefsManager()
                                     .getData("email_configured",activity).equals("")){
 
-                            Mailer mailer = new Mailer(activity, service, command, false, help, mailerListener, false);
-                            mailer.setAppendPassword(true);
-                            if (returnContent) {
+                            Mailer mailer = new Mailer(activity, service, command, noreply, help, mailerListener, this.noMessage);
+                                if (returnContent) {
                                 mailer.setReturnContent(true);
                             }
                             mailer.execute();}
