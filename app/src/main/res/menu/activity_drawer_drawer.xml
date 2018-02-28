@@ -2,9 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-
-
+    <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
@@ -25,27 +23,29 @@
 
     </group>
 
-    <item android:title="Destacados">
-        <menu>
-            <item
-                android:id="@+id/nav_retos"
-                android:icon="@drawable/retos"
-                android:title="Retos" />
-            <item
-                android:id="@+id/nav_invitar"
-                android:icon="@drawable/referir_y_ganar"
-                android:title="Referir y ganar" />
-        </menu>
-    </item>
 
-    <item android:title="Otros">
-        <menu>
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/info"
-                android:title="Acerca de" />
 
-        </menu>
-    </item>
+    <group
+        android:id="@+id/menu_important"
+        android:checkableBehavior="none">
 
+        <item
+            android:id="@+id/nav_retos"
+            android:icon="@drawable/retos"
+            android:title="Retos" />
+        <item
+            android:id="@+id/nav_invitar"
+            android:icon="@drawable/referir_y_ganar"
+            android:title="Referir y ganar" />
+    </group>
+
+    <group
+        android:id="@+id/menu_other"
+        android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/info"
+            android:title="Acerca de" />
+    </group>
 </menu>
