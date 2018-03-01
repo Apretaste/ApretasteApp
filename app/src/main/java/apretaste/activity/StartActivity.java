@@ -30,15 +30,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
-import ca.psiphon.PsiphonTunnel;
+//import ca.psiphon.PsiphonTunnel;
 
 import static apretaste.activity.LoginActivity.RESP;
 
 
-public class StartActivity extends AppCompatActivity implements PsiphonTunnel.HostService , Httplistener {
+public class StartActivity extends AppCompatActivity   {
 
     public static AtomicInteger mLocalHttpProxyPort;
-    private PsiphonTunnel mPsiphonTunnel;
+   // private PsiphonTunnel mPsiphonTunnel;
     public  static boolean connectProxy;
 
     @Override
@@ -47,8 +47,8 @@ public class StartActivity extends AppCompatActivity implements PsiphonTunnel.Ho
         setContentView(R.layout.activity_start);
 
 
-        mLocalHttpProxyPort = new AtomicInteger(0);
-        mPsiphonTunnel = PsiphonTunnel.newPsiphonTunnel(StartActivity.this);
+      /*  mLocalHttpProxyPort = new AtomicInteger(0);
+        mPsiphonTunnel = PsiphonTunnel.newPsiphonTunnel(StartActivity.this);*/
         ///Comprueba que si ya hay datos de un usuario , si hay entra directo al main
         if(PreferenceManager.getDefaultSharedPreferences(this).getString(RESP,null) !=null) {
             startActivity(new Intent(StartActivity.this, DrawerActivity.class));//e inicia la activity principal
@@ -78,7 +78,7 @@ public class StartActivity extends AppCompatActivity implements PsiphonTunnel.Ho
             }
         });
     }
-
+/*
     @Override
     public void onBackPressed() {
         // super.onBackPressed();
@@ -326,8 +326,8 @@ public class StartActivity extends AppCompatActivity implements PsiphonTunnel.Ho
     public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
     }
-
-    /*Clase que se llama para llamar recurso via get*/
+*/
+    /*Clase que se llama para llamar recurso via get
     class Connection extends AsyncTask<Void,Void,Void> {
 
         protected Void doInBackground(Void... params) {
@@ -341,8 +341,8 @@ public class StartActivity extends AppCompatActivity implements PsiphonTunnel.Ho
 
 
 
-    }
-    /*Metodo que envia una simple peticion get*/
+    }*/
+   /* Metodo que envia una simple peticion get
     private void sendGet() throws Exception {
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", mLocalHttpProxyPort.get()));
         HttpURLConnection con = (HttpURLConnection) new URL("https://apretaste.com").openConnection(proxy);
@@ -358,6 +358,6 @@ public class StartActivity extends AppCompatActivity implements PsiphonTunnel.Ho
         Log.e("response",response.toString());
 
 
-    }
+    }*/
 
 }

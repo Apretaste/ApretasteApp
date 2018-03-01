@@ -60,8 +60,8 @@
             android:theme="@style/App" />
         <activity
             android:name="apretaste.activity.DrawerActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
             android:theme="@style/AppWithBar.NoActionBar">
             <meta-data
                 android:name="android.app.searchable"
@@ -69,7 +69,7 @@
         </activity>
         <activity
             android:name="apretaste.activity.StartActivity"
-            android:theme="@style/App"></activity>
+            android:theme="@style/App" />
         <activity
             android:name="apretaste.activity.LoginHttp"
             android:theme="@style/App" />
@@ -85,6 +85,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

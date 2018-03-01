@@ -15,7 +15,7 @@ import apretaste.Comunication.http.MultipartHttp;
 import apretaste.Helper.NetworkHelper;
 import apretaste.Helper.PrefsManager;
 import apretaste.activity.Settings_nauta;
-import ca.psiphon.PsiphonTunnel;
+//import ca.psiphon.PsiphonTunnel;
 
 
 /**
@@ -35,11 +35,12 @@ public class Comunication {
 
 
     NetworkHelper networkHelper = new NetworkHelper();
-    public static  PsiphonTunnel tunnel;
 
-    public static void setTunnel(PsiphonTunnel tunnel) {
+   // public static  PsiphonTunnel tunnel;
+
+    /*public static void setTunnel(PsiphonTunnel tunnel) {
         Comunication.tunnel = tunnel;
-    }
+    }*/
 
     public void setReturnContent(boolean returnContent) {
         this.returnContent = returnContent;

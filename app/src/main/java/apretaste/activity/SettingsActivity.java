@@ -66,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
 
          state_img = (TextView) findViewById(R.id.state_img);
-         type_conn = (TextView) findViewById(R.id.tvTypeConn);
+       //  type_conn = (TextView) findViewById(R.id.tvTypeConn);
 
         if (!new PrefsManager().getData("type_img",SettingsActivity.this).equals("")){
            switch (new PrefsManager().getData("type_img",SettingsActivity.this)){
@@ -91,7 +91,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         }
 
 
-        if (!new PrefsManager().getData("type_conn",SettingsActivity.this).equals("")){
+       /* if (!new PrefsManager().getData("type_conn",SettingsActivity.this).equals("")){
             switch (new PrefsManager().getData("type_conn",SettingsActivity.this)){
                 case "auto":{
                     type_conn.setText(" (automática)");
@@ -111,7 +111,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
             }
         }else{
             state_img.setText("");
-        }
+        }*/
 
         final Switch sw = (Switch) findViewById(R.id.sw_mailer);
         /*Coje el valor actual del switch*/
@@ -177,9 +177,9 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     public void open_activitys(View view) {
         switch (view.getId()) {
 
-            case R.id.ll_config_nauta:
+           /* case R.id.ll_config_nauta:
                 startActivity(new Intent(SettingsActivity.this, Settings_nauta.class));
-                break;
+                break;*/
             case R.id.ll_buzon:
                 startActivity(new Intent(SettingsActivity.this, Settings_buzon.class));
                 break;
@@ -218,7 +218,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                 break;
 
             }
-
+            /*
             case R.id.ll_type_conn:
             {
                 String[] options = {"Automática","Correo electrónico","Internet"};
@@ -249,7 +249,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                             }
                         }).show();
                 break;
-            }
+            }*/
 
             case R.id.ll_calidad_img:
             {

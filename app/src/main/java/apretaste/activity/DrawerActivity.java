@@ -753,7 +753,6 @@ public class DrawerActivity extends AppCompatActivity
                /* Mailer mailer = new Mailer(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,false);
                 mailer.setAppendPassword(true);
                 mailer.execute();*/
-
                comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
@@ -839,7 +838,10 @@ public class DrawerActivity extends AppCompatActivity
 
             /*Elimina lo servicios que se quitan del servidor*/
             ServiceNoActive(piu.active);
+
+            dbh.addService(piu.services);
             update_info(response);
+
         }
         else {
             open(service, command, response, mailer);
@@ -866,6 +868,7 @@ public class DrawerActivity extends AppCompatActivity
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
+                dbh.addService(pi.services);
                 update_info(mailer.ext);
 
             }
@@ -1029,6 +1032,7 @@ public class DrawerActivity extends AppCompatActivity
 
             /*Elimina lo servicios que se quitan del servidor*/
             ServiceNoActive(piu.active);
+            dbh.addService(piu.services);
             update_info(response);
         }
 
@@ -1071,6 +1075,7 @@ public class DrawerActivity extends AppCompatActivity
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
+                dbh.addService(pi.services);
                 update_info(multipartHttp.ext);
 
             }
