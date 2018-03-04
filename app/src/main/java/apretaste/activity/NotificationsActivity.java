@@ -146,6 +146,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             public void run() {
                 HistoryManager.getSingleton().addToHistory(entry);
                 HistoryManager.getSingleton().setCurrentPage(entry);
+                DrawerActivity.open = true;
                 finish();
             }
         });
@@ -273,53 +274,9 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                 public void onClick(View v) {
                     if(fdb.getLink()!=null && !fdb.getLink().isEmpty()) {
 
+                        comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this,NotificationsActivity.this);
 
 
-
-
-                        if (!db.getAllCache(fdb.getService(),"peticion").equals("")){
-
-
-                            try {
-                                if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),db.getAllCache(fdb.getService(),"cache"))){
-                                    Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
-                                    final HistoryEntry entry = new HistoryEntry(fdb.getService(), null, db.getAllCache(fdb.getService(),"path"),  null);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            HistoryManager.getSingleton().setCurrentPage(entry);
-                                            DrawerActivity.open = true;
-
-                                        }
-                                    });
-
-                                }else{
-                                    Log.i("llamar","llamar servicios y borra el cache");
-                                    db.delBy("cache","_id",db.getAllCache(fdb.getService(),"id"));
-
-                                 /*   Mailer mailer = new  Mailer(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this, false);
-                                    mailer.setAppendPassword(true);
-                                    mailer.execute();*/
-
-
-                                    comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this,NotificationsActivity.this);
-
-
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            Log.i("llamar","El servicio no esta en cache");
-
-                          /*  Mailer mailer = new  Mailer(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this, false);
-                            mailer.setAppendPassword(true);
-                            mailer.execute();*/
-
-                            comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this,NotificationsActivity.this);
-
-                        }
 
                     }
                     db.setRead(String.valueOf(fdb.getId()));
