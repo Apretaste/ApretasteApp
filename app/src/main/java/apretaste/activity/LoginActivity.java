@@ -113,13 +113,13 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
         final View hidenLayout=findViewById(R.id.hiden_layout);
         final ImageButton togleButton=(ImageButton)findViewById(R.id.togle_button);
 
-        findViewById(R.id.btn_back_login).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.btn_back_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this,StartActivity.class));
                 finish();
             }
-        });
+        });*/
 
 
         //Boton siguiente
@@ -240,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
     @Override
     public void onBackPressed() {
 
-        startActivity(new Intent(this,StartActivity.class));
+        // startActivity(new Intent(this,StartActivity.class));
         finish();
         //  super.onBackPressed();
     }

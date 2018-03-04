@@ -293,7 +293,6 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    /*Metodos de HisTory*/
 
 
     /*Metodos de Notifications*/
@@ -361,18 +360,23 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
     public void addService(ProfileInfo.Services[] servicesLists){
-
         for (int i = 0; i < servicesLists.length; i++) {
-            ContentValues valores = new ContentValues();
-            valores.put(CN_SERVICES_NAME, servicesLists[i].name);
-            valores.put(CN_SERVICES_DESCRIPTION, servicesLists[i].description);
-            valores.put(CN_SERVICES_CATEGORY, servicesLists[i].category);
-            valores.put(CN_SERVICES_CREATOR, servicesLists[i].creator);
-            valores.put(CN_SERVICES_UPDATED, servicesLists[i].updated);
-            valores.put(CN_SERVICES_ICON, servicesLists[i].icon);
-            valores.put(CN_SERVICES_USED, 0);
-            valores.put(CN_SERVICES_FAV, 0);
-            getWritableDatabase().insert(TABLE_SERVICES, null, valores);
+            if (!CheckIsDataAlreadyInDborNot(TABLE_SERVICES,ServicesTable.CN_SERVICES_NAME,servicesLists[i].name)){
+                ContentValues valores = new ContentValues();
+                valores.put(CN_SERVICES_NAME, servicesLists[i].name);
+                valores.put(CN_SERVICES_DESCRIPTION, servicesLists[i].description);
+                valores.put(CN_SERVICES_CATEGORY, servicesLists[i].category);
+                valores.put(CN_SERVICES_CREATOR, servicesLists[i].creator);
+                valores.put(CN_SERVICES_UPDATED, servicesLists[i].updated);
+                valores.put(CN_SERVICES_ICON, servicesLists[i].icon);
+                valores.put(CN_SERVICES_USED, 0);
+                valores.put(CN_SERVICES_FAV, 0);
+                getWritableDatabase().insert(TABLE_SERVICES, null, valores);
+            }else{
+                delBy(TABLE_SERVICES,ServicesTable.CN_SERVICES_NAME,servicesLists[i].name);
+                addOneService(servicesLists[i].name,servicesLists[i].description,servicesLists[i].category,servicesLists[i].creator,servicesLists[i].updated,servicesLists[i].icon);
+            }
+
 
 
         }
@@ -395,30 +399,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
 
-    public boolean CheckIsDataAlreadyInDborNot(String table , String dbfield , String fieldvalue){
-        String query = "Select * from "+table+" where " + dbfield + " = " + fieldvalue;
-        Cursor cursor = getReadableDatabase().rawQuery(query,null);
-        if (cursor.getCount() <=0)
-            return false;
-        else
-            return true;
+    public boolean CheckIsDataAlreadyInDborNot(String table , String dbfield , String valuefield){
+        String query = "SELECT *" +  " from " + table +
+                " where " + dbfield + " = ?;";
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery(query,new String[] { String.valueOf(valuefield) });
+        return(cursor.moveToFirst());
     }
-
-    public void CheckService(String fieldvalue){
-        Cursor cursor = null;
-        String sql ="SELECT service FROM services  WHERE id="+"1";
-        cursor= getWritableDatabase().rawQuery(sql,null);
-      //  Log.e("Cursor Count : " + cursor.getCount());
-
-        if(cursor.getCount()>0){
-            //PID Found
-        }else{
-            //PID Not Found
-        }
-        cursor.close();
-
-    }
-
 
 
 
