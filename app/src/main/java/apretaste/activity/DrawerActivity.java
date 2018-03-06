@@ -737,10 +737,11 @@ public class DrawerActivity extends AppCompatActivity
 
         switch (id) {
 
-            case R.id.nav_home: {
-                startActivity(new Intent(this, DrawerActivity.class));
+          /*  case R.id.nav_home: {
+                startActivity(new Intent(this, ChatListActivity.class));
+finish();
                 break;
-            }
+            }*/
             case R.id.nav_noti: {
                 startActivity(new Intent(this, NotificationsActivity.class));
                 break;
