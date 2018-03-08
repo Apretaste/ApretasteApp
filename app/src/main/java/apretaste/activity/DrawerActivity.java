@@ -1220,6 +1220,7 @@ finish();
                                         obD = true;
                                     }
                                     etD = ed[i];
+                                    etD.setFocusableInTouchMode(false);
                                     ed[i].setHint(parts[i].substring(2));
                                     ed[i].setInputType(InputType.TYPE_CLASS_DATETIME );
                                     ed[i].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_date_range_black_24dp, 0);
@@ -1266,7 +1267,7 @@ finish();
                                     break;
                                 case "m:":
                                      etM = ed[i];
-
+                                    etM.setFocusableInTouchMode(false);
                                     if (parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1).equals("*")){
 
                                         ed[i].setHint(parts[i].split("\\[")[0].substring(2)+parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1));
