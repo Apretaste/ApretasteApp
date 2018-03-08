@@ -24,7 +24,9 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -159,6 +161,9 @@ public class DrawerActivity extends AppCompatActivity
         Log.e("token",new PrefsManager().getData("token",this));
         dbh =    DbHelper.getSingleton(this);
 
+
+
+        //dbh.addOneService("demo","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
         fabSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -519,7 +524,10 @@ public class DrawerActivity extends AppCompatActivity
         ((TextView)view.findViewById(R.id.tvUsername)).setText("@"+pro.username);
         ((TextView)view.findViewById(R.id.tvcredit)).setText("§"+pro.credit);
         profilePict=(ImageView)view.findViewById(R.id.ivProfile);
+        if(reloadServices) {
+            serviceAdapter.notifyDataSetChanged();
 
+        }
         if(pro.profile.picture!=null && !pro.profile.picture.isEmpty())
         {
             try {
@@ -546,12 +554,7 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (findViewById(R.id.tvNoResult).getVisibility() == View.VISIBLE){
 
-            findViewById(R.id.tvNoResult).setVisibility(View.GONE);
-            gridView.setVisibility(View.VISIBLE);
-            return;
-        }else {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
@@ -578,10 +581,10 @@ public class DrawerActivity extends AppCompatActivity
             }
 
 
-        }
-
-
     }
+
+
+
 
 
     @Override
@@ -622,11 +625,6 @@ public class DrawerActivity extends AppCompatActivity
 
 
         searchView.setQueryHint("Inserte un servicio a buscar");
-
-
-
-
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -638,80 +636,17 @@ public class DrawerActivity extends AppCompatActivity
 
 
                 serviceAdapter.getFilter().filter(newText);
-                if (serviceAdapter.getCount() <1) {
-
-
-                    findViewById(R.id.tvNoResult).setVisibility(View.VISIBLE);
-                    gridView.setVisibility(View.GONE);
-
-                }else{
-                    findViewById(R.id.tvNoResult).setVisibility(View.GONE);
-                    gridView.setVisibility(View.VISIBLE);
-
-
-                }
 
                 return true;
             }
         });
 
-        final ImageView imageView= (ImageView) searchView.findViewById(R.id.search_close_btn);
-
-      etSearchview= (EditText) searchView.findViewById(R.id.search_src_text);
-
-
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (serviceAdapter.getCount() <1) {
-
-
-
-                    etSearchview.setText("");
-                    gridView.setVisibility(View.VISIBLE);
-                    findViewById(R.id.tvNoResult).setVisibility(View.GONE);
-                    hideKeyboard();
-
-                }else{
-
-
-                    etSearchview.setText("");
-                    searchView.setQuery("",false);
-
-
-                }
-
-
-
-
-            }
-        });
-
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                Toast.makeText(DrawerActivity.this, "close..", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
+        etSearchview= (EditText) searchView.findViewById(R.id.search_src_text);
 
         return true;
 
 
     }
-
-
-    private void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -841,6 +776,13 @@ finish();
 
             if (piu.services.length > 0){
                 dbh.addService(piu.services);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        showProfileInfo(hView,true);
+                    }
+                });
             }
             workNotifications(piu);
 
@@ -852,7 +794,7 @@ finish();
             /*Elimina lo servicios que se quitan del servidor*/
             ServiceNoActive(piu.active);
 
-            dbh.addService(piu.services);
+
             update_info(response);
 
         }
@@ -870,6 +812,14 @@ finish();
                 ProfileInfo pi = new Gson().fromJson( mailer.ext,ProfileInfo.class);
                 if (pi.services.length > 0){
                     dbh.addService(pi.services);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            showProfileInfo(hView,true);
+                        }
+                    });
+
                 }
                 /*Accion para anadir notifiaciones */
                 workNotifications(pi);
@@ -881,7 +831,7 @@ finish();
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
-                dbh.addService(pi.services);
+
                 update_info(mailer.ext);
 
             }
@@ -1436,7 +1386,7 @@ finish();
                                                     obE && etE.getText().toString().equals("") ||
                                                     obN && etN.getText().toString().equals("")
                                                     ){
-                                                Toast.makeText(DrawerActivity.this, "Rellena los campos que tienen un * al final del texto", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
 
                                             }else{
                                                /* Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0], command + " " + f, !waiting, help, DrawerActivity.this, false);
