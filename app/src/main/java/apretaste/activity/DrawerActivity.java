@@ -504,6 +504,15 @@ public class DrawerActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if(SettingsActivity.terminating)
+            return;
+        if(needsReload)
+            showProfileInfo(hView,false);
+    }
+
     @SuppressLint("SetTextI18n")
     private void showProfileInfo(View view , boolean reloadServices) {
 

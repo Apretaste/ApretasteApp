@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
 
     @Override
     public void onResponseArrived(String service, String command, String response, Mailer mailer) {
-     Mailer.dialog.dismiss();
+     //Mailer.dialog.dismiss();
         new PrefsManager().saveData("type_conn",LoginActivity.this,"email");
         needsNormalization=true;
         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString      (RESP,response).apply();
