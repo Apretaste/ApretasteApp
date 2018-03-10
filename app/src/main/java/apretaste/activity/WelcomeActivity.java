@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,12 @@ import android.widget.TextView;
 
 import com.example.apretaste.R;
 
+import java.io.File;
+
+import apretaste.Helper.DbHelper;
+import apretaste.Helper.FileHelper;
 import apretaste.Helper.WelcomePreferenceManager;
+import apretaste.HistoryManager;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -41,6 +48,8 @@ public class WelcomeActivity extends AppCompatActivity {
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
+        }else{
+            ClearAllDates(WelcomeActivity.this);
         }
 
         // Making notification bar transparent
@@ -203,4 +212,14 @@ public class WelcomeActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
+    public void ClearAllDates(Context context){
+        HistoryManager.getSingleton().entries.clear();
+        context.deleteDatabase(DbHelper.DB_NAME);
+        FileHelper.delete(getCacheDir(), false);
+        FileHelper.delete(getFilesDir(), false);
+        FileHelper.delete(getExternalFilesDir(null), false);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
+    }
+
 }

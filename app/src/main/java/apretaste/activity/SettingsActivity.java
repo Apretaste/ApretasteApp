@@ -21,6 +21,7 @@ import android.widget.ViewSwitcher;
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
+import apretaste.Helper.FileHelper;
 import apretaste.Helper.PrefsManager;
 import apretaste.HistoryManager;
 
@@ -325,21 +326,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     }
 
 
-    public static void delete(File file, boolean deleteDir) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    delete(f, true);
-                }
-            }
-            if (deleteDir) {
-                file.delete();
-            }
-        } else {
-            file.delete();
-        }
-    }
+
 
     @Override
     public void onMailSent() {
@@ -400,9 +387,9 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         context.deleteDatabase(DbHelper.DB_NAME);
       //  new DbHelper(SettingsActivity.this).deleteAllTable("services");
        // new DbHelper(SettingsActivity.this).deleteAllTable("notifications");
-        delete(getCacheDir(), false);
-        delete(getFilesDir(), false);
-        delete(getExternalFilesDir(null), false);
+        FileHelper.delete(getCacheDir(), false);
+        FileHelper.delete(getFilesDir(), false);
+        FileHelper.delete(getExternalFilesDir(null), false);
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
     }
 }
