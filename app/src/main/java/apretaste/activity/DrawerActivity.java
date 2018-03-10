@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Profile;
 import apretaste.ProfileInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -24,9 +25,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -42,7 +41,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.AbsListView;
@@ -55,6 +53,7 @@ import android.widget.Filterable;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -74,6 +73,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.mail.Service;
 
 import apretaste.Helper.DataHelper;
 import apretaste.Helper.DbHelper;
@@ -149,6 +150,7 @@ public class DrawerActivity extends AppCompatActivity
     private boolean obE = false;
     private boolean obN = false;
     private boolean obM = false;
+    private int laststate = 0;
 
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -158,12 +160,11 @@ public class DrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Log.e("token",new PrefsManager().getData("token",this));
         dbh =    DbHelper.getSingleton(this);
 
 
-
-        //dbh.addOneService("demo","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
+        //dbh.delBy("services","service","google");
+        // dbh.addOneService("abc","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
         fabSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,8 +263,6 @@ public class DrawerActivity extends AppCompatActivity
         gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(serviceAdapter);
         gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            int laststate=0;
             boolean ismaximized=true;
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -515,7 +514,7 @@ public class DrawerActivity extends AppCompatActivity
         if(SettingsActivity.terminating)
             return;
         if(needsReload)
-            showProfileInfo(hView,false);
+            showProfileInfo(hView,true);
     }
 
     @SuppressLint("SetTextI18n")
@@ -774,16 +773,7 @@ finish();
             Log.e("update-reply",response);
             ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
 
-            if (piu.services.length > 0){
-                dbh.addService(piu.services);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        showProfileInfo(hView,true);
-                    }
-                });
-            }
+            updateService(piu);
             workNotifications(piu);
 
             new PrefsManager(). saveData("mailbox", DrawerActivity.this, piu.mailbox);
@@ -810,17 +800,8 @@ finish();
             if (mailer.ext != null) {
                 Log.i("ext",mailer.ext);
                 ProfileInfo pi = new Gson().fromJson( mailer.ext,ProfileInfo.class);
-                if (pi.services.length > 0){
-                    dbh.addService(pi.services);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
 
-                            showProfileInfo(hView,true);
-                        }
-                    });
-
-                }
+                updateService(pi);
                 /*Accion para anadir notifiaciones */
                 workNotifications(pi);
 
@@ -838,6 +819,25 @@ finish();
         }
     }
 
+    public void updateService(ProfileInfo pi){
+        if (pi.services.length > 0){
+            dbh.addService(pi.services);
+            for (int i = 0;i<pi.services.length;i++){
+                Services service = new Services();
+                service.setName(pi.services[i].name);
+                service.setCreator(pi.services[i].creator);
+                service.setDescription(pi.services[i].description);
+                service.setUpdated(pi.services[i].updated);
+                service.setIcon(pi.services[i].icon);
+                service.setUsed("0");
+                service.setFav("0");
+
+                serviceAdapter.sevList.add(service);
+                serviceAdapter.notifyDataSetChanged();
+            }
+
+        }
+    }
     public void ServiceNoActive(String[] active){
         Services[] sev = serviceAdapter.sevList.toArray(new Services[serviceAdapter.sevList.size()]);
         for (int i = 0;i<sev.length;i++){
@@ -850,11 +850,28 @@ finish();
             }
             if (!found){
                 dbh.delBy("services","service",sev[i].getName());
-                Log.e("a kitar", sev[i].getName());
-                serviceAdapter.sevList.remove(sev[i].getId());
-                serviceAdapter.notifyDataSetChanged();
+                serviceAdapter.sevList.remove(getIndexByname(sev[i].getName()));
+                laststate = 3;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        serviceAdapter.notifyDataSetChanged();
+                    }
+                });
+
+
             }
         }
+    }
+
+    public int getIndexByname(String sName)
+    {
+        for(Services _item : serviceAdapter.sevList)
+        {
+            if(_item.getName().equals(sName))
+                return serviceAdapter.sevList.indexOf(_item);
+        }
+        return -1;
     }
     public void open(final String service, final String command, String response, final Mailer mailer){
         final File file = new File(response);
@@ -944,11 +961,6 @@ finish();
 
         }
 
-
-
-
-
-       
     }
     @Override
     protected void onResume() {
@@ -995,7 +1007,7 @@ finish();
 
             /*Elimina lo servicios que se quitan del servidor*/
             ServiceNoActive(piu.active);
-            dbh.addService(piu.services);
+
             update_info(response);
         }
 
@@ -1033,12 +1045,11 @@ finish();
 
 
                 new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
-
                 new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
-                dbh.addService(pi.services);
+
                 update_info(multipartHttp.ext);
 
             }
@@ -1500,7 +1511,6 @@ finish();
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editText.setText(sdf.format(myCalendar.getTime()));
     }
-
 
 }
 
