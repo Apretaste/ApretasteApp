@@ -1,5 +1,6 @@
 package apretaste.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -192,8 +193,9 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                        /* Mailer mailer = new Mailer(SettingsActivity.this, null, "SUSCRIPCION EXCLUYEME", true, "Sus Datos privados han sido borrados", SettingsActivity.this, true);
                         mailer.setAppendPassword(true);
                         mailer.execute();*/
-                       comunication.execute(SettingsActivity.this, null, "SUSCRIPCION EXCLUYEME", true, "Sus Datos privados han sido borrados", SettingsActivity.this, SettingsActivity.this);
                         comunication.setNoMessage(true);
+                        comunication.execute(SettingsActivity.this, null, "SUSCRIPCION EXCLUYEME", true, "Sus Datos privados han sido borrados", SettingsActivity.this, SettingsActivity.this);
+
                         task = true;
 
                     }
@@ -343,13 +345,8 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     public void onMailSent() {
 
         if (task) {
-            HistoryManager.getSingleton().entries.clear();
-            new DbHelper(SettingsActivity.this).deleteAllTable("cache");
-            new DbHelper(SettingsActivity.this).deleteAllTable("services");
-            delete(getCacheDir(), false);
-            delete(getFilesDir(), false);
-            delete(getExternalFilesDir(null), false);
-            PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit().clear().apply();
+
+            ClearAllDates(SettingsActivity.this);
             terminating = true;
             finish();
         }
@@ -395,6 +392,18 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     @Override
     public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
+    }
+
+    public void ClearAllDates(Context context){
+        HistoryManager.getSingleton().entries.clear();
+        //new DbHelper(SettingsActivity.this).deleteAllTable("cache");
+        context.deleteDatabase(DbHelper.DB_NAME);
+      //  new DbHelper(SettingsActivity.this).deleteAllTable("services");
+       // new DbHelper(SettingsActivity.this).deleteAllTable("notifications");
+        delete(getCacheDir(), false);
+        delete(getFilesDir(), false);
+        delete(getExternalFilesDir(null), false);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
     }
 }
 

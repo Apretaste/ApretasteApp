@@ -55,7 +55,7 @@ import static apretaste.Helper.DbHelper.ServicesTable.TABLE_SERVICES;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static DbHelper singleton;
-    private static final String DB_NAME = "ap.db";
+    public static final String DB_NAME = "ap.db";
     private static final int DB_SHEME_VERSION = 1;
 
 
