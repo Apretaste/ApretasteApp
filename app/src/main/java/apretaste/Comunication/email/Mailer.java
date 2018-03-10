@@ -434,7 +434,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         }
         dialog.dismiss();
         if(finishedCancel){
-            new AlertDialog.Builder(activity).setMessage("Se ha cancelado con exito la peticion").setPositiveButton(ACEPTAR,                 null).show();
+           // new AlertDialog.Builder(activity).setMessage("Se ha cancelado con exito la peticion").setPositiveButton(ACEPTAR,                 null).show();
         }else{
             new AlertDialog.Builder(activity).setMessage(SE_HA_CANCELADO_LA_PETICION).setPositiveButton(ACEPTAR,null).show();
         }
