@@ -69,6 +69,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -91,6 +93,8 @@ import apretaste.Comunication.email.Mailerlistener;
 import apretaste.Services;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
+
+
 
 
 public class DrawerActivity extends AppCompatActivity
@@ -163,7 +167,7 @@ public class DrawerActivity extends AppCompatActivity
         dbh =    DbHelper.getSingleton(this);
 
 
-        //dbh.delBy("services","service","google");
+       // dbh.delBy("services","service","google");
         // dbh.addOneService("abc","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
         fabSync.setOnClickListener(new View.OnClickListener() {
@@ -525,7 +529,6 @@ public class DrawerActivity extends AppCompatActivity
         profilePict=(ImageView)view.findViewById(R.id.ivProfile);
         if(reloadServices) {
             serviceAdapter.notifyDataSetChanged();
-
         }
         if(pro.profile.picture!=null && !pro.profile.picture.isEmpty())
         {
@@ -820,7 +823,7 @@ finish();
     }
 
     public void updateService(ProfileInfo pi){
-        if (pi.services.length > 0){
+       if (pi.services.length > 0){
             dbh.addService(pi.services);
             for (int i = 0;i<pi.services.length;i++){
                 Services service = new Services();
@@ -830,13 +833,28 @@ finish();
                 service.setUpdated(pi.services[i].updated);
                 service.setIcon(pi.services[i].icon);
                 service.setUsed("0");
+                service.setId(dbh.getIdByName(pi.services[i].name));
                 service.setFav("0");
-
                 serviceAdapter.sevList.add(service);
-                serviceAdapter.notifyDataSetChanged();
-            }
+                Collections.sort(serviceAdapter.sevList, new Comparator<Services>() {
+                    @Override
+                    public int compare(Services o1, Services o2) {
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
 
+            }
+           runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                   showProfileInfo(hView,true);
+               }
+           });
         }
+
+
+
+
     }
     public void ServiceNoActive(String[] active){
         Services[] sev = serviceAdapter.sevList.toArray(new Services[serviceAdapter.sevList.size()]);

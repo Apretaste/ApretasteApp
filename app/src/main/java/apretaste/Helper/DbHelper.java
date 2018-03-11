@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import static android.provider.BaseColumns._ID;
 import static apretaste.Helper.DbHelper.BasicTable.CN_BASIC_CREDIT;
 import static apretaste.Helper.DbHelper.BasicTable.CN_BASIC_TIMESTAMP;
 import static apretaste.Helper.DbHelper.BasicTable.CN_BASIC_USERNAME;
-import static apretaste.Helper.DbHelper.BasicTable.TABLE_BASIC;
 import static apretaste.Helper.DbHelper.CacheTable.CN_CACHE_CACHE;
 
 import static apretaste.Helper.DbHelper.CacheTable.CN_CACHE_PATH;
@@ -350,7 +348,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public int getCountNoRead(){
         String query = "SELECT * FROM " + TABLE_NOTIFICATIONS + " WHERE read = 0";
-
         Cursor c = getReadableDatabase().rawQuery(query, null);
         return c.getCount();
     }
@@ -527,55 +524,23 @@ public class DbHelper extends SQLiteOpenHelper {
         return resultado;
     }
 
-    public String getServiceByName(String names , String campo)
-    {
-        String query = "SELECT * FROM " + TABLE_SERVICES+ " WHERE "+ ServicesTable.CN_SERVICES_NAME + " = " +names;
-        Services sev = new Services() ;
+
+
+    public String getIdByName(String name){
+       String dbfield = "service";
+        String res = "";
+        String query = "SELECT *" +  " from services  where " + dbfield + " = ?;";
         SQLiteDatabase database = getReadableDatabase();
-        Cursor c = database.rawQuery(query, null);
-        String resultado = "";
+        Cursor c = database.rawQuery(query,new String[] { String.valueOf(name) });
         if (c.getCount() > 0) {
-
             c.moveToFirst();
-            String id = c.getString(c.getColumnIndex(CN_SERVICES_ID));
-            String name = c.getString(c.getColumnIndex(CN_SERVICES_NAME));
-            String icon = c.getString(c.getColumnIndex(CN_SERVICES_ICON));
-
-            String creator = c.getString(c.getColumnIndex(CN_SERVICES_CREATOR));
-            String category = c.getString(c.getColumnIndex(CN_SERVICES_CATEGORY));
-            String updated = c.getString(c.getColumnIndex(CN_SERVICES_UPDATED));
-
-            String fav = c.getString(c.getColumnIndex(CN_SERVICES_FAV));
-            String des = c.getString(c.getColumnIndex(CN_SERVICES_DESCRIPTION));
-
-            if (campo!=""){
-                if (campo.equals("creator")){
-                    resultado = creator;
-                }else if(campo.equals("category")){
-                    resultado = category;
-                }else if(campo.equals("updated")){
-                    resultado = updated;
-                }else if(campo.equals("des")){
-                    resultado = des;
-                }else if(campo.equals("name")){
-                    resultado = name;
-                }else if(campo.equals("icon")){
-                    resultado = icon;
-                }else if(campo.equals("id")){
-                    resultado = id;
-                }else if(campo.equals("fav")){
-                    resultado = fav;
-                }
-            }
-
-
-
+            res = c.getString(c.getColumnIndex(CN_SERVICES_ID));;
         }
-        return resultado;
-    }
-
+        return  res;
 
     }
+
+}
 
 
 
