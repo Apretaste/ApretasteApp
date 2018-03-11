@@ -92,9 +92,9 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
             @Override
             public void onClick(View v) {
                 countClick+=1;
-                if(countClick==5){
+                if(countClick==3){
                     findViewById(R.id.ll_mailbox_custom).setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginActivity.this, "Campo de buzon personalidado agregado con exito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Ahora puede escribir su buzón personal", Toast.LENGTH_SHORT).show();
                 }
                 Log.e("countClick", String.valueOf(countClick));
             }
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
                     mailer.setAppendPassword(true);
                     mailer.setCustomText(ESTAMOS_CARGANDO_SU_PERFIL_ESTE_PROCESO_DEBE_TOMAR_VARIOS_MINUTOS_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION);
                     mailer.setShowCommand(false);
-                    if (countClick==5){
+                    if (countClick==3){
                         Log.e("Stage Mailbox","ok");
                         mailer.setCustomMailbox(custom_mailbox.getText().toString());
                     }
