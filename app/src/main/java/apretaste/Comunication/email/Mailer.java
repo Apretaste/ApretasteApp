@@ -195,7 +195,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     private boolean showStatus=true;
 
-    private static final boolean HIDE_STATUS_DETAILS=false;
+    private static final boolean HIDE_STATUS_DETAILS=true;
 
     private final Activity activity;
 
