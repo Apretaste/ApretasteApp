@@ -683,11 +683,11 @@ public class DrawerActivity extends AppCompatActivity
 
         switch (id) {
 
-          /*  case R.id.nav_home: {
-                startActivity(new Intent(this, ChatListActivity.class));
-finish();
+            case R.id.nav_home: {
+                HistoryManager.getSingleton().setCurrentPage(null);
+                open = false;
                 break;
-            }*/
+            }
             case R.id.nav_noti: {
                 startActivity(new Intent(this, NotificationsActivity.class));
                 break;
