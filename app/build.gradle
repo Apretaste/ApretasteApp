@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId 'com.apretaste.apretaste'
-        minSdkVersion 15
+        minSdkVersion 9
         targetSdkVersion 25
         versionName '3.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
