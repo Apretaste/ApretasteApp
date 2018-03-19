@@ -18,6 +18,9 @@ import apretaste.Profile;
 import apretaste.ProfileInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -107,6 +110,8 @@ public class DrawerActivity extends AppCompatActivity
     public  String pref;
     DbHelper dbh;
     FloatingActionButton fabSync;
+    FloatingActionButton fabDownload;
+    FloatingActionButton fabUpdate;
     public static final String COMMAND = "command";
     public static final String SERVICE = "service";
     public static final String DATE = "date";
@@ -136,6 +141,8 @@ public class DrawerActivity extends AppCompatActivity
     private SearchView searchView;
     TextView count_noti;
     MenuItem searchItem;
+    MenuItem updateItem;
+    MenuItem donwloadItem;
     Comunication comunication = new Comunication();
     double latest;
     private GridView gridView;
@@ -170,6 +177,9 @@ public class DrawerActivity extends AppCompatActivity
        // dbh.delBy("services","service","google");
         // dbh.addOneService("abc","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
+
+
+
         fabSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -576,6 +586,8 @@ public class DrawerActivity extends AppCompatActivity
                     HistoryManager.getSingleton().setCurrentPage(null);
                     open = false;
                     searchItem.setVisible(true);
+                    donwloadItem.setVisible(false);
+                    updateItem.setVisible(false);
                     return;
                 }
 
@@ -619,6 +631,8 @@ public class DrawerActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.drawer, menu);
          searchItem = menu.findItem(R.id.action_search);
+         updateItem = menu.findItem(R.id.action_update);
+         donwloadItem = menu.findItem(R.id.action_download);
 
 
 
@@ -664,6 +678,37 @@ public class DrawerActivity extends AppCompatActivity
                 break;
             }
 
+            case R.id.action_download:{
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    PrintManager printManager = (PrintManager) DrawerActivity.this
+                            .getSystemService(Context.PRINT_SERVICE);
+
+                    PrintDocumentAdapter printAdapter =
+                            null;
+
+                    printAdapter = wv.createPrintDocumentAdapter("MyDocument");
+
+
+                    String jobName = getString(R.string.app_name) +
+                            " Print Test";
+
+                    printManager.print(jobName, printAdapter,
+                            new PrintAttributes.Builder().build());
+                }else{
+                    Toast.makeText(DrawerActivity.this, "Su versión android no permite esta funcionalidad", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+
+            case R.id.action_update:{
+                HistoryManager historyManager = HistoryManager.getSingleton();
+                // comunication.execute(DrawerActivity.this,historyManager.getEntry("service"),historyManager.getEntry("service"),false,"",DrawerActivity.this,DrawerActivity.this);
+
+                Mailer mailer=new Mailer(DrawerActivity.this, historyManager.getEntry("service"), historyManager.getEntry("command"), false, null, DrawerActivity.this,false);
+                mailer.setAppendPassword(true);
+                mailer.execute();
+
+            }
         }
 
         //noinspection SimplifiableIfStatement
@@ -968,7 +1013,10 @@ public class DrawerActivity extends AppCompatActivity
             toolbar.setTitle(newUrl.service.split(" ")[0].toLowerCase());
             wv.loadUrl(newUrl.path);
             fabSync.setVisibility(View.GONE);
+
             searchItem.setVisible(false);
+            donwloadItem.setVisible(true);
+            updateItem.setVisible(true);
             vsw.setDisplayedChild(1);
 
             return;

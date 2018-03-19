@@ -44,6 +44,20 @@ public class HistoryManager {
         return singleton;
     }
 
+    public String getEntry(String field){
+        String result = "";
+        switch (field){
+            case "service":
+                result = currentEntry.service;
+                break;
+            case "command":
+                result = currentEntry.command;
+                break;
+
+        }
+
+    return result;
+    }
     public void setCurrentPage(HistoryEntry entry) {
         currentEntry=entry;
         for (HistoryListener listener :

@@ -6,4 +6,16 @@
         android:icon="@drawable/ic_action_search"
         yourapp:showAsAction="ifRoom|collapseActionView"
         yourapp:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/action_download"
+        android:title="Guardar"
+        android:visible="false"
+        android:icon="@drawable/save"
+        yourapp:showAsAction="ifRoom|collapseActionView"/>
+
+    <item android:id="@+id/action_update"
+        android:title="Actualizar"
+        android:visible="false"
+        android:icon="@drawable/ic_update"
+        yourapp:showAsAction="ifRoom|collapseActionView"/>
 </menu>
