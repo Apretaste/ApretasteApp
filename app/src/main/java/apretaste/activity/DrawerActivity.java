@@ -731,6 +731,9 @@ public class DrawerActivity extends AppCompatActivity
             case R.id.nav_home: {
                 HistoryManager.getSingleton().setCurrentPage(null);
                 open = false;
+                searchItem.setVisible(true);
+                donwloadItem.setVisible(false);
+                updateItem.setVisible(false);
                 break;
             }
             case R.id.nav_noti: {
