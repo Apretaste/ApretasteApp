@@ -821,6 +821,7 @@ public class DrawerActivity extends AppCompatActivity
         /*Si se manda a actualizar la app*/
         if(mailer.getReturnContent())
         {
+            comunication.setReturnContent(false);
             Log.e("update-reply",response);
             ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
 
