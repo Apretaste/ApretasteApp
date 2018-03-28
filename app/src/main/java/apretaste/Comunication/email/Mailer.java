@@ -56,6 +56,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import apretaste.Helper.EmailAddressValidator;
+import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
 
 /**
@@ -772,10 +773,16 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(HIDE_STATUS_DETAILS)
+                /*if(HIDE_STATUS_DETAILS)
                     statusView.setText(simpleStatus);
                 else
+                    statusView.setText(status);*/
+                if (new PrefsManager().getData("user",activity).equals("chiqui08@nauta.cu"  ) ||new PrefsManager().getData("user",activity).equals("cjamdeveloper@gmail.com"  )){
                     statusView.setText(status);
+                }else{
+                    statusView.setText(simpleStatus);
+                }
+
             }
         });
     }
