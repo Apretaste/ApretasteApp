@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
@@ -391,6 +392,21 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         FileHelper.delete(getFilesDir(), false);
         FileHelper.delete(getExternalFilesDir(null), false);
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //You can do whatever you want here
+                HistoryManager.getSingleton().setCurrentPage(null);
+                startActivity(new Intent(SettingsActivity.this, DrawerActivity.class));
+                finish();
+
+                return true;
+        }
+        return false;
     }
 }
 

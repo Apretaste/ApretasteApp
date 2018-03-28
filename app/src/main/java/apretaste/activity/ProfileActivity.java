@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.example.apretaste.R;
 
+import apretaste.HistoryManager;
 import apretaste.Profile;
 import apretaste.ProfileInfo;
 import apretaste.Comunication.email.Mailer;
@@ -803,7 +804,9 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
         switch (item.getItemId()) {
             case android.R.id.home:
                 //You can do whatever you want here
-                onBackPressed();
+                HistoryManager.getSingleton().setCurrentPage(null);
+                startActivity(new Intent(ProfileActivity.this, DrawerActivity.class));
+                finish();
 
                 return true;
         }

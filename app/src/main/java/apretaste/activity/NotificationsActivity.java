@@ -62,8 +62,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
         tbn.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NotificationsActivity.this, DrawerActivity.class));
-                finish();
+                onBackPressed();
             }
         });
         tbn.setTitle("Notificaciones");
@@ -177,6 +176,13 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
     }
 
     @Override
+    public void onBackPressed() {
+        HistoryManager.getSingleton().setCurrentPage(null);
+        startActivity(new Intent(NotificationsActivity.this, DrawerActivity.class));
+        finish();
+        //  super.onBackPressed();
+    }
+    @Override
     public void onResponseSimpleHttp(String response) {
 
     }
@@ -243,6 +249,8 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             return vh;
 
         }
+
+
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
