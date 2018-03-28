@@ -117,8 +117,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
     @Override
     protected void onPause() {
         super.onPause();
-        String pro=new Gson().toJson( DrawerActivity.pro);
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(RESP,pro).apply();
+
     }
 
     @Override
@@ -162,8 +161,6 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                 /*Accion para anadir notifiaciones */
             if (pi.notifications.length > 0){
                 db.addNotification(pi.notifications);
-
-
 
             }
 
@@ -210,9 +207,6 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                 /*Accion para anadir notifiaciones */
             if (pi.notifications.length > 0){
                 db.addNotification(pi.notifications);
-
-
-
             }
 
             new PrefsManager(). saveData("mailbox", NotificationsActivity.this, pi.mailbox);
