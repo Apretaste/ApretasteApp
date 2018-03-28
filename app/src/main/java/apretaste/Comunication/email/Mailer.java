@@ -123,7 +123,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     public static final String PASS = "pass";
     public static final String USER = "user";
     public static final String ACEPTAR = "Aceptar";
-    public static final String SE_HA_CANCELADO_LA_PETICION = "No hemos recibido respuesta del servidor. Esto puede ser un fallo en la conexion, o que nuestro servicio este temporalmente caido. Intente nuevamente y si falla por favor denos unas horas para corregir el problema. Hemos alertado a nuestro equipo y ya estan viendo que ocurre.";
+    public static final String SE_HA_CANCELADO_LA_PETICION = "No hemos recibido respuesta del servidor. Esto puede ser un fallo en la conexion, o que nuestro servicio este temporalmente caido. Intente nuevamente y si falla por favor denos unas horas para corregir el problema. Avisaremos a nuestro equipo lo que ocurre.";
     public static final String E_GET_MESSAGE = "e.getMessage()";
     public static final String DIB = "DIB";
     public static final String MAILER = "Mailer";
