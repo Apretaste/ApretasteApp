@@ -342,7 +342,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                     Log.e(MAILER1, CANCELLED);
                 }
             }
-        },120000);//120000
+        },60000);//120000
 
 
         dialog.setCanceledOnTouchOutside(false);
@@ -378,9 +378,9 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 });
             }
         });
-        if (!sendRequestError) {
+
             dialog.show();
-        }
+
     }
 
     //esto se ejecutara en background en un hilo secundario, es la tarea principal
@@ -422,21 +422,27 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         if(finished2) {
             return;
         }
-
-        if (errorReply) {
-
-            Mailer mailer = new Mailer(activity, "", "", true, "", null, true);
-            mailer.setAppendPassword(true);
-            mailer.setlastTicket(lastTicket);
-            mailer.setSendRequestError(true);
-            mailer.execute();
-            finishedCancel = false;
-        }
         dialog.dismiss();
-        if(finishedCancel){
-           // new AlertDialog.Builder(activity).setMessage("Se ha cancelado con exito la peticion").setPositiveButton(ACEPTAR,                 null).show();
-        }else{
-            new AlertDialog.Builder(activity).setMessage(SE_HA_CANCELADO_LA_PETICION).setPositiveButton(ACEPTAR,null).show();
+        if (errorReply){
+            new AlertDialog.Builder(activity).setMessage(SE_HA_CANCELADO_LA_PETICION).setPositiveButton(ACEPTAR, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+
+                    Mailer mailer = new Mailer(activity, "", "", true, "", null, true);
+                    mailer.setAppendPassword(true);
+                    mailer.setSendRequestError(true);
+                    mailer.setlastTicket(lastTicket);
+
+                    mailer.execute();
+                    finishedCancel = false;
+                }
+
+            }).show();
+        }else if(finishedCancel) {
+            // new AlertDialog.Builder(activity).setMessage("Se ha cancelado con exito la peticion").setPositiveButton(ACEPTAR,                 null).show();else{
+
+
         }
 
     }
