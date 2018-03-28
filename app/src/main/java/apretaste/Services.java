@@ -88,4 +88,18 @@ public class Services {
     public String getFav() {
         return fav;
     }
+
+    @Override
+    public boolean  equals (Object object) {
+        boolean result = false;
+        if (object == null || object.getClass() != getClass()) {
+            result = false;
+        } else {
+            Services service = (Services) object;
+            if (this.name.equals(service.getName())) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }

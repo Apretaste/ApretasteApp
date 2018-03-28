@@ -884,13 +884,15 @@ public class DrawerActivity extends AppCompatActivity
                 service.setUsed("0");
                 service.setId(dbh.getIdByName(pi.services[i].name));
                 service.setFav("0");
-                serviceAdapter.sevList.add(service);
+                if (!service.equals(service)){
+                    serviceAdapter.sevList.add(service);
                 Collections.sort(serviceAdapter.sevList, new Comparator<Services>() {
                     @Override
                     public int compare(Services o1, Services o2) {
                         return o1.getName().compareTo(o2.getName());
                     }
                 });
+                }
 
             }
            runOnUiThread(new Runnable() {
