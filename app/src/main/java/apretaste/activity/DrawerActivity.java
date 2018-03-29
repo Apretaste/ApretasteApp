@@ -884,7 +884,8 @@ public class DrawerActivity extends AppCompatActivity
                 service.setUsed("0");
                 service.setId(dbh.getIdByName(pi.services[i].name));
                 service.setFav("0");
-                if (!service.equals(service)){
+                Log.e("found", String.valueOf(getItemExist(service.getName())));
+                if (!getItemExist(service.getName())){
                     serviceAdapter.sevList.add(service);
                 Collections.sort(serviceAdapter.sevList, new Comparator<Services>() {
                     @Override
@@ -941,6 +942,17 @@ public class DrawerActivity extends AppCompatActivity
                 return serviceAdapter.sevList.indexOf(_item);
         }
         return -1;
+    }
+
+    public boolean getItemExist(String sName)
+    {  boolean exists = false;
+        for(Services _item : serviceAdapter.sevList)
+        {
+
+            if(_item.getName().equals(sName))
+                exists = true;
+        }
+       return  exists;
     }
     public void open(final String service, final String command, String response, final Mailer mailer){
         final File file = new File(response);
