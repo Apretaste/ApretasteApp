@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Base64;
+import android.util.Log;
 
 import com.example.apretaste.R;
 import com.google.gson.Gson;
@@ -67,6 +68,7 @@ public class UtilHelper {
             zos.putNextEntry(entry);
             ComunicationJson comunicationJson = new ComunicationJson();
             comunicationJson.setCommand(command);
+            Log.e("command",command);
             if (!command.equals("perfil status")) {
                 comunicationJson.setTimestamp(DrawerActivity.pro.timestamp);
             }else{

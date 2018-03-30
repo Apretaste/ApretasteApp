@@ -273,7 +273,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                                         mailer.setShowCommand(true);
                                         mailer.execute();*/
 
-                                        comunication.execute(SettingsActivity.this, null, "PERFIL IMAGEN ORIGINAL", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
+                                        comunication.execute(SettingsActivity.this, "PERFIL", "IMAGEN ORIGINAL", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
 
                                         new  PrefsManager().saveData("type_img",SettingsActivity.this,"ORIGINAL");
 
@@ -287,7 +287,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                                         mailer.setCustomText("Cambiando preferencia de imagenes a reducida");
                                         mailer.setShowCommand(true);
                                         mailer.execute();*/
-                                        comunication.execute(SettingsActivity.this, null, "PERFIL IMAGEN ORIGINAL", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
+                                        comunication.execute(SettingsActivity.this, "PERFIL", "IMAGEN REDUCIDA", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
 
 
                                         new  PrefsManager().saveData("type_img",SettingsActivity.this,"REDUCIDA");
@@ -304,7 +304,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                                         mailer.setShowCommand(true);
                                         mailer.execute();*/
 
-                                        comunication.execute(SettingsActivity.this, null, "PERFIL IMAGEN ORIGINAL", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
+                                        comunication.execute(SettingsActivity.this, "PERFIL", "IMAGEN SIN_IMAGEN", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
 
                                         new  PrefsManager().saveData("type_img",SettingsActivity.this,"SIN_IMAGEN");
 

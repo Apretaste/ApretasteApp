@@ -705,9 +705,8 @@ public class DrawerActivity extends AppCompatActivity
                 HistoryManager historyManager = HistoryManager.getSingleton();
                 // comunication.execute(DrawerActivity.this,historyManager.getEntry("service"),historyManager.getEntry("service"),false,"",DrawerActivity.this,DrawerActivity.this);
 
-                Mailer mailer=new Mailer(DrawerActivity.this, historyManager.getEntry("service"), historyManager.getEntry("command"), false, null, DrawerActivity.this,false);
-                mailer.setAppendPassword(true);
-                mailer.execute();
+                Comunication comunication = new Comunication();
+                comunication.execute(DrawerActivity.this, historyManager.getEntry("service"),historyManager.getEntry("command"),false,null,DrawerActivity.this,DrawerActivity.this);
 
             }
         }
