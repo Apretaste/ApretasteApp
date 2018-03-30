@@ -74,6 +74,10 @@ public class Comunication {
                                 if (returnContent) {
                                 mailer.setReturnContent(true);
                             }
+
+                            if (saveInternal){
+                                mailer.setSaveInternal(true);
+                            }
                             mailer.execute();}
                             else
                             {

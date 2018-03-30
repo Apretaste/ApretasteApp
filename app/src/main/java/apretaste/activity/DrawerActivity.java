@@ -193,6 +193,7 @@ public class DrawerActivity extends AppCompatActivity
                                         mailer.setAppendPassword(true);
                                         mailer.execute();*/
 
+                                        comunication.setSaveInternal(true);
                                         comunication.setReturnContent(true);
                                         comunication.execute(DrawerActivity.this, null, PERFIL_STATUS, false, null,
                                                 DrawerActivity.this,DrawerActivity.this);
