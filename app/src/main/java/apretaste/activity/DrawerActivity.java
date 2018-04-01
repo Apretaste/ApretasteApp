@@ -1361,7 +1361,7 @@ public class DrawerActivity extends AppCompatActivity
                                     ed[i].setHint(parts[i].substring(2));
                                     break;
                                 case "m:":
-                                     etM = ed[i];
+                                    etM = ed[i];
                                     etM.setFocusableInTouchMode(false);
                                     if (parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1).equals("*")){
 
@@ -1375,17 +1375,19 @@ public class DrawerActivity extends AppCompatActivity
                                         obM = true;
                                     }
                                     ed[i].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_black_24dp, 0);
+                                    final int finalI1 = i;
                                     ed[i].setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            final String[] item =  help.split("\\[")[1].split("\\]")[0].split(",");
+                                            final String[] item =  parts[finalI1].split("\\[")[1].split("\\]")[0].split(",");
+
                                             AlertDialog.Builder di = new AlertDialog.Builder(DrawerActivity.this);
                                             di.setItems(item, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    for (int i = 0; i < item.length; i++) {
-                                                        if (which == i) {
-                                                            etM.setText(item[i]);
+                                                    for (int j = 0; j < item.length; j++) {
+                                                        if (which == j) {
+                                                            ed[finalI1].setText(item[j]);
                                                             break;
                                                         }
                                                     }
@@ -1422,9 +1424,9 @@ public class DrawerActivity extends AppCompatActivity
 
 
                                             String  values = (ed[i].getText().toString());
-                                            f= f + " "+ values;
+                                            f= f + "|"+ values;
 
-                                            String peticion = new StringHelper().clearString((command+" "+f));
+                                            String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
 
 
 
@@ -1432,7 +1434,7 @@ public class DrawerActivity extends AppCompatActivity
                                         }
 
 
-                                        String peticion = new StringHelper().clearString((command+" "+f));
+                                        String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
 
 
                                         Log.i("peticion",peticion);
@@ -1466,7 +1468,7 @@ public class DrawerActivity extends AppCompatActivity
                                                     mailer.setAppendPassword(true);
                                                     mailer.execute();*/
 
-                                                    comunication.execute(DrawerActivity.this, command.split(" ")[0], command+" "+f,!waiting, help,DrawerActivity.this,DrawerActivity.this);
+                                                    comunication.execute(DrawerActivity.this, command.split(" ")[0], command+" "+f.substring(1),!waiting, help,DrawerActivity.this,DrawerActivity.this);
                                                 }
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
@@ -1489,7 +1491,9 @@ public class DrawerActivity extends AppCompatActivity
                                                 mailer.setAppendPassword(true);
                                                 mailer.execute();*/
 
-                                                comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f, !waiting, help, DrawerActivity.this, DrawerActivity.this);
+                                                comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
+                                            Log.e("command1",command.split(" ")[0]);
+                                            Log.e("command1",command + " " + f.substring(1));
                                             }
 
 
