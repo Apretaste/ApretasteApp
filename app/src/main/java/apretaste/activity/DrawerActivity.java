@@ -702,11 +702,9 @@ public class DrawerActivity extends AppCompatActivity
             }
 
             case R.id.action_update:{
-                HistoryManager historyManager = HistoryManager.getSingleton();
-                // comunication.execute(DrawerActivity.this,historyManager.getEntry("service"),historyManager.getEntry("service"),false,"",DrawerActivity.this,DrawerActivity.this);
 
-                Comunication comunication = new Comunication();
-                comunication.execute(DrawerActivity.this, historyManager.getEntry("service"),historyManager.getEntry("command"),false,null,DrawerActivity.this,DrawerActivity.this);
+                comunication.execute(DrawerActivity.this, getDateByTitleWebview(1),getDateByTitleWebview(1)+" "+getDateByTitleWebview(2),false,null,DrawerActivity.this,DrawerActivity.this);
+
 
             }
         }
@@ -717,6 +715,27 @@ public class DrawerActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public String getDateByTitleWebview(int field){
+        String result="";
+        String service_comand = wv.getTitle().split("_")[0];
+        String sevComm[] = service_comand.split("\\(");
+        switch(field){
+            case 1:{
+                result = sevComm[0];
+                break;
+            }
+
+            case 2:{
+                if (sevComm.length>1){
+                    result = sevComm[1];
+                }
+
+            }
+
+        }
+
+        return  result;
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

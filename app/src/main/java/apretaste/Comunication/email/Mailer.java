@@ -882,7 +882,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 {
                     timestamp = new Date();
                     String timeStamp = new SimpleDateFormat(YYYY_M_MDD_H_HMMSS).format(timestamp);
-                    filename = HTML2 + timeStamp + HTML1;
+                    filename = command.replace(" ","(")+"_"+HTML2 + timeStamp + HTML1;
                 }
 
                 if(filename.endsWith("ext") )
