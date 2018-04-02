@@ -206,7 +206,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
 
             setCurrentStatus("Comprimiendo", CONECTANDO);
-            multipartUtility.addFilePart("attachments",new UtilHelper().Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
+          //  multipartUtility.addFilePart("attachments",new UtilHelper().Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
             multipartUtility.addFormField("token", preferences.getString("token",null));

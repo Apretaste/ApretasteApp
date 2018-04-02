@@ -6,27 +6,32 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.apretaste.R;
+import com.google.gson.Gson;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +39,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -55,9 +61,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import apretaste.ComunicationJson;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
+import apretaste.activity.DrawerActivity;
 
 /**
  * Created  by Raymond Arteaga on 13/07/2017.
@@ -567,7 +575,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             }
             //parte del adjunto
             try {
-                File file = new UtilHelper().Compress(activity,command,profileBitmap,appendPassword?pass:null);//obtenemos el archivo adjunto que vamos a enviar
+                File file = Compress(activity,command,profileBitmap,appendPassword?pass:null);//obtenemos el archivo adjunto que vamos a enviar
                 if(isCancelled())
                 {
                     dialog.dismiss();
@@ -882,7 +890,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 {
                     timestamp = new Date();
                     String timeStamp = new SimpleDateFormat(YYYY_M_MDD_H_HMMSS).format(timestamp);
-                    filename = command.replace(" ","(")+"_"+HTML2 + timeStamp + HTML1;
+                    filename = "ap_"+command.replace(" ","(")+"_"+HTML2 + timeStamp + HTML1;
                 }
 
                 if(filename.endsWith("ext") )
@@ -928,5 +936,48 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         return returnValue;
 
     }
+
+    public File Compress(Activity activity,String command, Bitmap image, String appendedPassword) throws Exception {
+        File f= File.createTempFile("apr", "zip");
+        FileOutputStream fos=new FileOutputStream(f);
+        OutputStream os = fos;
+        ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os));
+        try {
+            String filename = new UtilHelper().genString(activity)+ ".txt";
+            ZipEntry entry = new ZipEntry(filename);
+            zos.putNextEntry(entry);
+            ComunicationJson comunicationJson = new ComunicationJson();
+            comunicationJson.setCommand(command);
+            Log.e("command",command);
+            if (!command.equals("perfil status")) {
+                comunicationJson.setTimestamp(DrawerActivity.pro.timestamp);
+            }else{
+                comunicationJson.setTimestamp("");
+                comunicationJson.setCommand("status");
+            }
+            comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
+            comunicationJson.setVersionSo(Build.VERSION.RELEASE);
+            comunicationJson.setToken(appendedPassword);
+
+            String text = new Gson().toJson(comunicationJson);
+            String base64= Base64.encodeToString(appendedPassword.getBytes("UTF-8"),Base64.DEFAULT);
+            final  byte[] bytes = text.replaceAll(appendedPassword,base64).replaceAll("[\n]","").getBytes("UTF-8");
+
+            zos.write(bytes);
+            zos.closeEntry();
+            if(profileBitmap!=null)
+            {
+                entry = new ZipEntry("profile.png");
+                zos.putNextEntry(entry);
+                image.compress(Bitmap.CompressFormat.PNG,100,zos);
+                zos.closeEntry();
+            }
+
+        } finally {
+            zos.close();
+        }
+        return f;
+    }
+
 
 }
