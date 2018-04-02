@@ -14,7 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
-import apretaste.Profile;
 import apretaste.ProfileInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -56,7 +55,6 @@ import android.widget.Filterable;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
@@ -78,8 +76,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.mail.Service;
 
 import apretaste.Helper.DataHelper;
 import apretaste.Helper.DbHelper;
@@ -703,7 +699,9 @@ public class DrawerActivity extends AppCompatActivity
 
             case R.id.action_update:{
 
-                comunication.execute(DrawerActivity.this, getDateByTitleWebview(1),getDateByTitleWebview(1)+" "+getDateByTitleWebview(2),false,null,DrawerActivity.this,DrawerActivity.this);
+                String b  = wv.getUrl().split("ap_")[1];
+                String text = b.substring(0,b.length()-5);
+                comunication.execute(DrawerActivity.this, getDateByUrlWebview(text,1), getDateByUrlWebview(text,1)+" "+ getDateByUrlWebview(text,2),false,null,DrawerActivity.this,DrawerActivity.this);
 
 
             }
@@ -715,9 +713,9 @@ public class DrawerActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public String getDateByTitleWebview(int field){
+    public String getDateByUrlWebview(String text, int field){
         String result="";
-        String service_comand = wv.getTitle().split("_")[0];
+        String service_comand = text.split("_")[0];
         String sevComm[] = service_comand.split("\\(");
         switch(field){
             case 1:{
