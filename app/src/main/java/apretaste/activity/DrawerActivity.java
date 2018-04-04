@@ -1501,7 +1501,7 @@ public class DrawerActivity extends AppCompatActivity
                                                     obE && etE.getText().toString().equals("") ||
                                                     obN && etN.getText().toString().equals("")
                                                     ){
-                                                Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatorios", Toast.LENGTH_SHORT).show();
 
                                             }else{
                                                /* Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0], command + " " + f, !waiting, help, DrawerActivity.this, false);
