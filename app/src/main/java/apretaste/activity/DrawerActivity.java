@@ -143,20 +143,6 @@ public class DrawerActivity extends AppCompatActivity
     double latest;
     private GridView gridView;
     EditText  etSearchview;
-    private EditText etT;
-    private EditText etA;
-    private EditText etP;
-    private EditText etD;
-    private EditText etE;
-    private EditText etN;
-    private EditText etM;
-    private boolean obT = false;
-    private boolean obA = false;
-    private boolean obP = false;
-    private boolean obD = false;
-    private boolean obE = false;
-    private boolean obN = false;
-    private boolean obM = false;
     private int laststate = 0;
 
 
@@ -1282,18 +1268,9 @@ public class DrawerActivity extends AppCompatActivity
                             switch (typeDates){
 
                                 case "t:":
-                                     etT = ed[i];
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obT = true;
-                                    }
-
                                     ed[i].setHint(parts[i].substring(2));
                                     break;
                                 case "a:":
-                                    etA = ed[i];
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obA = true;
-                                    }
                                     ed[i].setHint(parts[i].substring(2));
                                     break;
 
@@ -1302,19 +1279,12 @@ public class DrawerActivity extends AppCompatActivity
                                     break;
 
                                 case "p:":
-                                    etP = ed[i];
+
                                     ed[i].setHint(parts[i].substring(2));
                                     ed[i].setTransformationMethod(PasswordTransformationMethod.getInstance());
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obP = true;
-                                    }
                                     break;
                                 case "d:":
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obD = true;
-                                    }
-                                    etD = ed[i];
-                                    etD.setFocusableInTouchMode(false);
+                                    ed[i].setFocusableInTouchMode(false);
                                     ed[i].setHint(parts[i].substring(2));
                                     ed[i].setInputType(InputType.TYPE_CLASS_DATETIME );
                                     ed[i].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_date_range_black_24dp, 0);
@@ -1345,23 +1315,14 @@ public class DrawerActivity extends AppCompatActivity
 
                                     break;
                                 case "e:":
-                                    etE = ed[i];
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obE = true;
-                                    }
                                     ed[i].setHint(parts[i].substring(2));
                                     break;
                                 case "n:":
-                                    etN = ed[i];
                                     ed[i].setInputType(InputType.TYPE_CLASS_PHONE);
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obN = true;
-                                    }
                                     ed[i].setHint(parts[i].substring(2));
                                     break;
                                 case "m:":
-                                    etM = ed[i];
-                                    etM.setFocusableInTouchMode(false);
+                                    ed[i].setFocusableInTouchMode(false);
                                     if (parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1).equals("*")){
 
                                         ed[i].setHint(parts[i].split("\\[")[0].substring(2)+parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1));
@@ -1370,9 +1331,7 @@ public class DrawerActivity extends AppCompatActivity
                                         ed[i].setHint(parts[i].split("\\[")[0].substring(2));
                                     }
 
-                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                        obM = true;
-                                    }
+
                                     ed[i].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_black_24dp, 0);
                                     final int finalI1 = i;
                                     ed[i].setOnClickListener(new View.OnClickListener() {
@@ -1419,19 +1378,39 @@ public class DrawerActivity extends AppCompatActivity
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         String f = "";
+                                       int cantFieldRequeried = 0;
                                         for(int i = 0; i < ed.length; i++){
 
+                                            /*Verificando cuantos campos son obligatorios*/
+                                            if (parts[i].substring(parts[i].length()-1).equals("*")){
+                                                cantFieldRequeried=cantFieldRequeried+1;
 
-                                            //parts[i].substring(parts[i].length()-1).equals("*")
+                                            }
+
                                             String  values = (ed[i].getText().toString());
+
                                             f= f + "|"+ values;
 
                                             String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
 
 
 
-
                                         }
+                                        Log.e("cantidad", String.valueOf(cantFieldRequeried));
+                                        int fieldRequeriedValid=0;
+
+                                        /*Comprobacion de los campos que son obligatorios*/
+                                        for (int j = 0;j<cantFieldRequeried;j++){
+
+                                            if (ed[j].getText().toString().equals("")){
+                                                Log.e("campo por llenar", String.valueOf(j));
+                                            }else{
+                                                Log.e("campo","campo lleno");
+                                                fieldRequeriedValid = fieldRequeriedValid+1;
+
+                                            }
+                                        }
+
 
 
                                         String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
@@ -1473,28 +1452,19 @@ public class DrawerActivity extends AppCompatActivity
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                        }else{
-                                            Log.i("llamar","El servicio no esta en cache");
+                                        }else {
+                                            Log.i("llamar", "El servicio no esta en cache");
 
-                                            if (    obT && etT.getText().toString().equals("") ||
-                                                    obP && etP.getText().toString().equals("") ||
-                                                    obA && etA.getText().toString().equals("") ||
-                                                    obM && etM.getText().toString().equals("") ||
-                                                    obD && etD.getText().toString().equals("") ||
-                                                    obE && etE.getText().toString().equals("") ||
-                                                    obN && etN.getText().toString().equals("")
-                                                    ){
-                                                Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatorios", Toast.LENGTH_SHORT).show();
 
-                                            }else{
                                                /* Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0], command + " " + f, !waiting, help, DrawerActivity.this, false);
                                                 mailer.setAppendPassword(true);
                                                 mailer.execute();*/
-
+                                            if (fieldRequeriedValid==cantFieldRequeried){
                                                 comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
-                                            Log.e("command1",command.split(" ")[0]);
-                                            Log.e("command1",command + " " + f.substring(1));
+                                            }else{
+                                                Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
                                             }
+
 
 
 
