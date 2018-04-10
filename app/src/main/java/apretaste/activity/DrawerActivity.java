@@ -699,9 +699,11 @@ public class DrawerActivity extends AppCompatActivity
 
             case R.id.action_update:{
 
-                String b  = wv.getUrl().split("ap_")[1];
-                String text = b.substring(0,b.length()-5);
-                comunication.execute(DrawerActivity.this, getDateByUrlWebview(text,1), getDateByUrlWebview(text,1)+" "+ getDateByUrlWebview(text,2),false,null,DrawerActivity.this,DrawerActivity.this);
+                String url  = wv.getUrl().split("ap_")[1];
+                String text = url.substring(0,url.length()-5).split("_")[0];
+                String textfinal = text.replaceAll("\\("," ").replaceAll("\\)","/").replaceAll("\\!","_");
+                Log.e("text final",textfinal);
+                comunication.execute(DrawerActivity.this, text.split("\\(")[0], textfinal,false,null,DrawerActivity.this,DrawerActivity.this);
 
 
             }
@@ -713,27 +715,7 @@ public class DrawerActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public String getDateByUrlWebview(String text, int field){
-        String result="";
-        String service_comand = text.split("_")[0];
-        String sevComm[] = service_comand.split("\\(");
-        switch(field){
-            case 1:{
-                result = sevComm[0];
-                break;
-            }
 
-            case 2:{
-                if (sevComm.length>1){
-                    result = sevComm[1];
-                }
-
-            }
-
-        }
-
-        return  result;
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -1440,6 +1422,7 @@ public class DrawerActivity extends AppCompatActivity
                                         for(int i = 0; i < ed.length; i++){
 
 
+                                            //parts[i].substring(parts[i].length()-1).equals("*")
                                             String  values = (ed[i].getText().toString());
                                             f= f + "|"+ values;
 
