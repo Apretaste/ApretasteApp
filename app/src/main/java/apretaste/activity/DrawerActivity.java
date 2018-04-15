@@ -685,11 +685,9 @@ public class DrawerActivity extends AppCompatActivity
 
             case R.id.action_update:{
 
-                String url  = wv.getUrl().split("ap_")[1];
-                String text = url.substring(0,url.length()-5).split("_")[0];
-                String textfinal = text.replaceAll("\\("," ").replaceAll("\\)","/").replaceAll("\\!","_");
-                Log.e("text final",textfinal);
-                comunication.execute(DrawerActivity.this, text.split("\\(")[0], textfinal,false,null,DrawerActivity.this,DrawerActivity.this);
+                String path_picado =  wv.getUrl().substring(8);
+                String pathfinal = "file:/"+path_picado;
+                comunication.execute(DrawerActivity.this,  dbh.getHistoryById(pathfinal,"service"), dbh.getHistoryById(pathfinal,"command"),false,null,DrawerActivity.this,DrawerActivity.this);
 
 
             }
@@ -946,6 +944,7 @@ public class DrawerActivity extends AppCompatActivity
             @Override
             public void run() {
                 HistoryManager.getSingleton().addToHistory(entry);
+                dbh.addHistory(service,command,file.toURI().toString(), String.valueOf(mailer.getResponseTimestamp()));
                 HistoryManager.getSingleton().setCurrentPage(entry);
                 open = true;
 

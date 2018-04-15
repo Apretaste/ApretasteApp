@@ -27,6 +27,12 @@ import static apretaste.Helper.DbHelper.CacheTable.CN_CACHE_PATH;
 import static apretaste.Helper.DbHelper.CacheTable.CN_CACHE_PETICION;
 import static apretaste.Helper.DbHelper.CacheTable.TABLE_CACHE;
 
+import static apretaste.Helper.DbHelper.HistoryTable.CN_HISTORY_COMMAND;
+import static apretaste.Helper.DbHelper.HistoryTable.CN_HISTORY_DATE;
+import static apretaste.Helper.DbHelper.HistoryTable.CN_HISTORY_PATH;
+import static apretaste.Helper.DbHelper.HistoryTable.CN_HISTORY_SERVICE;
+
+import static apretaste.Helper.DbHelper.HistoryTable.TABLE_HISTORY;
 import static apretaste.Helper.DbHelper.NotificationsTable.CN_NOTIFICATIONS_ID;
 import static apretaste.Helper.DbHelper.NotificationsTable.CN_NOTIFICATIONS_LINK;
 import static apretaste.Helper.DbHelper.NotificationsTable.CN_NOTIFICATIONS_READ;
@@ -69,7 +75,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(ServicesTable.CREATE_TABLE_SERVICES);
         db.execSQL(NotificationsTable.CREATE_TABLE_NOTIFICATIONS);
         db.execSQL(HistoryTable.CREATE_TABLE_HISTORY);
-        db.execSQL(BasicTable.CREATE_TABLE_BASIC);
 
 	}
 
@@ -140,7 +145,48 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    /*Metodos de Notifications*/
+    /*Metodos History*/
+
+    public void addHistory(String service,String command,String path, String date){
+        ContentValues valores = new ContentValues();
+        valores.put(CN_HISTORY_SERVICE, service);
+        valores.put(CN_HISTORY_COMMAND, command);
+        valores.put(CN_HISTORY_PATH, path);
+        valores.put(CN_HISTORY_DATE, date);
+
+        getWritableDatabase().insert(TABLE_HISTORY, null, valores);
+    }
+
+    public String getHistoryById(String id,String field){
+
+        String  dbfield = "path";
+        String res = "";
+        String query = "SELECT *" +  " from history  where " + dbfield + " = ?;";
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor c = database.rawQuery(query,new String[] { id });
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            switch (field){
+                case "command":
+                    res = c.getString(c.getColumnIndex(CN_HISTORY_COMMAND));
+                    break;
+                case "service":
+                    res = c.getString(c.getColumnIndex(CN_HISTORY_SERVICE));
+                    break;
+                case "path":
+                    res = c.getString(c.getColumnIndex(CN_HISTORY_PATH));
+                    break;
+                case "date":
+                    res = c.getString(c.getColumnIndex(CN_HISTORY_DATE));
+                    break;
+
+
+            }
+
+        }
+        return  res;
+
+    }
 
     /*Tabla Notifications*/
     static  final class NotificationsTable{
@@ -209,9 +255,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
         private static final String SERVICES_TABLE_DROP_QUERY ="DROP TABLE "+ TABLE_SERVICES +";";
 
-
-
-
         public static final  String CREATE_TABLE_SERVICES = "create table " +TABLE_SERVICES+ " ("
                 +CN_SERVICES_ID + " integer primary key autoincrement,"
                 +CN_SERVICES_NAME + " text not null,"
@@ -222,10 +265,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 +CN_SERVICES_ICON + " text not null,"
                 +CN_SERVICES_USED + " int ,"
                 +CN_SERVICES_FAV + " int );";
-
-
-
     }
+
+
 
 
 

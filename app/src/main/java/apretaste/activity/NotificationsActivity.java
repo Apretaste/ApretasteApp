@@ -138,6 +138,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
     public void onResponseArrived(String service, String command, String response, Mailer mailer) {
 
         File file = new File(response);
+        db.addHistory(service,command,file.toURI().toString(), String.valueOf(mailer.getResponseTimestamp()));
         final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), mailer.getResponseTimestamp());
         runOnUiThread(new Runnable() {
             @Override
@@ -197,6 +198,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             @Override
             public void run() {
                 HistoryManager.getSingleton().addToHistory(entry);
+
                 HistoryManager.getSingleton().setCurrentPage(entry);
                 finish();
             }
