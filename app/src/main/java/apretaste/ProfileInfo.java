@@ -18,6 +18,7 @@ public class ProfileInfo  {
     public float credit;
     public String[] active = new String[]{};
     public String mailbox;
+    public String domain;
     public String img_quality;
     public Profile profile=new Profile();
     public Notifications notifications[]=new Notifications[]{};

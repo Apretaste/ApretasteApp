@@ -26,10 +26,17 @@
                 android:layout_marginBottom="10dp"
                 />
             <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_et_buzon"
+            android:id="@+id/et_buzon"
+            android:inputType="textEmailAddress"/>
+
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_et_buzon"
-                android:id="@+id/et_buzon"
+                android:hint="Dominio"
+                android:id="@+id/et_domain"
                 android:inputType="textEmailAddress"/>
         </LinearLayout>
     <android.support.design.widget.FloatingActionButton

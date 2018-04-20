@@ -85,10 +85,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="apretaste.activity.ChatListActivity"
-            android:label="Chat Apretaste" />
-        <activity android:name="apretaste.activity.ConversationActivity"></activity>
     </application>
 
 </manifest>

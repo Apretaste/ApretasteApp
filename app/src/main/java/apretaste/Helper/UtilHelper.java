@@ -59,7 +59,47 @@ public class UtilHelper {
 
 
 
+    public File Compress(Activity activity,String command, Bitmap image, String appendedPassword) throws Exception {
+        File f= File.createTempFile("apr", "zip");
+        FileOutputStream fos=new FileOutputStream(f);
+        OutputStream os = fos;
+        ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os));
+        try {
+            String filename = new UtilHelper().genString(activity)+ ".txt";
+            ZipEntry entry = new ZipEntry(filename);
+            zos.putNextEntry(entry);
+            ComunicationJson comunicationJson = new ComunicationJson();
+            comunicationJson.setCommand(command);
+            Log.e("command",command);
+            if (!command.equals("perfil status")) {
+                comunicationJson.setTimestamp(DrawerActivity.pro.timestamp);
+            }else{
+                comunicationJson.setTimestamp("");
+                comunicationJson.setCommand("status");
+            }
+            comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
+            comunicationJson.setVersionSo(Build.VERSION.RELEASE);
+            comunicationJson.setToken(appendedPassword);
 
+            String text = new Gson().toJson(comunicationJson);
+            String base64= Base64.encodeToString(appendedPassword.getBytes("UTF-8"),Base64.DEFAULT);
+            final  byte[] bytes = text.replaceAll(appendedPassword,base64).replaceAll("[\n]","").getBytes("UTF-8");
+
+            zos.write(bytes);
+            zos.closeEntry();
+            if(profileBitmap!=null)
+            {
+                entry = new ZipEntry("profile.png");
+                zos.putNextEntry(entry);
+                image.compress(Bitmap.CompressFormat.PNG,100,zos);
+                zos.closeEntry();
+            }
+
+        } finally {
+            zos.close();
+        }
+        return f;
+    }
 
 
 

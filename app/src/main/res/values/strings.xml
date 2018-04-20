@@ -119,7 +119,7 @@
     <string name="text_auto_sync">Auto Resfrescar</string>
     <string name="description_auto_sync">Mientras más bajo el tiempo de resfrescado , mas rápido le llegaran nuevos servicios y notificaciones. También tendrá que conectarse con el servidor mas seguido y le consumirá un poco mas de saldo</string>
     <string name="text_buzon_personal">Cambiar buzón personal</string>
-    <string name="desc_buzon_personal">Si no logra conectar con Apretaste , puede que necesite cambiar su buzón personal</string>
+    <string name="desc_buzon_personal">Si no logra conectar con Apretaste , puede que necesite cambiar su buzón personal o dominio en caso de uso la app con internet</string>
     <string name="text_config_nauta">Cambiar Contraseña Nauta</string>
     <string name="des_config_nauta">Solo utilice esta opcion si usted previamente ha cambiado su contraseña de nauta</string>
     <string name="btn_accept">Aceptar</string>

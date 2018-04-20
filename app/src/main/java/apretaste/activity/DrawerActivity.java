@@ -1113,6 +1113,7 @@ public class DrawerActivity extends AppCompatActivity
 
 
                 new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
+                new PrefsManager().saveData("domain", DrawerActivity.this, pi.domain);
                 new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
 
                 /*Elimina lo servicios que se quitan del servidor*/

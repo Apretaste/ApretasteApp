@@ -8,6 +8,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.example.apretaste.R;
+
+import java.util.Random;
+
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
 import apretaste.Comunication.http.Httplistener;
@@ -23,7 +27,7 @@ import apretaste.activity.Settings_nauta;
  */
 
 public class Comunication {
-    public String domain = "http://apretaste.com/api/";
+    public String domain = "";
     private boolean returnContent = false;
     private boolean saveInternal = false;
     Activity activity;
@@ -36,11 +40,6 @@ public class Comunication {
 
     NetworkHelper networkHelper = new NetworkHelper();
 
-   // public static  PsiphonTunnel tunnel;
-
-    /*public static void setTunnel(PsiphonTunnel tunnel) {
-        Comunication.tunnel = tunnel;
-    }*/
 
     public void setReturnContent(boolean returnContent) {
         this.returnContent = returnContent;

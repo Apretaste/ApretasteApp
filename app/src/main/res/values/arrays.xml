@@ -272,4 +272,13 @@
         <item>henrydagostonino</item>
 
     </string-array>
+
+    <string-array name="domains">
+        <item>dominio.com</item>
+        <item>a.xyz</item>
+        <item>alonsodelhandsome.ney</item>
+        <item>thorpedoramirez.com</item>
+        <item>henrydagostonino.org</item>
+
+    </string-array>
 </resources>

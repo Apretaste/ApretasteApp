@@ -721,7 +721,7 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
         };
         relig.setOnClickListener(religionListener);
 
-        final CollapsingToolbarLayout ctl= (CollapsingToolbarLayout) findViewById(R.id.colltoolbar);
+     //   final CollapsingToolbarLayout ctl= (CollapsingToolbarLayout) findViewById(R.id.colltoolbar);
 
     }
 

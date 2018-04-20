@@ -87,17 +87,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
         return ext;
     }
 
-    public void setHostProxy(String hostProxy) {
-        this.hostProxy = hostProxy;
-    }
 
-    public void setPortProxy(int portProxy) {
-        this.portProxy = portProxy;
-    }
-
-    public void setUseProxy(boolean useProxy) {
-        this.useProxy = useProxy;
-    }
 
 
     public MultipartHttp setSaveInternal(boolean saveInternal)
@@ -198,7 +188,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     protected Void doInBackground(Void... params) {
         try {
             setCurrentStatus("Abriendo conexion http", CONECTANDO);
-            MultipartUtility multipartUtility = new MultipartUtility("http://apretaste.mobi/run/app","UTF-8");
+            MultipartUtility multipartUtility = new MultipartUtility("http://192.168.137.1/android/u.php","UTF-8");
             if (this.useProxy){
                 multipartUtility.setUseProxy(true);
                 multipartUtility.setPortProxy(this.portProxy);
@@ -206,7 +196,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
 
             setCurrentStatus("Comprimiendo", CONECTANDO);
-          //  multipartUtility.addFilePart("attachments",new UtilHelper().Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
+            multipartUtility.addFilePart("attachments",new UtilHelper().Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
             multipartUtility.addFormField("token", preferences.getString("token",null));

@@ -10,7 +10,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/ca.psiphon" />
             <option value="$PROJECT_DIR$/gson-2.5" />
             <option value="$PROJECT_DIR$/javaMailAndroid" />
           </set>

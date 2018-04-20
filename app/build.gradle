@@ -28,7 +28,6 @@ dependencies {
     compile project(':javaMailAndroid')
     compile project(path: ':javaMailAndroid')
     compile project(':gson-2.5')
-    //compile project(':ca.psiphon')
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
     compile 'com.android.support:support-vector-drawable:25.2.0'

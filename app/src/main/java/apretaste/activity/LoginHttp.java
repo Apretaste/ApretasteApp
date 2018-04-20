@@ -1,6 +1,7 @@
 package apretaste.activity;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 
+import java.util.Random;
+
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.EmailAddressValidator;
@@ -18,7 +21,7 @@ import apretaste.Helper.PrefsManager;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
-//import ca.psiphon.PsiphonTunnel;
+
 
 
 public class LoginHttp extends AppCompatActivity implements Httplistener {
@@ -35,11 +38,7 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
         gson= new Gson();
         etMail = (EditText) findViewById(R.id.etMail);
 
-       /** try {
-            new Comunication().tunnel.startTunneling("");
-        } catch (PsiphonTunnel.Exception e) {
-            e.printStackTrace();
-        }*/
+
 
         findViewById(R.id.btn_b_http).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,18 +52,14 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
             @Override
             public void onClick(View v) {
                 if (EmailAddressValidator.isValidAddress(etMail.getText().toString())){
+                    PreferenceManager.getDefaultSharedPreferences(LoginHttp.this).edit().putString("domain",getDomain()).apply();
 
-                  String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
-                  // String url =  "http://192.168.137.1/android/start.php?email="+etMail.getText().toString();
+                 //String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
+                  String url =  "http://192.168.137.1/android/start.php?email="+etMail.getText().toString();
                    // String url = "https://ipinfo.io";
                     Log.e("url",url);
                    // new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
                     SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this,url,LoginHttp.this);
-                   /* if (StartActivity.connectProxy){
-
-                        simpleHttp.setUseProxy(true);
-                        simpleHttp.setPortProxy(StartActivity.mLocalHttpProxyPort.get());
-                    }*/
                     simpleHttp.execute();
                     email = etMail.getText().toString();
 
@@ -104,4 +99,10 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     }
 
 
+      public String getDomain() {
+        String[] words = {"dominio1","dominio2"};
+        String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
+
+        return  domain;
+    }
 }

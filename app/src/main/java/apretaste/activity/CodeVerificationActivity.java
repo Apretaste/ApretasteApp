@@ -55,18 +55,13 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
                     et_code.setError("El código de verificacion solo permite 4 numeros");
                 }else{
                     String email = new PrefsManager().getData("email",CodeVerificationActivity.this);
-                    String url = new Comunication().domain+"auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
-                 //  String url = "http://192.168.137.1/android/auth.php?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
+                   // String url = new Comunication().domain+"auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
+                 String url = "http://192.168.137.1/android/auth.php?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
                     Log.e("url",url);
                    /* new SimpleRequest(CodeVerificationActivity.this,url,"Verificando Código de activacion",CodeVerificationActivity.this).execute();*/
 
 
                     SimpleHttp simpleHttp = new SimpleHttp(CodeVerificationActivity.this,url,CodeVerificationActivity.this);
-                    if (StartActivity.connectProxy){
-                        Log.e("proxy","running for proxy");
-                        simpleHttp.setUseProxy(true);
-                        simpleHttp.setPortProxy(StartActivity.mLocalHttpProxyPort.get());
-                    }
                     simpleHttp.execute();
 
                 }
@@ -93,10 +88,6 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
         if (httpInfo.code.equals("ok")){
             new PrefsManager().saveData("token",CodeVerificationActivity.this,httpInfo.token);
             MultipartHttp multipartHttp =   new MultipartHttp(CodeVerificationActivity.this,"perfil status","perfil status",false,"texto help",CodeVerificationActivity.this);
-            if (StartActivity.connectProxy){
-                multipartHttp.setUseProxy(true);
-                multipartHttp.setPortProxy(StartActivity.mLocalHttpProxyPort.get());
-            }
             multipartHttp.setReturnContent(true);
             multipartHttp.setSaveInternal(true);
             multipartHttp.execute();
