@@ -1,6 +1,7 @@
 package apretaste.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,7 +57,10 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
                 }else{
                     String email = new PrefsManager().getData("email",CodeVerificationActivity.this);
                    // String url = new Comunication().domain+"auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
-                 String url = "http://192.168.137.1/android/auth.php?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
+
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CodeVerificationActivity.this);
+                    String urlsaved = preferences.getString("domain", "cubaworld.info");
+                 String url = "http://"+urlsaved+"/api/auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
                     Log.e("url",url);
                    /* new SimpleRequest(CodeVerificationActivity.this,url,"Verificando Código de activacion",CodeVerificationActivity.this).execute();*/
 

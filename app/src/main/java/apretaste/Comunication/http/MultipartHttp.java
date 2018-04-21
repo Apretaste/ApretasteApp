@@ -31,6 +31,7 @@ import java.util.zip.ZipInputStream;
 import apretaste.Helper.UtilHelper;
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
+import apretaste.activity.LoginHttp;
 
 /**
  * Created by cjam on 8/2/2018.
@@ -188,7 +189,9 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     protected Void doInBackground(Void... params) {
         try {
             setCurrentStatus("Abriendo conexion http", CONECTANDO);
-            MultipartUtility multipartUtility = new MultipartUtility("http://192.168.137.1/android/u.php","UTF-8");
+            SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(activity);
+            String urlsaved = pre.getString("domain", "cubaworld.info");
+            MultipartUtility multipartUtility = new MultipartUtility("http://"+urlsaved+"/run/app","UTF-8");
             if (this.useProxy){
                 multipartUtility.setUseProxy(true);
                 multipartUtility.setPortProxy(this.portProxy);

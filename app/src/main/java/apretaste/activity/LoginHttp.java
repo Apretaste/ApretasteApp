@@ -1,6 +1,7 @@
 package apretaste.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,7 +56,9 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
                     PreferenceManager.getDefaultSharedPreferences(LoginHttp.this).edit().putString("domain",getDomain()).apply();
 
                  //String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
-                  String url =  "http://192.168.137.1/android/start.php?email="+etMail.getText().toString();
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginHttp.this);
+                  String urlsaved = preferences.getString("domain", "cubaworld.info");
+                  String url =  "http://"+urlsaved+"/api/start?email="+etMail.getText().toString();
                    // String url = "https://ipinfo.io";
                     Log.e("url",url);
                    // new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
@@ -100,7 +103,7 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
 
       public String getDomain() {
-        String[] words = {"dominio1","dominio2"};
+        String[] words = {"cubaworld.info","cubazone.info","cubanow.xyz","guaroso.com","cubacrece.com","kekistan.es","pragres.com"};
         String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
 
         return  domain;
