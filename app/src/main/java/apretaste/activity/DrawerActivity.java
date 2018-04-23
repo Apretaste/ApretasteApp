@@ -106,8 +106,6 @@ public class DrawerActivity extends AppCompatActivity
     public  String pref;
     DbHelper dbh;
     FloatingActionButton fabSync;
-    FloatingActionButton fabDownload;
-    FloatingActionButton fabUpdate;
     public static final String COMMAND = "command";
     public static final String SERVICE = "service";
     public static final String DATE = "date";
