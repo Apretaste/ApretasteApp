@@ -48,6 +48,7 @@ import android.webkit.WebView;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -1371,109 +1372,122 @@ public class DrawerActivity extends AppCompatActivity
 
                         final AlertDialog alertDialog = new AlertDialog.Builder(DrawerActivity.this)
                                 .setView(v)
-
-                                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                .setCancelable(false)
+                                .setPositiveButton("Aceptar",null)
+                                .setNegativeButton("Cancelar",null)
+                                .create();
+                        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialog) {
+                                Button b = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                                b.setOnClickListener(new View.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String f = "";
-                                       int cantFieldRequeried = 0;
-                                        for(int i = 0; i < ed.length; i++){
+                                    public void onClick(View view) {
+                                      ///  Toast.makeText(DrawerActivity.this, "Toast", Toast.LENGTH_SHORT).show();
+
+                                                String f = "";
+                                                int cantFieldRequeried = 0;
+                                                for(int i = 0; i < ed.length; i++){
 
                                             /*Verificando cuantos campos son obligatorios*/
-                                            if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                                cantFieldRequeried=cantFieldRequeried+1;
+                                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
+                                                        cantFieldRequeried=cantFieldRequeried+1;
 
-                                            }
+                                                    }
 
-                                            String  values = (ed[i].getText().toString());
+                                                    String  values = (ed[i].getText().toString());
 
-                                            f= f + "|"+ values;
+                                                    f= f + "|"+ values;
 
-                                            String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
+                                                    String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
 
 
 
-                                        }
-                                        Log.e("cantidad", String.valueOf(cantFieldRequeried));
-                                        int fieldRequeriedValid=0;
+                                                }
+                                                Log.e("cantidad", String.valueOf(cantFieldRequeried));
+                                                int fieldRequeriedValid=0;
 
                                         /*Comprobacion de los campos que son obligatorios*/
-                                        for (int j = 0;j<cantFieldRequeried;j++){
+                                                for (int j = 0;j<cantFieldRequeried;j++){
 
-                                            if (ed[j].getText().toString().equals("")){
-                                                Log.e("campo por llenar", String.valueOf(j));
-                                            }else{
-                                                Log.e("campo","campo lleno");
-                                                fieldRequeriedValid = fieldRequeriedValid+1;
+                                                    if (ed[j].getText().toString().equals("")){
+                                                        Log.e("campo por llenar", String.valueOf(j));
+                                                    }else{
+                                                        Log.e("campo","campo lleno");
+                                                        fieldRequeriedValid = fieldRequeriedValid+1;
 
-                                            }
-                                        }
-
-
-
-                                        String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
-
-
-                                        Log.i("peticion",peticion);
-
-                                        if (!dbh.getAllCache(peticion,"peticion").equals("")){
+                                                    }
+                                                }
 
 
 
-                                            try {
-                                                if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),dbh.getAllCache(peticion,"cache"))){
-                                                    Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
-                                                    final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion,"path"),  null);
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
+                                                String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
 
-                                                            HistoryManager.getSingleton().setCurrentPage(entry);
-                                                            open = true;
+
+                                                Log.i("peticion",peticion);
+
+                                                if (!dbh.getAllCache(peticion,"peticion").equals("")){
 
 
 
-                                                        }
-                                                    });
+                                                    try {
+                                                        if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),dbh.getAllCache(peticion,"cache"))){
+                                                            Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                                            final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion,"path"),  null);
+                                                            runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+
+                                                                    HistoryManager.getSingleton().setCurrentPage(entry);
+                                                                    open = true;
 
 
-                                                }else{
-                                                    Log.i("llamar","llamar servicios y borra el cache");
-                                                    dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
+
+                                                                }
+                                                            });
+
+
+                                                        }else{
+                                                            Log.i("llamar","llamar servicios y borra el cache");
+                                                            dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
 
                                                 /*    Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0],command+" "+f,!waiting,help,DrawerActivity.this,false);
                                                     mailer.setAppendPassword(true);
                                                     mailer.execute();*/
 
-                                                    comunication.execute(DrawerActivity.this, command.split(" ")[0], command+" "+f.substring(1),!waiting, help,DrawerActivity.this,DrawerActivity.this);
-                                                }
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }else {
-                                            Log.i("llamar", "El servicio no esta en cache");
+                                                            comunication.execute(DrawerActivity.this, command.split(" ")[0], command+" "+f.substring(1),!waiting, help,DrawerActivity.this,DrawerActivity.this);
+                                                        }
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }else {
+                                                    Log.i("llamar", "El servicio no esta en cache");
 
 
                                                /* Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0], command + " " + f, !waiting, help, DrawerActivity.this, false);
                                                 mailer.setAppendPassword(true);
                                                 mailer.execute();*/
-                                            if (fieldRequeriedValid==cantFieldRequeried){
-                                                comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
-                                            }else{
-                                                Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
-                                            }
+                                                    if (fieldRequeriedValid==cantFieldRequeried){
+                                                        comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
+                                                        alertDialog.dismiss();
+                                                    }else{
+                                                        Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
+                                                    }
 
 
 
 
 
-                                        }
+                                                }
 
 
+
+
+                                        //d.dismiss();
                                     }
-                                })
-                                .setNegativeButton("Cancelar",null)
-                                .create();
+                                });
+                            }
+                        });
                         alertDialog.show();
                     }
                     else
