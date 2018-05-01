@@ -208,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
     public void onResponseArrived(String service, String command, String response, Mailer mailer) {
      //Mailer.dialog.dismiss();
         new PrefsManager().saveData("type_conn",LoginActivity.this,"email");
+        new PrefsManager().saveData("domain",   LoginActivity.this,"cubaworld.info");
         needsNormalization=true;
         PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString      (RESP,response).apply();
         //guarda los datos recibidos en una sharedprefference

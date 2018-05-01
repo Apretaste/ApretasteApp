@@ -69,7 +69,7 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
         et_security_smtp.setOnClickListener(sslListener);
         et_security_imap.setOnClickListener(sslListener);
 
-        prefsManager.show_value(this,et_email,"email","");
+        prefsManager.show_value(this,et_email,"user","");
         prefsManager.show_value(this,et_password,PASS,"");
 
         prefsManager.show_value(this,et_server_imap,IMAP_SERVER,IMAP_NAUTA_CU);
