@@ -232,15 +232,15 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which){
                                     case 0:{
-                                    //    new  PrefsManager().saveData("type_conn",SettingsActivity.this,"auto");
-                                      //  type_conn.setText(" (automática)");
-                                        Toast.makeText(SettingsActivity.this, "Esta Funcionalidad aun no esta permitida", Toast.LENGTH_SHORT).show();
+                                      new  PrefsManager().saveData("type_conn",SettingsActivity.this,"auto");
+                                        type_conn.setText(" (automática)");
+                                        //Toast.makeText(SettingsActivity.this, "Esta Funcionalidad aun no esta permitida", Toast.LENGTH_SHORT).show();
                                         break;
                                     }
 
                                     case 1:{
                                         new  PrefsManager().saveData("type_conn",SettingsActivity.this,"email");
-                                        type_conn.setText(" (correo Electrónico)");
+                                        type_conn.setText(" (correo electrónico)");
                                         break;
                                     }
 
@@ -384,10 +384,10 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
     public void ClearAllDates(Context context){
         HistoryManager.getSingleton().entries.clear();
-        //new DbHelper(SettingsActivity.this).deleteAllTable("cache");
+        new DbHelper(SettingsActivity.this).deleteAllTable("cache");
         context.deleteDatabase(DbHelper.DB_NAME);
-      //  new DbHelper(SettingsActivity.this).deleteAllTable("services");
-       // new DbHelper(SettingsActivity.this).deleteAllTable("notifications");
+        new DbHelper(SettingsActivity.this).deleteAllTable("services");
+        new DbHelper(SettingsActivity.this).deleteAllTable("notifications");
         FileHelper.delete(getCacheDir(), false);
         FileHelper.delete(getFilesDir(), false);
         FileHelper.delete(getExternalFilesDir(null), false);

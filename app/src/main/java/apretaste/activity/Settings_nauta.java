@@ -96,6 +96,7 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
                     Toast.makeText(getBaseContext(),"Rellene todos los campos",Toast.LENGTH_SHORT).show();
                 }else{
                     prefsManager.change_value(Settings_nauta.this ,"pass" , et_password);
+                    prefsManager.change_value(Settings_nauta.this ,"user" , et_email);
                     //Imap
                     prefsManager.change_value(Settings_nauta.this ,"imap_server" , et_server_imap);
                     prefsManager.change_value(Settings_nauta.this ,"imap_port" , et_port_imap);
@@ -126,6 +127,7 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
 
 
         prefsManager.change_value(Settings_nauta.this ,"pass" , et_password);
+        prefsManager.change_value(Settings_nauta.this ,"user" , et_email);
         //Imap
         prefsManager.change_value(Settings_nauta.this ,"imap_server" , et_server_imap);
         prefsManager.change_value(Settings_nauta.this ,"imap_port" , et_port_imap);
@@ -136,31 +138,19 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
         prefsManager.change_value(Settings_nauta.this ,"smtp_port" , et_port_smtp);
         prefsManager.change_value(Settings_nauta.this ,"smtp_ssl" , et_security_smtp);
 
-        prefsManager.change_value2(Settings_nauta.this ,"email_configured" , "done");
 
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(Settings_nauta.this, "Cambios con exito", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
     @Override
     public void onError(Exception e) {
-        prefsManager.change_value2(Settings_nauta.this ,"email_configured" , "");
-        prefsManager.change_value2(Settings_nauta.this ,"pass" , "");
-        //Imap
-        prefsManager.change_value2(Settings_nauta.this ,"imap_server" , "imap.nauta.cu");
-        prefsManager.change_value2(Settings_nauta.this ,"imap_port" , "143");
-        prefsManager.change_value2(Settings_nauta.this ,"imap_ssl" , "");
 
-        //Smtp
-        prefsManager.change_value2(Settings_nauta.this ,"smtp_server" , "smtp.nauta.cu");
-        prefsManager.change_value2(Settings_nauta.this ,"smtp_port" , "25");
-        prefsManager.change_value2(Settings_nauta.this ,"smtp_ssl" , "");
+        Log.e("error",e.toString());
+
+        prefsManager.change_value2(Settings_nauta.this ,"user" , "");
+        prefsManager.change_value2(Settings_nauta.this ,"pass" , "");
+
 
     }
 

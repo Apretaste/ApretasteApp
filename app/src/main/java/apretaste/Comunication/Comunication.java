@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.apretaste.R;
@@ -61,13 +62,13 @@ public class Comunication {
 
                         case "auto":{
 
+
                         }
                         case "email": {
                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
                             String pass=preferences.getString("pass","");
-
-                            if (!pass.equals("") && new PrefsManager()
-                                    .getData("email_configured",activity).equals("")){
+                            String user=preferences.getString("user","");
+                            if (!pass.equals("") && !user.equals("")){
 
                             Mailer mailer = new Mailer(activity, service, command, noreply, help, mailerListener, this.noMessage);
                                 if (returnContent) {
@@ -81,7 +82,7 @@ public class Comunication {
                             else
                             {
                                 new AlertDialog.Builder(activity)
-                                        .setMessage("Usted esta tratando de comunicarse con el servidor atraves de correo electronico pero aun no tenemos su contraseña")
+                                        .setMessage("Usted esta tratando de comunicarse con el servidor atraves de correo electronico pero aun no tenemos su correo electronico y contrasena")
                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
