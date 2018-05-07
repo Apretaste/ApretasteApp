@@ -485,7 +485,6 @@ public class DrawerActivity extends AppCompatActivity
 
         wv.addJavascriptInterface(new JSI(),"apretaste");
         if(HistoryManager.getSingleton().currentUrl==null) {
-            //  loadhome();
             HistoryManager.getSingleton().addListener(this);
         }
 
@@ -780,7 +779,7 @@ public class DrawerActivity extends AppCompatActivity
                 String ERROR = "Error";
                 String OK = "ok";
                 if (!networkHelper.haveConn(DrawerActivity.this)){
-                    alertHelper.simpleAlert(DrawerActivity.this,"Error","Usted debe enceder los datos moviles o conectarse a una red wifi para poder usar nuestra app");
+                    new AlertDialog.Builder(DrawerActivity.this).setTitle(ERROR).setMessage("Usted debe enceder los datos moviles o conectarse a una red wifi para poder usar nuestra app").setPositiveButton(OK, null).show(); //alertHelper.simpleAlert(DrawerActivity.this,"Error","Usted debe enceder los datos moviles o conectarse a una red wifi para poder usar nuestra app");
                 }else if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
 
                     new AlertDialog.Builder(DrawerActivity.this).setTitle(ERROR).setMessage("Su correo electronico o contraseña es incorrecto , verifiquelo y vuelvelo a intentar").setPositiveButton(OK, null).show();

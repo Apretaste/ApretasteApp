@@ -1,6 +1,7 @@
 package apretaste.Comunication.email;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -37,6 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -407,7 +410,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             if (!sendRequestError) {
                 mailerlistener.onError(e);
             }else{
-                Log.e("mailer-error",e.getMessage());
+                Logger.getLogger(Mailer.class.getName()).log(Level.SEVERE, null, e); //Log.e("mailer-error",e.getMessage());
             }
 
             finished2=true;
@@ -433,7 +436,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         }
         dialog.dismiss();
         if (errorReply){
-            new AlertDialog.Builder(activity).setMessage(SE_HA_CANCELADO_LA_PETICION).setPositiveButton(ACEPTAR, new DialogInterface.OnClickListener() {
+            AlertDialog alertDialog = new AlertDialog.Builder(activity).setMessage(SE_HA_CANCELADO_LA_PETICION).setPositiveButton(ACEPTAR, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -447,7 +450,9 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                     finishedCancel = false;
                 }
 
-            }).show();
+            }).create();
+            if(!activity.isFinishing())
+                alertDialog.show();
         }else if(finishedCancel) {
             // new AlertDialog.Builder(activity).setMessage("Se ha cancelado con exito la peticion").setPositiveButton(ACEPTAR,                 null).show();else{
 

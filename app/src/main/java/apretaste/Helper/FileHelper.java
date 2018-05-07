@@ -44,18 +44,20 @@ public class FileHelper {
     }
 
     public static void delete(File file, boolean deleteDir) {
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            if (files != null) {
-                for (File f : files) {
-                    delete(f, true);
+        if(file != null) {
+            if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        delete(f, true);
+                    }
                 }
-            }
-            if (deleteDir) {
+                if (deleteDir) {
+                    file.delete();
+                }
+            } else {
                 file.delete();
             }
-        } else {
-            file.delete();
         }
     }
 
