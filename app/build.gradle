@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId 'com.apretaste.apretaste'
         minSdkVersion 9
-        targetSdkVersion 25
-        versionName '3.0'
+        targetSdkVersion 26
+        versionName '3.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        versionCode 2
+        versionCode 17
     }
     buildTypes {
         release {

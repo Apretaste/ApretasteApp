@@ -1,1 +1,1 @@
-[{"outputType":{"type":"MERGED_MANIFESTS"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":1},"path":"AndroidManifest.xml","properties":{"packageId":"lib.javamailandroid","split":""}}]
+[{"outputType":{"type":"MERGED_MANIFESTS"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":1,"versionName":"1.0","enabled":true,"outputFile":"javaMailAndroid-release.aar","fullName":"release","baseName":"release"},"path":"AndroidManifest.xml","properties":{"packageId":"lib.javamailandroid","split":""}}]

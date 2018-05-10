@@ -1,7 +1,23 @@
 [
     {
+        "merged": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/drawable-hdpi-v4_ic_launcher.png.flat",
+        "source": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/bundles/debug/res/drawable-hdpi-v4/ic_launcher.png"
+    },
+    {
+        "merged": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/layout_main.xml.flat",
+        "source": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/bundles/debug/res/layout/main.xml"
+    },
+    {
         "merged": "/home/fvi/Android/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_ic_launcher.png.flat",
         "source": "/home/fvi/Android/apretaste-app-android/javaMailAndroid/build/intermediates/bundles/debug/res/drawable-mdpi-v4/ic_launcher.png"
+    },
+    {
+        "merged": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/drawable-mdpi-v4_ic_launcher.png.flat",
+        "source": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/bundles/debug/res/drawable-mdpi-v4/ic_launcher.png"
+    },
+    {
+        "merged": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/drawable-ldpi-v4_ic_launcher.png.flat",
+        "source": "/home/salvipascual/AndroidStudioProjects/apretaste-app-android/javaMailAndroid/build/intermediates/bundles/debug/res/drawable-ldpi-v4/ic_launcher.png"
     },
     {
         "merged": "/home/fvi/Android/apretaste-app-android/javaMailAndroid/build/intermediates/res/merged/androidTest/debug/drawable-ldpi-v4_ic_launcher.png.flat",
