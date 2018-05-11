@@ -103,8 +103,8 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
 
       public String getDomain() {
-        String[] words = {"cubaworld.info","cubazone.info","cubanow.xyz"};
-        String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
+          String[] words = {"cubaworld.info","cubazone.info","cubanow.xyz"};
+          String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
 
         return  domain;
     }

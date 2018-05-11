@@ -159,8 +159,6 @@ public class DrawerActivity extends AppCompatActivity
         // dbh.addOneService("abc","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
 
-
-
         fabSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -734,6 +732,15 @@ public class DrawerActivity extends AppCompatActivity
                 mailer.setAppendPassword(true);
                 mailer.execute();*/
                comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
+                break;
+            }
+
+            case R.id.nav_cupones: {
+
+               /* Mailer mailer = new Mailer(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,false);
+                mailer.setAppendPassword(true);
+                mailer.execute();*/
+                comunication.execute(DrawerActivity.this, "cupones","Cupones",false,"des",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
 

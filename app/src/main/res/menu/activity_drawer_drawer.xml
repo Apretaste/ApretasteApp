@@ -41,6 +41,11 @@
             android:id="@+id/nav_invitar"
             android:icon="@drawable/referir_y_ganar"
             android:title="Referir y ganar" />
+
+        <item
+            android:id="@+id/nav_cupones"
+            android:icon="@drawable/ic_cupones"
+            android:title="Cupones" />
     </group>
 
     <group
