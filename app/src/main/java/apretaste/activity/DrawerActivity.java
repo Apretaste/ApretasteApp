@@ -78,6 +78,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.mail.Multipart;
+
 import apretaste.Helper.DataHelper;
 import apretaste.Helper.DbHelper;
 import apretaste.Helper.AlertHelper;
@@ -830,7 +832,7 @@ public class DrawerActivity extends AppCompatActivity
 
         }
         else {
-            open(service, command, response, mailer);
+            open(service, command, response, mailer,null);
 
             /*Si vino la cache */
             if (mailer.mincache !=null) {
@@ -858,6 +860,55 @@ public class DrawerActivity extends AppCompatActivity
 
             }
         }
+    }
+
+    @Override
+    public void  onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
+        if(multipartHttp.getReturnContent())
+        {
+            comunication.setReturnContent(false);
+            ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
+            updateService(piu); /*Actualiza o agrega servicios nuevos*/
+            workNotifications(piu);//Muestra las notificaciones en caso de que venga.
+            new PrefsManager(). saveData("mailbox", DrawerActivity.this, piu.mailbox);
+            new PrefsManager(). saveData("type_img", DrawerActivity.this, piu.img_quality);
+            new PrefsManager(). saveData("token",    DrawerActivity.this, piu.token);
+            ServiceNoActive(piu.active);       /*Elimina lo servicios que se quitan del servidor*/
+            update_info(response);
+
+
+        }
+
+        else {
+            open(service, command, response, null,multipartHttp);
+
+            /*Si vino la cache */
+            if (multipartHttp.mincache !=null) {
+                Log.e("num cache drawer",multipartHttp.mincache);
+                dbh.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(multipartHttp.mincache), new File(response).toURI().toString());
+            }
+            /*Metodo cuando venga .ext (siempre viene)*/
+            if (multipartHttp.ext != null) {
+                Log.i("ext",multipartHttp.ext);
+                ProfileInfo pi = new Gson().fromJson( multipartHttp.ext,ProfileInfo.class);
+
+                updateService(pi);
+                /*Accion para anadir notifiaciones */
+                workNotifications(pi);
+
+                new PrefsManager(). saveData("mailbox", DrawerActivity.this, pi.mailbox);
+                new PrefsManager(). saveData("type_img", DrawerActivity.this, pi.img_quality);
+                new PrefsManager(). saveData("token",    DrawerActivity.this, pi.token);
+                Log.e("token-response-mailer",pi.token);
+
+                /*Elimina lo servicios que se quitan del servidor*/
+                ServiceNoActive(pi.active);
+
+                update_info(multipartHttp.ext);
+
+            }
+        }
+
     }
 
     public void updateService(ProfileInfo pi){
@@ -943,14 +994,23 @@ public class DrawerActivity extends AppCompatActivity
         }
        return  exists;
     }
-    public void open(final String service, final String command, String response, final Mailer mailer){
+    public void open(final String service, final String command, String response, final Mailer mailer, final MultipartHttp multiparthttp){
+        Date time = null;
+
+        if (mailer!=null){
+            time = mailer.getResponseTimestamp();
+        }else{
+            time = multiparthttp.getResponseTimestamp();
+        }
+
         final File file = new File(response);
-        final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), mailer.getResponseTimestamp());
+        final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), time);
+        final Date finalTime = time;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 HistoryManager.getSingleton().addToHistory(entry);
-                dbh.addHistory(service,command,file.toURI().toString(), String.valueOf(mailer.getResponseTimestamp()));
+                dbh.addHistory(service,command,file.toURI().toString(), String.valueOf(finalTime));
                 HistoryManager.getSingleton().setCurrentPage(entry);
                 open = true;
 
@@ -1064,73 +1124,7 @@ public class DrawerActivity extends AppCompatActivity
     Log.e("response drawe",response);
     }
 
-    @Override
-    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
-        if(multipartHttp.getReturnContent())
-        {
-            Log.e("update-reply",response);
-            ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
-            if (piu.services.length > 0){
-                dbh.addService(piu.services);
-            }
 
-            workNotifications(piu);
-
-            new PrefsManager(). saveData("mailbox", DrawerActivity.this, piu.mailbox);
-            new PrefsManager().saveData("type_img", DrawerActivity.this, piu.img_quality);
-
-            /*Elimina lo servicios que se quitan del servidor*/
-            ServiceNoActive(piu.active);
-
-            update_info(response);
-        }
-
-        else {
-            Log.e("response", response);
-            final File file = new File(response);
-            final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), multipartHttp.getResponseTimestamp());
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    HistoryManager.getSingleton().addToHistory(entry);
-                    HistoryManager.getSingleton().setCurrentPage(entry);
-                    open = true;
-
-                }
-            });
-
-            /*Si vino la cache */
-            if (multipartHttp.mincache != null) {
-                dbh.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(multipartHttp.mincache), new File(response).toURI().toString());
-            }
-            /*Metodo cuando venga .ext (siempre viene)*/
-            if (multipartHttp.ext != null) {
-
-
-                Log.i("ext", multipartHttp.ext);
-
-                ProfileInfo pi = new Gson().fromJson(multipartHttp.ext, ProfileInfo.class);
-                if (pi.services.length > 0) {
-
-                    dbh.addService(pi.services);
-                }
-                /*Accion para anadir notifiaciones */
-                workNotifications(pi);
-
-
-                new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
-                new PrefsManager().saveData("domain", DrawerActivity.this, pi.domain);
-                new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
-
-                /*Elimina lo servicios que se quitan del servidor*/
-                ServiceNoActive(pi.active);
-
-                update_info(multipartHttp.ext);
-
-            }
-        }
-
-    }
 
 
     /*Adaptador de los servicios */
