@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 
@@ -43,7 +44,8 @@ public class AlertHelper {
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(icono)
+
+                .setSmallIcon(getNotificationIcon())
                 .setContentTitle(service)
                 .setContentText(text)
                 .setVibrate(new long[] {100, 250, 100, 500})
@@ -55,6 +57,9 @@ public class AlertHelper {
         mNotifyMgr.notify((int) when, mBuilder.build());
     }
 
-
+    private int getNotificationIcon() {
+        boolean useWhiteIcon = (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP);
+        return useWhiteIcon ? R.mipmap.ic_launcher_new : R.mipmap.ic_launcher_new;
+    }
 
 }

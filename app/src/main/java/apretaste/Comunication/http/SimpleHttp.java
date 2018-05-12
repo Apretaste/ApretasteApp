@@ -19,19 +19,10 @@ import java.net.URL;
 public class SimpleHttp extends AsyncTask<Void, Void, Void> {
     String url;
     Activity activity;
-    int portProxy = 0;
-    boolean useProxy  = false;
     Httplistener httplistener;
-    private String ipProxy = "localhost" ;
-
-    public void setUseProxy(boolean useProxy) {
-        this.useProxy = useProxy;
-    }
+    boolean requestCheck = false;
 
 
-    public void setPortProxy(int portProxy) {
-        this.portProxy = portProxy;
-    }
 
     public SimpleHttp(Activity context , String url, Httplistener httpListener){
         this.activity = context;
@@ -50,13 +41,9 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
     /*Metodo que envia una simple peticion get*/
     private void sendGet(String url) throws Exception {
         HttpURLConnection con = null;
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(this.ipProxy, this.portProxy));
-        if (!useProxy){
-             con = (HttpURLConnection) new URL(url).openConnection();
-        }else{
-             con = (HttpURLConnection) new URL(this.url).openConnection(proxy);
-        }
 
+        con = (HttpURLConnection) new URL(url).openConnection();
+        con.setConnectTimeout(2000);
         int responseCode = con.getResponseCode();
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -66,9 +53,17 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
             response.append(inputLine);
         }
         in.close();
-        httplistener.onResponseSimpleHttp(response.toString());
+        if (requestCheck){
+            httplistener.onResponseSimpleHttp(String.valueOf(responseCode));
+        }else {
+            httplistener.onResponseSimpleHttp(response.toString());
+        }
+
 
 
     }
 
+    public void setRequestCheck(boolean requestCheck) {
+        this.requestCheck = requestCheck;
+    }
 }
