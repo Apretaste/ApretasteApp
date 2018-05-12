@@ -108,7 +108,7 @@
                     android:id="@+id/tvType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Metodo Conexión"
+                    android:text="Metodo de Conexión"
                     android:textColor="#000"
                     android:textSize="18sp" />
 
