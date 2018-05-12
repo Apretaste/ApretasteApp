@@ -17,6 +17,7 @@ import android.os.Build;
 import apretaste.Comunication.Comunication;
 import apretaste.ProfileInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -67,6 +68,9 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -156,6 +160,8 @@ public class DrawerActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dbh =    DbHelper.getSingleton(this);
+
+
 
 
        // dbh.delBy("services","service","google");
@@ -678,7 +684,15 @@ public class DrawerActivity extends AppCompatActivity
                     printManager.print(jobName, printAdapter,
                             new PrintAttributes.Builder().build());
                 }else{
-                    Toast.makeText(DrawerActivity.this, "Su versión android no permite esta funcionalidad", Toast.LENGTH_SHORT).show();
+                    File Directory = new File("/sdcard/Apretaste/");
+                    if (!Directory.exists()){
+                        Directory.mkdirs();
+                    }
+                    String name =  "HTML"+wv.getUrl().split("HTML")[1];
+                    copyFile(getExternalFilesDir(null)+"/"+name,"/sdcard/Apretaste/");
+                    if (copyFile(getExternalFilesDir(null)+"/"+name,"/sdcard/Apretaste/")){
+                        Toast.makeText(this, "Pagina guardada  en /sdcard/Apretaste/"+"HTML"+wv.getUrl().split("HTML")[1], Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             }
@@ -699,7 +713,28 @@ public class DrawerActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
+    public static boolean copyFile(String from, String to) {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            if (sd.canWrite()) {
+                int end = from.toString().lastIndexOf("/");
+                String str1 = from.toString().substring(0, end);
+                String str2 = from.toString().substring(end+1, from.length());
+                File source = new File(str1, str2);
+                File destination= new File(to, str2);
+                if (source.exists()) {
+                    FileChannel src = new FileInputStream(source).getChannel();
+                    FileChannel dst = new FileOutputStream(destination).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
