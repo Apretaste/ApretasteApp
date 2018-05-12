@@ -160,12 +160,6 @@ public class DrawerActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dbh =    DbHelper.getSingleton(this);
-
-
-
-
-       // dbh.delBy("services","service","google");
-        // dbh.addOneService("abc","demo","ocio","cjamdeveloper@gmail.com","2018-02-02 14:59:27","");
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
 
         fabSync.setOnClickListener(new View.OnClickListener() {
@@ -524,7 +518,7 @@ public class DrawerActivity extends AppCompatActivity
     private void showProfileInfo(View view , boolean reloadServices) {
 
         ((TextView)view.findViewById(R.id.tvUsername)).setText("@"+pro.username);
-        ((TextView)view.findViewById(R.id.tvcredit)).setText("§"+pro.credit);
+        ((TextView)view.findViewById(R.id.tvcredit)).setText("§"+String.format("%.2f", pro.credit));
         profilePict=(ImageView)view.findViewById(R.id.ivProfile);
         if(reloadServices) {
             serviceAdapter.notifyDataSetChanged();
