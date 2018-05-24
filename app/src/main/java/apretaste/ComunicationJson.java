@@ -17,6 +17,11 @@ public class ComunicationJson {
     public String token;
     public String appversion;
     public String osversion;
+    public String ostype;
+
+    public void setOstype() {
+        this.ostype = "android";
+    }
 
     public void setVersionSo(String versionSo) {
         this.osversion = versionSo;

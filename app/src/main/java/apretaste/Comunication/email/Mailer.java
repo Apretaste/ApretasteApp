@@ -950,6 +950,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             zos.putNextEntry(entry);
             ComunicationJson comunicationJson = new ComunicationJson();
             comunicationJson.setCommand(command);
+            comunicationJson.setOstype();
             Log.e("command",command);
             if (!command.equals("perfil status")) {
                 comunicationJson.setTimestamp(DrawerActivity.pro.timestamp);
