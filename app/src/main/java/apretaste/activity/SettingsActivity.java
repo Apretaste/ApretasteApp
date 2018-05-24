@@ -231,20 +231,20 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which){
-                                    case 0:{
+                                    /*case 0:{
                                       new  PrefsManager().saveData("type_conn",SettingsActivity.this,"auto");
                                         type_conn.setText(" (automática)");
                                         //Toast.makeText(SettingsActivity.this, "Esta Funcionalidad aun no esta permitida", Toast.LENGTH_SHORT).show();
                                         break;
-                                    }
+                                    }*
 
-                                    case 1:{
+                                    case 0:{
                                         new  PrefsManager().saveData("type_conn",SettingsActivity.this,"email");
                                         type_conn.setText(" (correo electrónico)");
                                         break;
                                     }
 
-                                    case 2:{
+                                    case 1:{
                                         new  PrefsManager().saveData("type_conn",SettingsActivity.this,"internet");
                                         type_conn.setText(" (internet)");
                                         break;
