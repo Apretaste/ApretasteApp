@@ -225,7 +225,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
             case R.id.ll_type_conn:
             {
-                String[] options = {"Automática","Correo electrónico","Internet"};
+                String[] options = {"Correo electrónico","Internet"};
                 new AlertDialog.Builder(SettingsActivity.this)
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
