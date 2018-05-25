@@ -109,10 +109,7 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
 
                     Log.e("user",new PrefsManager().getData("user",Settings_nauta.this));
                     Log.e("pass",new PrefsManager().getData("pass",Settings_nauta.this));
-                    Mailer mailer=new Mailer(Settings_nauta.this, null, DrawerActivity.PERFIL_STATUS + DrawerActivity.pro.timestamp, true, null, Settings_nauta.this,false);
-
-
-                    mailer.setAppendPassword(true);
+                    Mailer mailer=new Mailer(Settings_nauta.this, null, DrawerActivity.PERFIL_STATUS + DrawerActivity.pro.timestamp, true, null, Settings_nauta.this,true);
                     mailer.execute();
                 }
             }
@@ -138,7 +135,12 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
         prefsManager.change_value(Settings_nauta.this ,"smtp_port" , et_port_smtp);
         prefsManager.change_value(Settings_nauta.this ,"smtp_ssl" , et_security_smtp);
 
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Settings_nauta.this, "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -150,6 +152,12 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
 
         prefsManager.change_value2(Settings_nauta.this ,"user" , "");
         prefsManager.change_value2(Settings_nauta.this ,"pass" , "");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Settings_nauta.this, "Hubo un error, compruebe sus datos", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
