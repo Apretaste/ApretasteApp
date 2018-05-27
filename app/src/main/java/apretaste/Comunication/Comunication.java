@@ -139,7 +139,7 @@ public class Comunication implements Httplistener {
         else
         {
             new AlertDialog.Builder(activity)
-                    .setMessage("Usted esta tratando de comunicarse con el servidor atraves de correo electronico pero aun no tenemos su correo electronico y contrasena")
+                    .setMessage("Usted esta intentando comunicarse con el servidor usando su correo Nauta, pero aun no ha insertado su cuenta.")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
