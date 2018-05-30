@@ -60,12 +60,12 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CodeVerificationActivity.this);
                     String urlsaved = preferences.getString("domain", "cubaworld.info");
-                 String url = "http://"+urlsaved+"/api/auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
+                    String url = "http://"+urlsaved+"/api/auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
                     Log.e("url",url);
-                   /* new SimpleRequest(CodeVerificationActivity.this,url,"Verificando Código de activacion",CodeVerificationActivity.this).execute();*/
 
 
                     SimpleHttp simpleHttp = new SimpleHttp(CodeVerificationActivity.this,url,CodeVerificationActivity.this);
+                    simpleHttp.setMessageDialog("Verificando");
                     simpleHttp.execute();
 
                 }

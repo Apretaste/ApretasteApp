@@ -55,14 +55,12 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
                 if (EmailAddressValidator.isValidAddress(etMail.getText().toString())){
                     PreferenceManager.getDefaultSharedPreferences(LoginHttp.this).edit().putString("domain",getDomain()).apply();
 
-                 //String url =  new Comunication().domain+"start?email="+etMail.getText().toString();
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginHttp.this);
-                  String urlsaved = preferences.getString("domain", "cubaworld.info");
-                  String url =  "http://"+urlsaved+"/api/start?email="+etMail.getText().toString();
-                   // String url = "https://ipinfo.io";
+                    String urlsaved = preferences.getString("domain", "cubaworld.info");
+                    String url =  "http://"+urlsaved+"/api/start?email="+etMail.getText().toString();
                     Log.e("url",url);
-                   // new SimpleRequest(LoginHttp.this,url,"Cargando",LoginHttp.this).execute();
                     SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this,url,LoginHttp.this);
+                    simpleHttp.setMessageDialog("Conectando");
                     simpleHttp.execute();
                     email = etMail.getText().toString();
 

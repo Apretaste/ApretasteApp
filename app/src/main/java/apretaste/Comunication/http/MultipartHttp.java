@@ -77,9 +77,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     private HttpInfo httpInfo;
     private Gson gson = new Gson();
 
-    public boolean useProxy = false;
-    public String hostProxy = "localhost";
-    public int portProxy;
+
     public String getMincache() {
         return mincache;
     }
@@ -192,11 +190,6 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
             SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(activity);
             String urlsaved = pre.getString("domain", "cubaworld.info");
             MultipartUtility multipartUtility = new MultipartUtility("http://"+urlsaved+"/run/app","UTF-8");
-            if (this.useProxy){
-                multipartUtility.setUseProxy(true);
-                multipartUtility.setPortProxy(this.portProxy);
-            }
-
 
             setCurrentStatus("Comprimiendo", CONECTANDO);
             multipartUtility.addFilePart("attachments",new UtilHelper().Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
