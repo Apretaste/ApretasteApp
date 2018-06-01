@@ -13,6 +13,11 @@
         <item name="backgroundTint">#FFF</item>
     </style>
 
+    <style name="h2">
+        <item name="android:textSize">@dimen/h2</item>
+        <item name="android:textColor">@color/colorTextBlack</item>
+    </style>
+
     <style name="FabTheme2" parent="Widget.Design.FloatingActionButton">
         <item name="backgroundTint">@color/colorPrimary</item>
     </style>

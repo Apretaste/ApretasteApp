@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,9 +34,6 @@ import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
 import apretaste.Helper.NetworkHelper;
 import apretaste.Helper.AlertHelper;
-
-import java.io.File;
-
 
 
 public class SettingsActivity extends AppCompatActivity implements Mailerlistener, Httplistener {

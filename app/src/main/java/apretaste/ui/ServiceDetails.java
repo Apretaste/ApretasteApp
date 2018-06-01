@@ -1,20 +1,15 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.apretaste.R;
 
@@ -23,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import apretaste.Helper.DbHelper;
-import apretaste.activity.DrawerActivity;
 
 public class ServiceDetails extends AppCompatActivity {
     DbHelper db;

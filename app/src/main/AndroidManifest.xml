@@ -14,52 +14,52 @@
         android:supportsRtl="true"
         android:theme="@style/AppWithBar">
         <activity
-            android:name="apretaste.activity.LoginActivity"
+            android:name="apretaste.ui.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.Settings_buzon"
+            android:name="apretaste.ui.Settings_buzon"
             android:label="Cambiar buzón personal"
-            android:parentActivityName="apretaste.activity.SettingsActivity" />
+            android:parentActivityName="apretaste.ui.SettingsActivity" />
         <activity
-            android:name="apretaste.activity.Settings_nauta"
+            android:name="apretaste.ui.Settings_nauta"
             android:configChanges="orientation|screenSize"
             android:label="Configuración de nauta"
-            android:parentActivityName="apretaste.activity.SettingsActivity" />
+            android:parentActivityName="apretaste.ui.SettingsActivity" />
         <activity
-            android:name="apretaste.activity.Settings_about"
+            android:name="apretaste.ui.Settings_about"
             android:label="Sobre esta app"
-            android:parentActivityName="apretaste.activity.SettingsActivity" />
+            android:parentActivityName="apretaste.ui.SettingsActivity" />
         <activity
-            android:name="apretaste.activity.SettingsActivity"
+            android:name="apretaste.ui.SettingsActivity"
             android:label="Ajustes"
-            android:parentActivityName="apretaste.activity.DrawerActivity" />
+            android:parentActivityName="apretaste.ui.DrawerActivity" />
         <activity
-            android:name="apretaste.activity.NotificationsActivity"
+            android:name="apretaste.ui.NotificationsActivity"
             android:configChanges="orientation|screenSize"
             android:label="Notificaciones"
-            android:parentActivityName="apretaste.activity.DrawerActivity"
+            android:parentActivityName="apretaste.ui.DrawerActivity"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.HistoryActivity"
+            android:name="apretaste.ui.HistoryActivity"
             android:label="Historial"
-            android:parentActivityName="apretaste.activity.DrawerActivity"
+            android:parentActivityName="apretaste.ui.DrawerActivity"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.ProfileActivity"
+            android:name="apretaste.ui.ProfileActivity"
             android:configChanges="orientation|screenSize"
             android:label="Perfil"
-            android:parentActivityName="apretaste.activity.DrawerActivity" />
+            android:parentActivityName="apretaste.ui.DrawerActivity" />
         <activity
-            android:name="apretaste.activity.ServiceDetails"
+            android:name="apretaste.ui.ServiceDetails"
             android:label="Detalles"
-            android:parentActivityName="apretaste.activity.DrawerActivity" />
+            android:parentActivityName="apretaste.ui.DrawerActivity" />
         <activity
-            android:name="apretaste.activity.ScrollingActivity"
+            android:name="apretaste.ui.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.DrawerActivity"
+            android:name="apretaste.ui.DrawerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppWithBar.NoActionBar">
@@ -68,16 +68,16 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="apretaste.activity.StartActivity"
+            android:name="apretaste.ui.StartActivity"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.LoginHttp"
+            android:name="apretaste.ui.LoginHttp"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.CodeVerificationActivity"
+            android:name="apretaste.ui.CodeVerificationActivity"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.activity.WelcomeActivity"
+            android:name="apretaste.ui.WelcomeActivity"
             android:theme="@style/App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

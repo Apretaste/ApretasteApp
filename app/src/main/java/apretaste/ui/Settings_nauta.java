@@ -1,8 +1,6 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.DialogInterface;
-import android.media.audiofx.BassBoost;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +11,10 @@ import android.widget.Toast;
 
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
-import apretaste.ProfileInfo;
+
 import com.example.apretaste.R;
 
 import apretaste.Helper.PrefsManager;
-import com.google.gson.Gson;
 
 public class Settings_nauta extends AppCompatActivity implements Mailerlistener {
     public static final String SIN_SEGURIDAD = "Sin seguridad";

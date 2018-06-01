@@ -65,7 +65,7 @@ import apretaste.ComunicationJson;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
-import apretaste.activity.DrawerActivity;
+import apretaste.ui.DrawerActivity;
 
 /**
  * Created  by Raymond Arteaga on 13/07/2017.

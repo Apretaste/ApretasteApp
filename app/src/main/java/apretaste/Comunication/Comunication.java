@@ -17,7 +17,7 @@ import apretaste.Comunication.http.MultipartHttp;
 import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.NetworkHelper;
 import apretaste.Helper.PrefsManager;
-import apretaste.activity.Settings_nauta;
+import apretaste.ui.Settings_nauta;
 //import ca.psiphon.PsiphonTunnel;
 
 

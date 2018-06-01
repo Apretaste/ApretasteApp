@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 
 import com.example.apretaste.R;
 
-import apretaste.activity.DrawerActivity;
-import apretaste.activity.NotificationsActivity;
+import apretaste.ui.NotificationsActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 

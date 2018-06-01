@@ -5,7 +5,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import apretaste.activity.ProfileActivity;
+import apretaste.ui.ProfileActivity;
 
 /**
  * Created by Raymond Arteaga on 17/07/2017.

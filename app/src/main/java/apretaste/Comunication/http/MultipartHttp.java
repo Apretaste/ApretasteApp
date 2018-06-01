@@ -31,7 +31,6 @@ import java.util.zip.ZipInputStream;
 import apretaste.Helper.UtilHelper;
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
-import apretaste.activity.LoginHttp;
 
 /**
  * Created by cjam on 8/2/2018.
