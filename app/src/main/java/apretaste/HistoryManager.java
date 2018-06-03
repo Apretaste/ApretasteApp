@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created  by Raymond Arteaga on  06/07/2017.
+
  */
 public class HistoryManager {
     private static HistoryManager singleton;

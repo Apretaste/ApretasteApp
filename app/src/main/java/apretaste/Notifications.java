@@ -1,7 +1,7 @@
 package apretaste;
 
 /**
- * Created by cjam on 8/10/2017.
+ * Created by  on 8/10/2017.
  */
 
 public class Notifications {

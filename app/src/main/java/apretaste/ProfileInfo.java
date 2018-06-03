@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Raymond Arteaga on 10/07/2017.
+ * Created by  on 10/07/2017.
  */
 
 public class ProfileInfo  {

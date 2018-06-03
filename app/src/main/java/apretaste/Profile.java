@@ -8,7 +8,7 @@ import java.util.Date;
 import apretaste.ui.ProfileActivity;
 
 /**
- * Created by Raymond Arteaga on 17/07/2017.
+ * Created by on 17/07/2017.
  */
 public class Profile implements Cloneable {
     public String full_name;

@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by cjam on 7/10/2017.
+ * Created by on 7/10/2017.
  * Clase se utiliza para convertir en json las peticiones
  */
 
