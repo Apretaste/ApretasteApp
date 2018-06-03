@@ -10,7 +10,7 @@ android {
         versionName '3.1'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        versionCode 2
+        versionCode 20
     }
     buildTypes {
         release {
