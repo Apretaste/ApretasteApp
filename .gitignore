@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+javaMailAndroid/build/
+app/release/
