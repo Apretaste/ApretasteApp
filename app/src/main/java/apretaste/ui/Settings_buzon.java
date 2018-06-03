@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;

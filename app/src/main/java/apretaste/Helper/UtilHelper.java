@@ -20,7 +20,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import apretaste.ComunicationJson;
-import apretaste.activity.DrawerActivity;
+import apretaste.ui.DrawerActivity;
 
 /**
  * Created by cjam on 21/1/2018.

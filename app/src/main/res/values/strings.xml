@@ -283,6 +283,11 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+    <string name="title_activity_chat">Chat</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 
-import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.DbHelper;
 import apretaste.Helper.PrefsManager;

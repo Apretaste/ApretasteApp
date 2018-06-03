@@ -1,21 +1,17 @@
-package apretaste.activity;
+package apretaste.ui;
 
-import android.content.Context;
 import android.content.Intent;
 
-import java.net.Proxy;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.apretaste.R;
 
 
 
-import static apretaste.activity.LoginActivity.RESP;
+import static apretaste.ui.LoginActivity.RESP;
 
 
 public class StartActivity extends AppCompatActivity   {

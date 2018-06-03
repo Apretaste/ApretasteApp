@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;

@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;

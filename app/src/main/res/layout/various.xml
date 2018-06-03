@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFF"
     style="@style/App"
-    tools:context="apretaste.activity.SettingsActivity">
+    tools:context="apretaste.ui.SettingsActivity">
     <ScrollView
 
         android:layout_width="match_parent"

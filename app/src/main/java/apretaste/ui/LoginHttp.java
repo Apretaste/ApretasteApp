@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 
 import java.util.Random;
 
-import apretaste.Comunication.Comunication;
 import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;

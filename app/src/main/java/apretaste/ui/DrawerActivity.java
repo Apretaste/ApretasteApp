@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -82,8 +81,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.mail.Multipart;
 
 import apretaste.Helper.DataHelper;
 import apretaste.Helper.DbHelper;

@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.apretaste.R;
-
-import java.io.File;
 
 import apretaste.Helper.DbHelper;
 import apretaste.Helper.FileHelper;

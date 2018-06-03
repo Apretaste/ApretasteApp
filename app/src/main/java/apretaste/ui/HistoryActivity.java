@@ -1,4 +1,4 @@
-package apretaste.activity;
+package apretaste.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
