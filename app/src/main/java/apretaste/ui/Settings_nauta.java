@@ -106,7 +106,7 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
 
                     Log.e("user",new PrefsManager().getData("user",Settings_nauta.this));
                     Log.e("pass",new PrefsManager().getData("pass",Settings_nauta.this));
-                    Mailer mailer=new Mailer(Settings_nauta.this, null, DrawerActivity.PERFIL_STATUS + DrawerActivity.pro.timestamp, true, null, Settings_nauta.this,true);
+                    Mailer mailer=new Mailer(Settings_nauta.this, null,"PERFIL IMAGEN "+ new PrefsManager().getData("type_img",Settings_nauta.this), true, null, Settings_nauta.this,true);
                     mailer.execute();
                 }
             }
