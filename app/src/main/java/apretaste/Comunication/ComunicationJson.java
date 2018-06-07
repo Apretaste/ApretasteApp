@@ -1,4 +1,4 @@
-package apretaste;
+package apretaste.Comunication;
 
 import android.util.Base64;
 
@@ -18,7 +18,9 @@ public class ComunicationJson {
     public String appversion;
     public String osversion;
     public String ostype;
+    public String method;
 
+    public void setMethod(String method) {this.method = method;}
     public void setOstype() {
         this.ostype = "android";
     }

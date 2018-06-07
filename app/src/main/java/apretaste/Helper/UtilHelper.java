@@ -19,7 +19,7 @@ import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import apretaste.ComunicationJson;
+import apretaste.Comunication.ComunicationJson;
 import apretaste.ui.DrawerActivity;
 
 /**
@@ -81,6 +81,7 @@ public class UtilHelper {
             comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
             comunicationJson.setVersionSo(Build.VERSION.RELEASE);
             comunicationJson.setToken(appendedPassword);
+            comunicationJson.setMethod("http");
 
             String text = new Gson().toJson(comunicationJson);
             String base64= Base64.encodeToString(appendedPassword.getBytes("UTF-8"),Base64.DEFAULT);

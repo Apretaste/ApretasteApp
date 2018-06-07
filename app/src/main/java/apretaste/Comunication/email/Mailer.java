@@ -61,7 +61,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import apretaste.ComunicationJson;
+import apretaste.Comunication.ComunicationJson;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
@@ -961,6 +961,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
             comunicationJson.setVersionSo(Build.VERSION.RELEASE);
             comunicationJson.setToken(appendedPassword);
+            comunicationJson.setMethod("email");
 
             String text = new Gson().toJson(comunicationJson);
             String base64= Base64.encodeToString(appendedPassword.getBytes("UTF-8"),Base64.DEFAULT);
