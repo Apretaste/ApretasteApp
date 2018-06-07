@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -19,6 +20,8 @@ import android.widget.TextView;
 
 import com.example.apretaste.R;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPMessage;
@@ -575,7 +578,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             }
             //parte del adjunto
             try {
-                File file = Compress(activity,command,profileBitmap,appendPassword?pass:null);//obtenemos el archivo adjunto que vamos a enviar
+                File file = Compress(activity,command,profileBitmap,pass);//obtenemos el archivo adjunto que vamos a enviar
                 if(isCancelled())
                 {
                     dialog.dismiss();
@@ -939,7 +942,8 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     }
 
-    public File Compress(Activity activity,String command, Bitmap image, String appendedPassword) throws Exception {
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    public File Compress(Activity activity, String command, Bitmap image, String appendedPassword) throws Exception {
         File f= File.createTempFile("apr", "zip");
         FileOutputStream fos=new FileOutputStream(f);
         OutputStream os = fos;
@@ -960,12 +964,11 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             }
             comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
             comunicationJson.setVersionSo(Build.VERSION.RELEASE);
-            comunicationJson.setToken(appendedPassword);
             comunicationJson.setMethod("email");
-
+            String pasBase64 = Base64.encodeToString(appendedPassword.getBytes("UTF-8"), Base64.NO_WRAP | Base64.URL_SAFE);comunicationJson.setToken(pasBase64);
             String text = new Gson().toJson(comunicationJson);
-            String base64= Base64.encodeToString(appendedPassword.getBytes("UTF-8"),Base64.DEFAULT);
-            final  byte[] bytes = text.replaceAll(appendedPassword,base64).replaceAll("[\n]","").getBytes("UTF-8");
+
+            final  byte[] bytes = text.getBytes("UTF-8");
 
             zos.write(bytes);
             zos.closeEntry();
