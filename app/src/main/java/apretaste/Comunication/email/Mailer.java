@@ -22,6 +22,7 @@ import com.example.apretaste.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPStore;
 import com.sun.mail.smtp.SMTPMessage;
@@ -65,6 +66,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 import apretaste.Comunication.ComunicationJson;
+import apretaste.Helper.DialogHelper;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
@@ -165,15 +167,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         this.lastTicket = lastTicket;
     }
 
-    public void setAppendPassword(boolean appendPassword) {
-        this.appendPassword = appendPassword;
-    }
 
-    private boolean appendPassword=true;
-
-    public boolean isShowCommand() {
-        return showCommand;
-    }
 
     public Mailer setShowCommand(boolean showCommand) {
         this.showCommand = showCommand;
@@ -187,31 +181,11 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     }
     private boolean showCommand=true;
 
-    public boolean isShowCancelButton() {
-        return showCancelButton;
-    }
-
-    public void setShowCancelButton(boolean showCancelButton) {
-        this.showCancelButton = showCancelButton;
-    }
-
-    private boolean showCancelButton=true;
-
-    public boolean isShowStatus() {
-        return showStatus;
-    }
-
-    public void setShowStatus(boolean showStatus) {
-        this.showStatus = showStatus;
-    }
-
-    private boolean showStatus=true;
-
-    private static final boolean HIDE_STATUS_DETAILS=true;
 
     private final Activity activity;
 
-    public static AlertDialog dialog;
+    KProgressHUD dialog;
+
 
     private static Random random;
     static
@@ -297,37 +271,12 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     @Override
     protected void onPreExecute() {
-        final View v=activity.getLayoutInflater().inflate(R.layout.wait_dialog_layout,null);
-        statusView=((TextView)v.findViewById(R.id.status));
-        if(!showStatus)
-            statusView.setVisibility(View.GONE);
-        if(customText!=null && !customText.isEmpty())
-        {
-            ((TextView)v.findViewById(R.id.service)).setVisibility(View.VISIBLE);
-            ((TextView)v.findViewById(R.id.service)).setText(customText);
-        }
-        else
-            ((TextView)v.findViewById(R.id.service)).setText(service);
 
-        if(!showCommand)
-            v.findViewById(R.id.command).setVisibility(View.GONE);
-        else
-            ((TextView)v.findViewById(R.id.command)).setText(command);
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setView(v);
-
-        builder.setCancelable(false);
-
-        builder.setNegativeButton("Cancelar", null);
-
-        dialog=builder.create();
+        dialog = new DialogHelper().DialogRequest(activity);
         handler=new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.GONE);
                 synchronized (idleLock) {
                     if(arrived)
                     {
@@ -357,41 +306,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         },60000);//120000
 
 
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface d) {
-
-                final Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        b.setVisibility(View.GONE);
-                        synchronized (idleLock) {
-                            if(arrived)
-                                return;
-                            Log.e(MAILER1, CANCELLING);
-                            cancel(true);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        if (inbox != null)
-                                            inbox.isOpen();
-                                    }
-                                    catch (Exception ignored){}
-                                }
-                            }).start();
-                            Log.e(MAILER1, CANCELLED);
-                        }
-                    }
-                });
-            }
-        });
-
-            dialog.show();
+        dialog.show();
 
     }
 
@@ -418,6 +333,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
                     dialog.dismiss();
                 }
             });
@@ -442,7 +358,6 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
 
                     Mailer mailer = new Mailer(activity, "", "", true, "", null, true);
-                    mailer.setAppendPassword(true);
                     mailer.setSendRequestError(true);
                     mailer.setlastTicket(lastTicket);
 
@@ -781,21 +696,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     //se utiliza para guardar el estado actual y luego actualizar la ui del dialogo de progreso
     private void setCurrentStatus(final String status, final String simpleStatus) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                /*if(HIDE_STATUS_DETAILS)
-                    statusView.setText(simpleStatus);
-                else
-                    statusView.setText(status);*/
-                if (new PrefsManager().getData("user",activity).equals("chiqui08@nauta.cu"  ) ||new PrefsManager().getData("user",activity).equals("cjamdeveloper@gmail.com"  )){
-                    statusView.setText(status);
-                }else{
-                    statusView.setText(simpleStatus);
-                }
-
-            }
-        });
+        Log.d("Mailer steps",status);
     }
 
     //esto se va a ejecutar cada vez q llegue un mensaje
@@ -974,7 +875,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             zos.closeEntry();
             if(profileBitmap!=null)
             {
-                entry = new ZipEntry("profile.png");
+                entry = new ZipEntry("picture.png");
                 zos.putNextEntry(entry);
                 image.compress(Bitmap.CompressFormat.PNG,100,zos);
                 zos.closeEntry();

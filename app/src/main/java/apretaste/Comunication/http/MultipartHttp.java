@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.apretaste.R;
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,6 +29,8 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import apretaste.Helper.AlertHelper;
+import apretaste.Helper.DialogHelper;
 import apretaste.Helper.UtilHelper;
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
@@ -38,26 +41,16 @@ import apretaste.Comunication.email.Mailerlistener;
 
 public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
-    private boolean HIDE_STATUS_DETAILS = true;
-    private TextView statusView;
-    private boolean showStatus = true;
-    private String customText=null;
-    private boolean showCommand = true;
+
     private String CONECTANDO = "Conectando";
     private String CARGANDO = "Cargando";
-
-
-    public void setCustomText(String customText) {
-        this.customText = customText;
-    }
 
     public Date getResponseTimestamp() {
         return timestamp;
     }
-    public  AlertDialog dialog;
+    public KProgressHUD dialog;
     private Boolean noreply = false;
     private Activity activity;
-    private Mailerlistener mailerlistener;
     private String help;
     private Date timestamp;
     private Bitmap profileBitmap=null;
@@ -73,19 +66,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     private boolean saveInternal = false;
     public String ext;
     public String mincache;
-    private HttpInfo httpInfo;
     private Gson gson = new Gson();
-
-
-    public String getMincache() {
-        return mincache;
-    }
-
-    public String getExt() {
-        return ext;
-    }
-
-
 
 
     public MultipartHttp setSaveInternal(boolean saveInternal)
@@ -115,67 +96,17 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
     @Override
     protected void onPreExecute() {
-        final View v=activity.getLayoutInflater().inflate(R.layout.wait_dialog_layout,null);
-        statusView=((TextView)v.findViewById(R.id.status));
-        if(!showStatus)
-            statusView.setVisibility(View.GONE);
-        if(customText!=null && !customText.isEmpty())
-        {
-            ((TextView)v.findViewById(R.id.service)).setVisibility(View.VISIBLE);
-            ((TextView)v.findViewById(R.id.service)).setText(customText);
-        }
-        else
-            ((TextView)v.findViewById(R.id.service)).setText(service);
-
-        if(!showCommand)
-            v.findViewById(R.id.command).setVisibility(View.GONE);
-        else
-            ((TextView)v.findViewById(R.id.command)).setText(command);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setView(v);
-
-        builder.setCancelable(false);
-
-        builder.setNegativeButton("Cancelar", null);
-
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dialog=builder.create();
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface d) {
-
-                final Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        b.setVisibility(View.GONE);
-                        cancel(true);
-                    }
-
-                });
-            }
-        });
-                dialog.show();
-            }
-        });
-
+        dialog = new DialogHelper().DialogRequest(activity);
+       activity.runOnUiThread(new Runnable() {
+           @Override
+           public void run() {
+               dialog.show();
+           }
+       });
     }
 
     private void setCurrentStatus(final String status, final String simpleStatus) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(HIDE_STATUS_DETAILS)
-                    statusView.setText(simpleStatus);
-                else
-                    statusView.setText(status);
-            }
-        });
+       Log.d("Http:Request",status);
     }
 
     @Override
@@ -212,12 +143,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
 
             setCurrentStatus("Descargando", CARGANDO);
-            if(isCancelled())
-            {
 
-                dialog.dismiss();
-
-            }
            Log.e("link descarga",httpInfo.file);
           if (noreply){
               activity.runOnUiThread(new Runnable() {
@@ -229,14 +155,9 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
                   }
               });
           }
-            downloadFile(httpInfo.file);
-            if(isCancelled())
-            {
-
-                dialog.dismiss();
-
+            if (!noreply) {
+                downloadFile(httpInfo.file);
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();

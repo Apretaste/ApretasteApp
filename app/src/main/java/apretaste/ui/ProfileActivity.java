@@ -556,8 +556,6 @@ public class ProfileActivity extends AppCompatActivity implements Mailerlistener
                     Mailer mailer=new Mailer(ProfileActivity.this,null, PERFIL_BULK +json,true, SE_HAN_GUARDADO_SUS_DATOS_DE_PERFIL,ProfileActivity.this,false).setCustomText("Estamos guardando su perfil. Sea paciente y no cierre la aplicación.")
                             .setShowCommand(false);
                     mailer.setAttachedbitmap(newBitmap);
-                    mailer.setAppendPassword(true);
-
                     mailer.execute();
                 }
                 else {

@@ -134,7 +134,6 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
                     Mailer mailer=new Mailer(LoginActivity.this,null, PERFIL_STATUS,false, ESTAMOS_CARGANDO_SU_PERFIL_ESTE_PROCESO_DEBE_TOMAR_VARIOS_MINUTOS_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION,LoginActivity.this,false);
                     mailer.setSaveInternal(true);
                     mailer.setReturnContent(true);
-                    mailer.setAppendPassword(true);
                     mailer.setCustomText(ESTAMOS_CARGANDO_SU_PERFIL_ESTE_PROCESO_DEBE_TOMAR_VARIOS_MINUTOS_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION);
                     mailer.setShowCommand(false);
                     if (countClick==3){
