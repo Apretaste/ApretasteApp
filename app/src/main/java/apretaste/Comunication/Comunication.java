@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -32,6 +33,11 @@ public class Comunication implements Httplistener {
     Activity activity;
     private boolean noMessage = false;
     boolean reponseOk;
+    private Bitmap bitmap=null;
+    public void setAttachedbitmap(Bitmap bitmap)
+    {
+        this.bitmap=bitmap;
+    }
 
 
     public void setNoMessage(boolean noMessage) {
@@ -118,6 +124,13 @@ public class Comunication implements Httplistener {
         if (returnContent) {
             multipartHttp.setReturnContent(true);
         }
+
+
+        if (this.bitmap!=null){
+            Log.e("Comunication ","hay img");
+            multipartHttp.setAttachedbitmap(this.bitmap);
+        }
+
         multipartHttp.execute();
     }
 
@@ -128,6 +141,10 @@ public class Comunication implements Httplistener {
         if (!pass.equals("") && !user.equals("")){
 
             Mailer mailer = new Mailer(activity, service, command, noreply, help, mailerListener, this.noMessage);
+            if (this.bitmap!=null){
+                Log.e("Comunication ","hay img");
+                mailer.setAttachedbitmap(this.bitmap);
+            }
             if (returnContent) {
                 mailer.setReturnContent(true);
             }

@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,20 +19,25 @@ import com.example.apretaste.R;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
+import apretaste.Comunication.ComunicationJson;
 import apretaste.Helper.AlertHelper;
 import apretaste.Helper.DialogHelper;
+import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
 import apretaste.Comunication.email.Mailer;
 import apretaste.Comunication.email.Mailerlistener;
@@ -73,6 +80,11 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     {
         this.saveInternal=saveInternal;
         return this;
+    }
+
+    public void setAttachedbitmap(Bitmap bitmap)
+    {
+        this.profileBitmap=bitmap;
     }
 
     public MultipartHttp setReturnContent(boolean returnContent)
@@ -122,7 +134,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
             MultipartUtility multipartUtility = new MultipartUtility("http://"+urlsaved+"/run/app","UTF-8");
 
             setCurrentStatus("Comprimiendo", CONECTANDO);
-            multipartUtility.addFilePart("attachments",new UtilHelper().Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
+            multipartUtility.addFilePart("attachments",Compress(activity,command,profileBitmap,""), new UtilHelper().genString(activity)+".zip");
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
             multipartUtility.addFormField("token", preferences.getString("token",null));
@@ -297,7 +309,58 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     }
 
 
+    public File Compress(Activity activity,String command, Bitmap image, String appendedPassword) throws Exception {
+        File f= File.createTempFile("apr", "zip");
+        FileOutputStream fos=new FileOutputStream(f);
+        OutputStream os = fos;
+        ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os));
+        try {
+            String filename = new UtilHelper().genString(activity)+ ".txt";
+            ZipEntry entry = new ZipEntry(filename);
+            zos.putNextEntry(entry);
+            ComunicationJson comunicationJson = new ComunicationJson();
+            comunicationJson.setCommand(command);
+            comunicationJson.setOstype();
+
+
+
+            String cm = "piropazo";
+            if (cm.equals(command)){
+                comunicationJson.setTimestamp("");
+                comunicationJson.setCommand(cm);
+            }else{
+                comunicationJson.setTimestamp(new PrefsManager().getData("timestamp",activity));
+                comunicationJson.setCommand(command);
+            }
+
+            comunicationJson.setMethod("http");
+            //comunicationJson.setApptype("single");
+            comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
+            comunicationJson.setVersionSo(Build.VERSION.RELEASE);
+            comunicationJson.setToken(appendedPassword);
+
+            String text = new Gson().toJson(comunicationJson);
+
+            Log.d("json request",text);
+            String base64= Base64.encodeToString(appendedPassword.getBytes("UTF-8"),Base64.DEFAULT);
+            final  byte[] bytes = text.replaceAll(appendedPassword,base64).replaceAll("[\n]","").getBytes("UTF-8");
+
+            zos.write(bytes);
+            zos.closeEntry();
+            if(profileBitmap!=null)
+            {
+                entry = new ZipEntry("image.png");
+                zos.putNextEntry(entry);
+                image.compress(Bitmap.CompressFormat.PNG,100,zos);
+                zos.closeEntry();
+            }
+
+        } finally {
+            zos.close();
+        }
+        return f;
     }
+}
 
 
 

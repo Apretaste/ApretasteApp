@@ -1,5 +1,6 @@
 package apretaste.ui;
 
+import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -7,10 +8,14 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
@@ -21,6 +26,8 @@ import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -147,7 +154,11 @@ public class DrawerActivity extends AppCompatActivity
     private GridView gridView;
     EditText  etSearchview;
     private int laststate = 0;
-
+    public static final String IMAGE = "image/*";
+    private final static int REQUEST_STORAGE_PERMISSION = 1;
+    private static final int REQUEST_IMAGE_GET = 0;
+    Uri fullPhotoUri = null;
+    Bitmap newBitmap = null;
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -1275,7 +1286,28 @@ public class DrawerActivity extends AppCompatActivity
                                     break;
 
                                 case "u:":
-                                    ed[i].setHint(parts[i].substring(2));
+                                    ed[i].setFocusableInTouchMode(false);
+                                    ed[i].setHint("Click para escojer la imagen");
+                                    ed[i].setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Log.e("prof","imagepick");
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                                                int checkpermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+                                                if(checkpermission!= PackageManager.PERMISSION_GRANTED)
+                                                {
+                                                    requestPermissions(new String[]{
+                                                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                    },REQUEST_STORAGE_PERMISSION);
+
+                                                }
+                                                else
+                                                    picPict();
+                                            }
+                                            else
+                                                picPict();
+                                        }
+                                    });
                                     break;
 
                                 case "p:":
@@ -1409,17 +1441,22 @@ public class DrawerActivity extends AppCompatActivity
                                                 int fieldRequeriedValid=0;
 
                                         /*Comprobacion de los campos que son obligatorios*/
-                                                for (int j = 0;j<cantFieldRequeried;j++){
+                                        for (int j = 0;j<cantFieldRequeried;j++){
 
-                                                    if (ed[j].getText().toString().equals("")){
-                                                        Log.e("campo por llenar", String.valueOf(j));
-                                                    }else{
-                                                        Log.e("campo","campo lleno");
-                                                        fieldRequeriedValid = fieldRequeriedValid+1;
+                                            if (newBitmap!=null){
+                                                fieldRequeriedValid = fieldRequeriedValid+1;
+                                            }else{
 
-                                                    }
+                                                if (ed[j].getText().toString().equals("")){
+                                                    Log.e("campo por llenar", String.valueOf(j));
+                                                }else{
+                                                    Log.e("campo","campo lleno");
+
+                                                    fieldRequeriedValid = fieldRequeriedValid+1;
+
                                                 }
-
+                                            }
+                                        }
 
 
                                                 String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
@@ -1462,6 +1499,7 @@ public class DrawerActivity extends AppCompatActivity
                                                     Log.i("llamar", "El servicio no esta en cache");
 
                                                     if (fieldRequeriedValid==cantFieldRequeried){
+                                                        comunication.setAttachedbitmap(newBitmap);
                                                         comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
                                                         alertDialog.dismiss();
                                                     }else{
@@ -1477,7 +1515,7 @@ public class DrawerActivity extends AppCompatActivity
 
 
 
-                                        //d.dismiss();
+
                                     }
                                 });
                             }
@@ -1566,6 +1604,110 @@ public class DrawerActivity extends AppCompatActivity
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editText.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    private void picPict()
+    {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(IMAGE);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_GET);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==REQUEST_STORAGE_PERMISSION)
+        {
+            if(grantResults.length>0
+                    && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+            {
+                picPict();
+            }
+            else
+            {
+                Toast.makeText(this,"Permiso no autorizado",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
+            fullPhotoUri = data.getData();
+            BitmapFactory.Options opts=new BitmapFactory.Options();
+            opts.outHeight=256;
+            opts.outWidth=256;
+            try {
+                String[] filePathColumn = { MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(fullPhotoUri,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String path = cursor.getString(columnIndex);
+                cursor.close();
+
+
+                newBitmap=decodeSampledBitmapFromFile(path,250,250);
+                RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
+                roundedBitmapDrawable.setCircular(true);
+                // profilePict.setImageDrawable(roundedBitmapDrawable);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "No se pudo cargar la imagen", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromFile(String path,
+                                                     int reqWidth, int reqHeight) {
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+
+        options.inJustDecodeBounds = false;
+        Bitmap bmp= BitmapFactory.decodeFile(path, options);
+
+        int w = bmp.getWidth();
+        int h = bmp.getHeight();
+        if (w > reqHeight)
+        {
+            float ratio = (float)w / reqHeight;
+            w = reqWidth;
+            h = (int) ((float) h / ratio);
+        }
+        if (h > reqHeight) {
+            float ratio = (float)h / reqWidth;
+            w = (int) ((float) w / ratio);
+            h = reqHeight;
+        }
+
+        return Bitmap.createScaledBitmap(bmp,w,h,true);
     }
 
 }
