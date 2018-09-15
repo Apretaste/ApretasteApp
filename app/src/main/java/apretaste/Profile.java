@@ -5,8 +5,6 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import apretaste.ui.ProfileActivity;
-
 /**
  * Created by on 17/07/2017.
  */
@@ -30,30 +28,6 @@ public class Profile implements Cloneable {
     public String[] interests=new String[]{};
 
 
-    public void humanizeData()
-    {
-        Log.e("pro","humanizing data");
-
-        Date dateTime = null;
-        try {
-            dateTime = new SimpleDateFormat("yyyy-MM-dd").parse(date_of_birth);
-            date_of_birth = new SimpleDateFormat("dd/MM/yyyy").format(dateTime);
-        } catch (Exception ignored) {
-        }
-
-
-        gender= ProfileActivity.getParallelValue(ProfileActivity.sexoVal,ProfileActivity.sexo,gender);
-        eyes=ProfileActivity.getParallelValue(ProfileActivity.ojosVal,ProfileActivity.ojos,eyes);
-        skin=ProfileActivity.getParallelValue(ProfileActivity.pielVal,ProfileActivity.piel,skin);
-        body_type=ProfileActivity.getParallelValue(ProfileActivity.cuerpoVal,ProfileActivity.cuerpo,body_type);
-        hair=ProfileActivity.getParallelValue(ProfileActivity.peloVal,ProfileActivity.pelo,hair);
-        province=ProfileActivity.getParallelValue(ProfileActivity.provinciaVal,ProfileActivity.provincia,province);
-        highest_school_level=ProfileActivity.getParallelValue(ProfileActivity.nivelescolarVal,ProfileActivity.nivelescolar,highest_school_level);
-        marital_status=ProfileActivity.getParallelValue(ProfileActivity.estadocivilVal,ProfileActivity.estadocivil,marital_status);
-        sexual_orientation=ProfileActivity.getParallelValue(ProfileActivity.orientacionVal,ProfileActivity.orientacion,sexual_orientation);
-        religion=ProfileActivity.getParallelValue(ProfileActivity.religionVal,ProfileActivity.religion,religion);
-        Log.e("pro","end humanizing");
-    }
 
     @Override
     public Profile clone(){

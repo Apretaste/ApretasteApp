@@ -166,12 +166,6 @@ public class DrawerActivity extends AppCompatActivity
                         .setPositiveButton("Refrescar", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                      /*  Mailer mailer=new Mailer(DrawerActivity.this, null, PERFIL_STATUS, false, null, DrawerActivity.this,false);
-                                        mailer.setReturnContent(true).setSaveInternal(true);
-                                        mailer.setShowCommand(false);
-                                        mailer.setAppendPassword(true);
-                                        mailer.execute();*/
-
                                         comunication.setSaveInternal(true);
                                         comunication.setReturnContent(true);
                                         comunication.execute(DrawerActivity.this, null, PERFIL_STATUS, false, null,
@@ -214,7 +208,7 @@ public class DrawerActivity extends AppCompatActivity
             }
 
         }
-       pro.profile.humanizeData();
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -232,7 +226,7 @@ public class DrawerActivity extends AppCompatActivity
         profilePict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DrawerActivity.this, ProfileActivity.class));
+                comunication.execute(DrawerActivity.this,"PERFIL","PERFIL EDITAR",false,"",DrawerActivity.this,DrawerActivity.this);
 
             }
         });
@@ -331,9 +325,6 @@ public class DrawerActivity extends AppCompatActivity
                                         }else{
                                             Log.i("llamar","llamar servicios y borra el cache");
                                             dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
-                                           /* Mailer mailer = new Mailer(DrawerActivity.this, serviceAdapter.sevList.get      (position).getName(),serviceAdapter.sevList.get(position).getName(),false,serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,false);
-                                            mailer.setAppendPassword(true);
-                                            mailer.execute();*/
 
                                             comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName(),false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
                                         }
@@ -394,11 +385,6 @@ public class DrawerActivity extends AppCompatActivity
 
 
 
-                                                             /*   Mailer mailer = new Mailer(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra, false, serviceAdapter.sevList.get(position).getDescription(), DrawerActivity.this, false);
-                                                                mailer.setAppendPassword(true);
-                                                                mailer.execute();*/
-
-
                                                             comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra,false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
 
                                                         }
@@ -410,10 +396,6 @@ public class DrawerActivity extends AppCompatActivity
                                                     if (extra.equals("")) {
                                                         Toast.makeText(DrawerActivity.this, "Rellene el campo antes de enviar", Toast.LENGTH_SHORT).show();
                                                     }else{
-
-                                                     /*   Mailer mailer = new Mailer(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(),serviceAdapter.sevList.get(position).getName()+" "+extra,false,serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,false);
-                                                        mailer.setAppendPassword(true);
-                                                        mailer.execute();*/
 
                                                         comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra,false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
                                                     }
@@ -484,7 +466,7 @@ public class DrawerActivity extends AppCompatActivity
 
         wv.addJavascriptInterface(new JSI(),"apretaste");
         if(HistoryManager.getSingleton().currentUrl==null) {
-            //  loadhome();
+
             HistoryManager.getSingleton().addListener(this);
         }
 
@@ -751,33 +733,24 @@ public class DrawerActivity extends AppCompatActivity
             }
 
             case R.id.nav_profile:{
-                startActivity(new Intent(this, ProfileActivity.class));
+                comunication.execute(DrawerActivity.this,"PERFIL","PERFIL EDITAR",false,"",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
 
             case R.id.nav_retos: {
 
-               /* Mailer mailer = new Mailer(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,false);
-                mailer.setAppendPassword(true);
-                mailer.execute();*/
-               comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
+                comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
 
             case R.id.nav_cupones: {
 
-               /* Mailer mailer = new Mailer(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,false);
-                mailer.setAppendPassword(true);
-                mailer.execute();*/
                 comunication.execute(DrawerActivity.this, "cupones","Cupones",false,"des",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
 
             case R.id.nav_invitar: {
 
-               /* Mailer mailer = new Mailer(DrawerActivity.this, "referir","referir",false,"des",DrawerActivity.this,false);
-                mailer.setAppendPassword(true);
-                mailer.execute();*/
                comunication.execute(DrawerActivity.this, "referir","referir",false,"des",DrawerActivity.this,DrawerActivity.this);
                 break;
             }
@@ -1411,7 +1384,7 @@ public class DrawerActivity extends AppCompatActivity
                                 b.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                      ///  Toast.makeText(DrawerActivity.this, "Toast", Toast.LENGTH_SHORT).show();
+
 
                                                 String f = "";
                                                 int cantFieldRequeried = 0;
@@ -1479,9 +1452,6 @@ public class DrawerActivity extends AppCompatActivity
                                                             Log.i("llamar","llamar servicios y borra el cache");
                                                             dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
 
-                                                /*    Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0],command+" "+f,!waiting,help,DrawerActivity.this,false);
-                                                    mailer.setAppendPassword(true);
-                                                    mailer.execute();*/
 
                                                             comunication.execute(DrawerActivity.this, command.split(" ")[0], command+" "+f.substring(1),!waiting, help,DrawerActivity.this,DrawerActivity.this);
                                                         }
@@ -1491,10 +1461,6 @@ public class DrawerActivity extends AppCompatActivity
                                                 }else {
                                                     Log.i("llamar", "El servicio no esta en cache");
 
-
-                                               /* Mailer mailer = new Mailer(DrawerActivity.this, command.split(" ")[0], command + " " + f, !waiting, help, DrawerActivity.this, false);
-                                                mailer.setAppendPassword(true);
-                                                mailer.execute();*/
                                                     if (fieldRequeriedValid==cantFieldRequeried){
                                                         comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
                                                         alertDialog.dismiss();
@@ -1547,10 +1513,6 @@ public class DrawerActivity extends AppCompatActivity
                                     Log.i("llamar","llamar servicios y borra el cache");
                                     dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
 
-                                /*    Mailer mailer= new Mailer(DrawerActivity.this, command.split(" ")[0],command,!waiting,help,DrawerActivity.this,false);
-                                    mailer.setAppendPassword(true);
-                                    mailer.execute();*/
-
                                     comunication.execute(DrawerActivity.this, command.split(" ")[0], command,!waiting, help,DrawerActivity.this,DrawerActivity.this);
                                 }
                             } catch (ParseException e) {
@@ -1558,10 +1520,6 @@ public class DrawerActivity extends AppCompatActivity
                             }
                         }else{
                             Log.i("llamar","El servicio no esta en cache");
-
-                          /*  Mailer mailer= new Mailer(DrawerActivity.this, command.split(" ")[0],command,!waiting,help,DrawerActivity.this,false);
-                            mailer.setAppendPassword(true);
-                            mailer.execute();*/
 
                             comunication.execute(DrawerActivity.this, command.split(" ")[0], command,!waiting, help,DrawerActivity.this,DrawerActivity.this);
 

@@ -70,7 +70,7 @@ public class ProfileInfo  {
         if(updateInfo.profile.full_name!=null)
             profile=updateInfo.profile;
 
-        profile.humanizeData();
+
         Log.e("pro","finish update 2");
     }
 

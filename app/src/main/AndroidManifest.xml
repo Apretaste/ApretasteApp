@@ -46,11 +46,6 @@
             android:parentActivityName="apretaste.ui.DrawerActivity"
             android:theme="@style/App" />
         <activity
-            android:name="apretaste.ui.ProfileActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="Perfil"
-            android:parentActivityName="apretaste.ui.DrawerActivity" />
-        <activity
             android:name="apretaste.ui.ServiceDetails"
             android:label="Detalles"
             android:parentActivityName="apretaste.ui.DrawerActivity" />
