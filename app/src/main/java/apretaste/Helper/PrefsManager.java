@@ -10,31 +10,29 @@ import android.widget.EditText;
  */
 
 public class PrefsManager {
-    public  void show_value(final Context ctx , EditText editText,final String prefName,String defaultValue){
-        editText.setText(PreferenceManager.getDefaultSharedPreferences(ctx).getString(prefName,defaultValue));
+    public void show_value(final Context ctx, EditText editText, final String prefName, String defaultValue) {
+        editText.setText(PreferenceManager.getDefaultSharedPreferences(ctx).getString(prefName, defaultValue));
 
     }
 
-    public  void change_value(final  Context ctx , final String prefName , EditText editText){
-        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(prefName,editText.getText().toString()).apply();
-
-    }
-    public  void change_value2(final  Context ctx , final String prefName , String  editText){
-        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(prefName,editText).apply();
+    public void change_value(final Context ctx, final String prefName, EditText editText) {
+        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(prefName, editText.getText().toString()).apply();
 
     }
 
-    public String getData(String key,Context ctx){
-        return  PreferenceManager.getDefaultSharedPreferences(ctx).getString(key,"");
-    }
-
-    public void saveData(String key, Context ctx, String value){
-        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(key,value).apply();
+    public void change_value2(final Context ctx, final String prefName, String editText) {
+        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(prefName, editText).apply();
 
     }
 
+    public String getData(String key, Context ctx) {
+        return PreferenceManager.getDefaultSharedPreferences(ctx).getString(key, "");
+    }
 
+    public void saveData(String key, Context ctx, String value) {
+        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putString(key, value).apply();
 
+    }
 
 
 }

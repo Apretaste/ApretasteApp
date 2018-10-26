@@ -26,7 +26,7 @@ import java.net.URL;
 public class SimpleHttp extends AsyncTask<Void, Void, Void> {
     String url;
     private TextView statusView;
-    private   AlertDialog dialog;
+    private AlertDialog dialog;
     Activity activity;
     Httplistener httplistener;
     boolean requestCheck = false;
@@ -50,7 +50,7 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
         this.showDialog = showDialog;
     }
 
-    public SimpleHttp(Activity context , String url, Httplistener httpListener){
+    public SimpleHttp(Activity context, String url, Httplistener httpListener) {
         this.activity = context;
         this.url = url;
         this.httplistener = httpListener;
@@ -64,10 +64,11 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
         }
         return null;
     }
+
     @Override
     protected void onPreExecute() {
-        final View v=activity.getLayoutInflater().inflate(R.layout.wait_dialog_layout,null);
-        statusView=((TextView)v.findViewById(R.id.status));
+        final View v = activity.getLayoutInflater().inflate(R.layout.wait_dialog_layout, null);
+        statusView = ((TextView) v.findViewById(R.id.status));
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setView(v);
@@ -79,7 +80,7 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog=builder.create();
+                dialog = builder.create();
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 
@@ -97,7 +98,7 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
                         });
                     }
                 });
-                if (isShowDialog()){
+                if (isShowDialog()) {
                     dialog.show();
                 }
 
@@ -127,12 +128,11 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
             response.append(inputLine);
         }
         in.close();
-        if (requestCheck){
+        if (requestCheck) {
             httplistener.onResponseSimpleHttp(String.valueOf(responseCode));
-        }else {
+        } else {
             httplistener.onResponseSimpleHttp(response.toString());
         }
-
 
 
     }

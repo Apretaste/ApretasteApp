@@ -1215,11 +1215,10 @@ public class DrawerActivity extends AppCompatActivity
                                             comunication.setAttachedbitmap(newBitmap);
                                             comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + inputTypeHelper.getCommand().substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
                                             alertDialog.dismiss();
-                                            if (!callback.equals("") || !callback.isEmpty()){
+                                            if (!callback.equals("") || !callback.isEmpty()) {
                                                 String js = "javascript:" + callback + "(" + inputTypeHelper.getParamsCallBack() + ")";
                                                 wv.loadUrl(js);
                                             }
-
 
 
                                         } else {

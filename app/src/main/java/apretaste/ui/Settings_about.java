@@ -25,7 +25,6 @@ public class Settings_about extends AppCompatActivity {
         // wv.loadDataWithBaseURL("about:apretaste",getResources().getString(R.string.about_text,MainActivity.pro.username),"text/html", Xml.Encoding.UTF_8.name(),null);
 
 
-
     }
 
 

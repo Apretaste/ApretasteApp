@@ -55,8 +55,8 @@ public class HistoryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 HistoryManager.getSingleton().entries.clear();
-                                String enties=new Gson().toJson(HistoryManager.getSingleton().entries);
-                                PreferenceManager.getDefaultSharedPreferences(HistoryActivity.this).edit().putString("history",enties).apply();
+                                String enties = new Gson().toJson(HistoryManager.getSingleton().entries);
+                                PreferenceManager.getDefaultSharedPreferences(HistoryActivity.this).edit().putString("history", enties).apply();
                                 ((ViewSwitcher) findViewById(R.id.notifSwitcher)).setDisplayedChild(0);
                                 Toast.makeText(HistoryActivity.this, "Historial limpiado con exito", Toast.LENGTH_SHORT).show();
                             }
@@ -119,10 +119,10 @@ public class HistoryActivity extends AppCompatActivity {
             ((RecentHolder) holder).delBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     new File(hm.entries.get(holder.getAdapterPosition()).path).delete();
+                    new File(hm.entries.get(holder.getAdapterPosition()).path).delete();
                     hm.entries.remove(holder.getAdapterPosition());
-                    String enties=new Gson().toJson(HistoryManager.getSingleton().entries);
-                    PreferenceManager.getDefaultSharedPreferences(HistoryActivity.this).edit().putString("history",enties).apply();
+                    String enties = new Gson().toJson(HistoryManager.getSingleton().entries);
+                    PreferenceManager.getDefaultSharedPreferences(HistoryActivity.this).edit().putString("history", enties).apply();
                     notifyItemRemoved(holder.getAdapterPosition());
 
 
@@ -130,9 +130,7 @@ public class HistoryActivity extends AppCompatActivity {
             });
 
 
-
         }
-
 
 
         @Override
@@ -155,6 +153,6 @@ public class HistoryActivity extends AppCompatActivity {
         HistoryManager.getSingleton().setCurrentPage(null);
         startActivity(new Intent(HistoryActivity.this, DrawerActivity.class));
         finish();
-      //  super.onBackPressed();
+        //  super.onBackPressed();
     }
 }

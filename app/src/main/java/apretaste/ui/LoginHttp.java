@@ -23,27 +23,26 @@ import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
 
 
-
 public class LoginHttp extends AppCompatActivity implements Httplistener {
 
     EditText etMail;
-     HttpInfo httpInfo;
-     Gson gson;
+    HttpInfo httpInfo;
+    Gson gson;
     String email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_http);
 
-        gson= new Gson();
+        gson = new Gson();
         etMail = (EditText) findViewById(R.id.etMail);
-
 
 
         findViewById(R.id.btn_b_http).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginHttp.this,StartActivity.class));
+                startActivity(new Intent(LoginHttp.this, StartActivity.class));
                 finish();
             }
         });
@@ -51,19 +50,19 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
         findViewById(R.id.btn_n_http).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (EmailAddressValidator.isValidAddress(etMail.getText().toString())){
-                    PreferenceManager.getDefaultSharedPreferences(LoginHttp.this).edit().putString("domain",getDomain()).apply();
+                if (EmailAddressValidator.isValidAddress(etMail.getText().toString())) {
+                    PreferenceManager.getDefaultSharedPreferences(LoginHttp.this).edit().putString("domain", getDomain()).apply();
 
                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginHttp.this);
                     String urlsaved = preferences.getString("domain", "cubaworld.info");
-                    String url =  "http://"+urlsaved+"/api/start?email="+etMail.getText().toString();
-                    Log.e("url",url);
-                    SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this,url,LoginHttp.this);
+                    String url = "http://" + urlsaved + "/api/start?email=" + etMail.getText().toString();
+                    Log.e("url", url);
+                    SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this, url, LoginHttp.this);
                     simpleHttp.setMessageDialog("Conectando");
                     simpleHttp.execute();
                     email = etMail.getText().toString();
 
-                }else{
+                } else {
                     etMail.setError("Email incorrecto");
                 }
             }
@@ -72,7 +71,7 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
     @Override
     public void onBackPressed() {
-       super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override
@@ -82,11 +81,11 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
     @Override
     public void onResponseSimpleHttp(String response) {
-        Log.e("Login-Http",response);
-        httpInfo = gson.fromJson(response,HttpInfo.class);
-        if (httpInfo.code.equals("ok")){
-            startActivity(new Intent(LoginHttp.this,CodeVerificationActivity.class));
-            new PrefsManager().saveData("email",LoginHttp.this,email);
+        Log.e("Login-Http", response);
+        httpInfo = gson.fromJson(response, HttpInfo.class);
+        if (httpInfo.code.equals("ok")) {
+            startActivity(new Intent(LoginHttp.this, CodeVerificationActivity.class));
+            new PrefsManager().saveData("email", LoginHttp.this, email);
             finish();
 
 
@@ -99,10 +98,10 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     }
 
 
-      public String getDomain() {
-          String[] words = {"cubaworld.info","cubazone.info","cubanow.xyz"};
-          String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
+    public String getDomain() {
+        String[] words = {"cubaworld.info", "cubazone.info", "cubanow.xyz"};
+        String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
 
-        return  domain;
+        return domain;
     }
 }

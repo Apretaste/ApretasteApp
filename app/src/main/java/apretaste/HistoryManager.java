@@ -13,7 +13,7 @@ public class HistoryManager {
     public String currentUrl;
 
 
-    public List<HistoryEntry> entries=new ArrayList<>(30);
+    public List<HistoryEntry> entries = new ArrayList<>(30);
 
     public interface HistoryListener {
         void onHistoryChange(HistoryEntry newUrl);
@@ -44,9 +44,9 @@ public class HistoryManager {
         return singleton;
     }
 
-    public String getEntry(String field){
+    public String getEntry(String field) {
         String result = "";
-        switch (field){
+        switch (field) {
             case "service":
                 result = currentEntry.service;
                 break;
@@ -56,18 +56,18 @@ public class HistoryManager {
 
         }
 
-    return result;
+        return result;
     }
+
     public void setCurrentPage(HistoryEntry entry) {
-        currentEntry=entry;
+        currentEntry = entry;
         for (HistoryListener listener :
                 listeners) {
             listener.onHistoryChange(currentEntry);
         }
     }
 
-    public void addToHistory(HistoryEntry entry)
-    {
+    public void addToHistory(HistoryEntry entry) {
         entries.add(entry);
     }
 }

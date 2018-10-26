@@ -1,8 +1,6 @@
 package apretaste.Comunication.http;
 
 
-
-
 /**
  * Created by cjam on 9/02/2018.
  */
@@ -12,7 +10,7 @@ public interface Httplistener {
 
     void onResponseSimpleHttp(String response);
 
-    void onResponseArrivedHttp(String service, String command, String response,MultipartHttp multipartHttp);
+    void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp);
 
 
 }

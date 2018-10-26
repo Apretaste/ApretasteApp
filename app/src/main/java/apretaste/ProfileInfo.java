@@ -10,29 +10,28 @@ import java.util.List;
  * Created by  on 10/07/2017.
  */
 
-public class ProfileInfo  {
+public class ProfileInfo {
 
     public String token;
     public String username;
-    public String   timestamp="";
+    public String timestamp = "";
     public float credit;
     public String[] active = new String[]{};
     public String mailbox;
     public String domain;
     public String img_quality;
-    public Profile profile=new Profile();
-    public Notifications notifications[]=new Notifications[]{};
-    public Services services[]=new Services[]{};
+    public Profile profile = new Profile();
+    public Notifications notifications[] = new Notifications[]{};
+    public Services services[] = new Services[]{};
 
 
-    public void change_un(String us){
+    public void change_un(String us) {
         this.username = us;
 
     }
 
 
-
-    public class Notifications  {
+    public class Notifications {
         public String received;
         public String service;
         public String text;
@@ -40,8 +39,8 @@ public class ProfileInfo  {
 
 
     }
-    public class Services
-    {
+
+    public class Services {
         public String name;
         public String description;
 
@@ -61,17 +60,16 @@ public class ProfileInfo  {
     }
 
 
-    public void update(ProfileInfo updateInfo)
-    {
+    public void update(ProfileInfo updateInfo) {
 
-        username=updateInfo.username;
-        timestamp=updateInfo.timestamp;
-        credit=updateInfo.credit;
-        if(updateInfo.profile.full_name!=null)
-            profile=updateInfo.profile;
+        username = updateInfo.username;
+        timestamp = updateInfo.timestamp;
+        credit = updateInfo.credit;
+        if (updateInfo.profile.full_name != null)
+            profile = updateInfo.profile;
 
 
-        Log.e("pro","finish update 2");
+        Log.e("pro", "finish update 2");
     }
 
 

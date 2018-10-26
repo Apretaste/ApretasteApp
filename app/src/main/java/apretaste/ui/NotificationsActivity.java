@@ -43,7 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class NotificationsActivity extends AppCompatActivity implements Mailerlistener , Httplistener {
+public class NotificationsActivity extends AppCompatActivity implements Mailerlistener, Httplistener {
 
     public static final String RESP = "resp";
     public ArrayList<Notifications> listNoti;//aki
@@ -80,8 +80,6 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                                 db.deleteAllTable("notifications");
 
 
-
-
                             }
                         })
                         .setNegativeButton("No", null)
@@ -93,22 +91,18 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
         db = new DbHelper(this);
 
 
-
-
-        listNoti= db.getAllNotifications();
-        if (listNoti.size() > 0){
-            ((ViewSwitcher)findViewById(R.id.notifSwitcher)).setDisplayedChild(1);
-            rv=(RecyclerView)findViewById(R.id.notifRV);
+        listNoti = db.getAllNotifications();
+        if (listNoti.size() > 0) {
+            ((ViewSwitcher) findViewById(R.id.notifSwitcher)).setDisplayedChild(1);
+            rv = (RecyclerView) findViewById(R.id.notifRV);
             rv.setLayoutManager(new LinearLayoutManager(this));
-            MyAdapter adapter=new MyAdapter(listNoti);
+            MyAdapter adapter = new MyAdapter(listNoti);
             rv.setAdapter(adapter);
 
         }
 
 
     }
-
-
 
 
     @Override
@@ -127,7 +121,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialog.Builder(NotificationsActivity.this).setTitle("Error").setMessage(DrawerActivity.NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE +e.toString()).setPositiveButton("OK", null).show();
+                new AlertDialog.Builder(NotificationsActivity.this).setTitle("Error").setMessage(DrawerActivity.NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE + e.toString()).setPositiveButton("OK", null).show();
             }
         });
     }
@@ -136,7 +130,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
     public void onResponseArrived(String service, String command, String response, Mailer mailer) {
 
         File file = new File(response);
-        db.addHistory(service,command,file.toURI().toString(), String.valueOf(mailer.getResponseTimestamp()));
+        db.addHistory(service, command, file.toURI().toString(), String.valueOf(mailer.getResponseTimestamp()));
         final HistoryEntry entry = new HistoryEntry(service, command, file.toURI().toString(), mailer.getResponseTimestamp());
         runOnUiThread(new Runnable() {
             @Override
@@ -148,25 +142,24 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             }
         });
 
-        if (mailer.mincache !=null) {
+        if (mailer.mincache != null) {
             db.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(mailer.mincache), new File(response).toURI().toString());
         }
 
         if (mailer.ext != null) {
 
-            ProfileInfo pi = new Gson().fromJson( mailer.ext,ProfileInfo.class);
+            ProfileInfo pi = new Gson().fromJson(mailer.ext, ProfileInfo.class);
 
                 /*Accion para anadir notifiaciones */
-            if (pi.notifications.length > 0){
+            if (pi.notifications.length > 0) {
                 db.addNotification(pi.notifications);
 
             }
 
-            new PrefsManager(). saveData("mailbox", NotificationsActivity.this, pi.mailbox);
-            new PrefsManager(). saveData("type_img", NotificationsActivity.this, pi.img_quality);
+            new PrefsManager().saveData("mailbox", NotificationsActivity.this, pi.mailbox);
+            new PrefsManager().saveData("type_img", NotificationsActivity.this, pi.img_quality);
         }
     }
-
 
 
     @Override
@@ -181,6 +174,7 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
         finish();
         //  super.onBackPressed();
     }
+
     @Override
     public void onResponseSimpleHttp(String response) {
 
@@ -202,37 +196,34 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
             }
         });
 
-        if (multipartHttp.mincache !=null) {
+        if (multipartHttp.mincache != null) {
             db.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(multipartHttp.mincache), new File(response).toURI().toString());
         }
 
         if (multipartHttp.ext != null) {
 
-            ProfileInfo pi = new Gson().fromJson( multipartHttp.ext,ProfileInfo.class);
+            ProfileInfo pi = new Gson().fromJson(multipartHttp.ext, ProfileInfo.class);
 
                 /*Accion para anadir notifiaciones */
-            if (pi.notifications.length > 0){
+            if (pi.notifications.length > 0) {
                 db.addNotification(pi.notifications);
             }
 
-            new PrefsManager(). saveData("mailbox", NotificationsActivity.this, pi.mailbox);
-            new PrefsManager(). saveData("type_img", NotificationsActivity.this, pi.img_quality);
+            new PrefsManager().saveData("mailbox", NotificationsActivity.this, pi.mailbox);
+            new PrefsManager().saveData("type_img", NotificationsActivity.this, pi.img_quality);
         }
     }
 
 
-    private class MyAdapter extends RecyclerView.Adapter
-    {
+    private class MyAdapter extends RecyclerView.Adapter {
 
         ArrayList<Notifications> notiList;//esta
 
 
-
-
-
-        public  MyAdapter(ArrayList<Notifications> listNoti){
+        public MyAdapter(ArrayList<Notifications> listNoti) {
             this.notiList = listNoti;
         }
+
         public static final String DD_MM_YYYY_HH_MMAA = "dd/MM/yyyy hh:mmaa";
         public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd hh:mm:ss";
 
@@ -242,20 +233,19 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                     .inflate(R.layout.notif_item, parent, false);
 
             MyAdapter.RecentHolder vh = new MyAdapter.RecentHolder(v);
-            vh.type =(TextView)v.findViewById(R.id.entry_type);
-            vh.date=(TextView)v.findViewById(R.id.entry_date);
-            vh.title= (TextView) v.findViewById(R.id.entry_title);
+            vh.type = (TextView) v.findViewById(R.id.entry_type);
+            vh.date = (TextView) v.findViewById(R.id.entry_date);
+            vh.title = (TextView) v.findViewById(R.id.entry_title);
             vh.dlbtn = (ImageView) v.findViewById(R.id.dlbtn);
             return vh;
 
         }
 
 
-
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
             final Notifications fdb = listNoti.get(holder.getAdapterPosition());//aki
-            String timeStamp=fdb.getReceived();
+            String timeStamp = fdb.getReceived();
             try {
                 Date dateTime = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS).parse(timeStamp);
                 timeStamp = new SimpleDateFormat(DD_MM_YYYY_HH_MMAA).format(dateTime);
@@ -263,21 +253,20 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                 e.printStackTrace();
             }
 
-            ((MyAdapter.RecentHolder)holder).date.setText(timeStamp.toLowerCase());
-            String mystring=fdb.getService().split(" ")[0].toLowerCase();
-            ((MyAdapter.RecentHolder)holder).type.setText(mystring.substring(0,1).toUpperCase() + mystring.substring(1));
+            ((MyAdapter.RecentHolder) holder).date.setText(timeStamp.toLowerCase());
+            String mystring = fdb.getService().split(" ")[0].toLowerCase();
+            ((MyAdapter.RecentHolder) holder).type.setText(mystring.substring(0, 1).toUpperCase() + mystring.substring(1));
 
 
             final SpannableStringBuilder sb = new SpannableStringBuilder(fdb.getText());
 
 
-            ((MyAdapter.RecentHolder)holder).title.setOnClickListener(new View.OnClickListener() {
+            ((MyAdapter.RecentHolder) holder).title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(fdb.getLink()!=null && !fdb.getLink().isEmpty()) {
+                    if (fdb.getLink() != null && !fdb.getLink().isEmpty()) {
 
-                        comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this,NotificationsActivity.this);
-
+                        comunication.execute(NotificationsActivity.this, fdb.getLink(), fdb.getLink(), false, fdb.getLink(), NotificationsActivity.this, NotificationsActivity.this);
 
 
                     }
@@ -285,41 +274,36 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
                     listNoti.get(holder.getAdapterPosition()).setRead("1");
                     notifyItemChanged(holder.getAdapterPosition());
 
-                   /// notifyDataSetChanged();
-
+                    /// notifyDataSetChanged();
 
 
                 }
             });
 
-            if(fdb.getRead().equals("1"))
-            {
+            if (fdb.getRead().equals("1")) {
 
-                ((MyAdapter.RecentHolder)holder).title.setText(sb);
-            }
-            else
-            {
+                ((MyAdapter.RecentHolder) holder).title.setText(sb);
+            } else {
 
                 final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
                 sb.setSpan(bss, 0, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE); // make first 4 characters Bold
-                ((MyAdapter.RecentHolder)holder).title.setText(sb);
+                ((MyAdapter.RecentHolder) holder).title.setText(sb);
             }
-            ((MyAdapter.RecentHolder)holder).itemView.setOnClickListener(new View.OnClickListener() {
+            ((MyAdapter.RecentHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                 }
             });
-            ((MyAdapter.RecentHolder)holder).dlbtn.setOnClickListener(new View.OnClickListener() {
+            ((MyAdapter.RecentHolder) holder).dlbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
 
-                  db.delBy("notifications","_id", String.valueOf(fdb.getId()));
+                    db.delBy("notifications", "_id", String.valueOf(fdb.getId()));
 
                     listNoti.remove(holder.getAdapterPosition());
                     notifyItemRemoved(holder.getAdapterPosition());
-
 
 
                 }
@@ -331,10 +315,11 @@ public class NotificationsActivity extends AppCompatActivity implements Mailerli
         public int getItemCount() {
             return listNoti.size();
         }
-        private class RecentHolder extends RecyclerView.ViewHolder
-        {
+
+        private class RecentHolder extends RecyclerView.ViewHolder {
             TextView type, date, title;
             ImageView dlbtn;
+
             RecentHolder(View itemView) {
                 super(itemView);
             }

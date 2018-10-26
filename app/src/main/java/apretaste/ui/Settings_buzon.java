@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.apretaste.R;
+
 import apretaste.Helper.PrefsManager;
 
 public class Settings_buzon extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class Settings_buzon extends AppCompatActivity {
     PrefsManager prefsManager = new PrefsManager();
 
     SettingsActivity settingsActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,27 +29,24 @@ public class Settings_buzon extends AppCompatActivity {
         et_domain = (EditText) findViewById(R.id.et_domain);
         // PrefsWatcher.bindWatcher(this,et_buzon,"mailbox","app@mailgun.apretaste.com");
 
-        prefsManager.show_value(this , et_buzon,"mailbox","app@mailgun.apretaste.com");
-        prefsManager.show_value(this , et_domain,"domain","apretaste.com");
+        prefsManager.show_value(this, et_buzon, "mailbox", "app@mailgun.apretaste.com");
+        prefsManager.show_value(this, et_domain, "domain", "apretaste.com");
 
         findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (et_buzon.getText().toString().isEmpty() && et_buzon.getText().toString().isEmpty() ){
-                    Toast.makeText(getBaseContext(),"Rellene todos los campos ",Toast.LENGTH_SHORT).show();
+                if (et_buzon.getText().toString().isEmpty() && et_buzon.getText().toString().isEmpty()) {
+                    Toast.makeText(getBaseContext(), "Rellene todos los campos ", Toast.LENGTH_SHORT).show();
 
-                }else{
-                    prefsManager.change_value(Settings_buzon.this ,"mailbox" , et_buzon);
-                    prefsManager.change_value(Settings_buzon.this ,"domain" , et_domain);
-                    Toast.makeText(getBaseContext(),"Se han guardado los cambios",Toast.LENGTH_SHORT).show();
+                } else {
+                    prefsManager.change_value(Settings_buzon.this, "mailbox", et_buzon);
+                    prefsManager.change_value(Settings_buzon.this, "domain", et_domain);
+                    Toast.makeText(getBaseContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
 
                 }
 
             }
         });
-
-
-
 
 
     }

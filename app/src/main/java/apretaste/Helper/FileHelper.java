@@ -13,17 +13,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-
 /**
  * Created by cjam on 8/10/2017.
  */
 
 public class FileHelper {
 
-    public void createDirectory(Context context ,String name){
-        File mydir = context.getDir( name, Context.MODE_PRIVATE); //Creating an internal dir;
-        if(!mydir.exists())
-        {
+    public void createDirectory(Context context, String name) {
+        File mydir = context.getDir(name, Context.MODE_PRIVATE); //Creating an internal dir;
+        if (!mydir.exists()) {
             mydir.mkdirs();
         }
 
@@ -58,7 +56,6 @@ public class FileHelper {
             file.delete();
         }
     }
-
 
 
 }

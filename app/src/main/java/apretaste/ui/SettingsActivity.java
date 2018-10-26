@@ -52,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     WebView wvs;
     public static boolean terminating = false;
     public boolean task = false;
-     TextView type_conn;
+    TextView type_conn;
 
     @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
@@ -64,52 +64,51 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         final SharedPreferences.Editor editor = preferences.edit();
 
 
-
-         state_img = (TextView) findViewById(R.id.state_img);
+        state_img = (TextView) findViewById(R.id.state_img);
         type_conn = (TextView) findViewById(R.id.tvTypeConn);
 
-        if (!new PrefsManager().getData("type_img",SettingsActivity.this).equals("")){
-           switch (new PrefsManager().getData("type_img",SettingsActivity.this)){
-               case "ORIGINAL":{
-                   state_img.setText(" (original)");
-                   break;
-               }
+        if (!new PrefsManager().getData("type_img", SettingsActivity.this).equals("")) {
+            switch (new PrefsManager().getData("type_img", SettingsActivity.this)) {
+                case "ORIGINAL": {
+                    state_img.setText(" (original)");
+                    break;
+                }
 
-               case "REDUCIDA":{
-                   state_img.setText(" (reducida)");
-                   break;
-               }
+                case "REDUCIDA": {
+                    state_img.setText(" (reducida)");
+                    break;
+                }
 
-               case "SIN_IMAGEN":{
-                   state_img.setText(" (sin imágenes)");
-                   break;
-               }
+                case "SIN_IMAGEN": {
+                    state_img.setText(" (sin imágenes)");
+                    break;
+                }
 
-           }
-        }else{
+            }
+        } else {
             state_img.setText("");
         }
 
 
-       if (!new PrefsManager().getData("type_conn",SettingsActivity.this).equals("")){
-            switch (new PrefsManager().getData("type_conn",SettingsActivity.this)){
-                case "auto":{
+        if (!new PrefsManager().getData("type_conn", SettingsActivity.this).equals("")) {
+            switch (new PrefsManager().getData("type_conn", SettingsActivity.this)) {
+                case "auto": {
                     type_conn.setText(" (automática)");
                     break;
                 }
 
-                case "email":{
+                case "email": {
                     type_conn.setText(" (correo electrónico)");
                     break;
                 }
 
-                case "internet":{
+                case "internet": {
                     type_conn.setText(" (internet)");
                     break;
                 }
 
             }
-        }else{
+        } else {
             state_img.setText("");
         }
 
@@ -143,7 +142,6 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                     comunication.execute(SettingsActivity.this, null, "SUSCRIPCION LISTA ENTRAR", true, "Se ha guardado sus datos", SettingsActivity.this, SettingsActivity.this);
 
 
-
                 } else {
 
 /*Guarda el estado del switch en prefernce(en este caso false pq esta en on el switch*/
@@ -163,8 +161,6 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                     comunication.execute(SettingsActivity.this, null, "SUSCRIPCION LISTA SALIR", true, "Se ha guardado sus datos", SettingsActivity.this, SettingsActivity.this);
 
 
-
-
                 }
 
 
@@ -177,7 +173,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     public void open_activitys(View view) {
         switch (view.getId()) {
 
-           case R.id.ll_config_nauta:
+            case R.id.ll_config_nauta:
                 startActivity(new Intent(SettingsActivity.this, Settings_nauta.class));
                 break;
             case R.id.ll_buzon:
@@ -220,28 +216,27 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
             }
 
-            case R.id.ll_type_conn:
-            {
-                String[] options = {"Correo electrónico","Internet"};
+            case R.id.ll_type_conn: {
+                String[] options = {"Correo electrónico", "Internet"};
                 new AlertDialog.Builder(SettingsActivity.this)
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
+                                switch (which) {
                                     /*case 0:{
                                       new  PrefsManager().saveData("type_conn",SettingsActivity.this,"auto");
                                         type_conn.setText(" (automática)");
                                         break;
                                     }*/
 
-                                    case 0:{
-                                        new  PrefsManager().saveData("type_conn",SettingsActivity.this,"email");
+                                    case 0: {
+                                        new PrefsManager().saveData("type_conn", SettingsActivity.this, "email");
                                         type_conn.setText(" (correo electrónico)");
                                         break;
                                     }
 
-                                    case 1:{
-                                        new  PrefsManager().saveData("type_conn",SettingsActivity.this,"internet");
+                                    case 1: {
+                                        new PrefsManager().saveData("type_conn", SettingsActivity.this, "internet");
                                         type_conn.setText(" (internet)");
                                         break;
                                     }
@@ -251,8 +246,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                 break;
             }
 
-            case R.id.ll_calidad_img:
-            {
+            case R.id.ll_calidad_img: {
                 final SharedPreferences.Editor editor = preferences.edit();
 
                 final boolean active = preferences.getBoolean("active", true);
@@ -261,8 +255,8 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                         .setItems(new CharSequence[]{"Original", "Reducida", "Sin imagenes"}, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                switch (which){
-                                    case 0:{
+                                switch (which) {
+                                    case 0: {
                                       /*  Mailer mailer = new Mailer(SettingsActivity.this, null, "PERFIL IMAGEN ORIGINAL", true, "Preferencias de imagenes", SettingsActivity.this, false);
                                         mailer.setAppendPassword(true);
                                         mailer.setCustomText("Cambiando preferencia de imagenes a original");
@@ -271,13 +265,13 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
                                         comunication.execute(SettingsActivity.this, "", "PERFIL IMAGEN ORIGINAL", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
 
-                                        new  PrefsManager().saveData("type_img",SettingsActivity.this,"ORIGINAL");
+                                        new PrefsManager().saveData("type_img", SettingsActivity.this, "ORIGINAL");
 
                                         state_img.setText(" (original)");
                                         break;
                                     }
 
-                                    case 1:{
+                                    case 1: {
                                       /*  Mailer mailer = new Mailer(SettingsActivity.this, null, "PERFIL IMAGEN REDUCIDA", true, "Preferencias de imagenes", SettingsActivity.this, false);
                                         mailer.setAppendPassword(true);
                                         mailer.setCustomText("Cambiando preferencia de imagenes a reducida");
@@ -286,13 +280,13 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                                         comunication.execute(SettingsActivity.this, "", "PERFIL IMAGEN REDUCIDA", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
 
 
-                                        new  PrefsManager().saveData("type_img",SettingsActivity.this,"REDUCIDA");
+                                        new PrefsManager().saveData("type_img", SettingsActivity.this, "REDUCIDA");
 
                                         state_img.setText(" (reducida)");
                                         break;
                                     }
 
-                                    case 2:{
+                                    case 2: {
 
                                       /*  Mailer mailer = new Mailer(SettingsActivity.this, null, "PERFIL IMAGEN SIN_IMAGEN", true, "Preferencias de imagenes", SettingsActivity.this, false);
                                         mailer.setAppendPassword(true);
@@ -302,7 +296,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
                                         comunication.execute(SettingsActivity.this, "", "PERFIL IMAGEN SIN_IMAGEN", true, "Preferencias de imagenes", SettingsActivity.this, SettingsActivity.this);
 
-                                        new  PrefsManager().saveData("type_img",SettingsActivity.this,"SIN_IMAGEN");
+                                        new PrefsManager().saveData("type_img", SettingsActivity.this, "SIN_IMAGEN");
 
                                         state_img.setText(" (sin imágenes)");
                                         break;
@@ -318,11 +312,8 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
             }
 
 
-
         }
     }
-
-
 
 
     @Override
@@ -378,7 +369,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
     }
 
-    public void ClearAllDates(Context context){
+    public void ClearAllDates(Context context) {
         HistoryManager.getSingleton().entries.clear();
         new DbHelper(SettingsActivity.this).deleteAllTable("cache");
         context.deleteDatabase(DbHelper.DB_NAME);

@@ -10,7 +10,7 @@ import java.util.Date;
  */
 
 public class DataHelper {
-    public String addMinutes(String minutes){
+    public String addMinutes(String minutes) {
 
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
@@ -19,14 +19,14 @@ public class DataHelper {
 
     }
 
-    public static Boolean compareDatime(String datetime1, String datetime2){
-        if (datetime1.compareTo(datetime2) > 0){
-            return  true;
+    public static Boolean compareDatime(String datetime1, String datetime2) {
+        if (datetime1.compareTo(datetime2) > 0) {
+            return true;
         }
         return false;
     }
 
-    public String getNowDateTime(){
+    public String getNowDateTime() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         return new SimpleDateFormat("dd/MM/yyyy hh:mmaa").format(c.getTime());
@@ -43,7 +43,7 @@ public class DataHelper {
 
         if (yourDate.after(currentDate)) {
             return true;
-        }else{
+        } else {
             return false;
         }
 

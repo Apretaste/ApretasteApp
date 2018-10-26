@@ -15,14 +15,16 @@ import android.util.AttributeSet;
 
 import com.example.apretaste.R;
 
-public class AssetDrawableCompatEditText extends AppCompatEditText{
+public class AssetDrawableCompatEditText extends AppCompatEditText {
     public AssetDrawableCompatEditText(Context context) {
         super(context);
     }
+
     public AssetDrawableCompatEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(context, attrs);
     }
+
     public AssetDrawableCompatEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(context, attrs);
@@ -65,7 +67,7 @@ public class AssetDrawableCompatEditText extends AppCompatEditText{
 
     @Override
     public boolean onTextContextMenuItem(int id) {
-                return false;
+        return false;
     }
 
 }

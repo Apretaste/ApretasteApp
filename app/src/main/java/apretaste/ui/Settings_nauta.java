@@ -31,17 +31,17 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
     public static final String OPCIONES_DE_SEGURIDAD = "Opciones de seguridad";
     public static final String SSL = "SSL";
     PrefsManager prefsManager = new PrefsManager();
-    EditText et_email,et_password,et_server_smtp,et_security_smtp,et_server_imap,et_security_imap,et_port_smtp,et_port_imap;
+    EditText et_email, et_password, et_server_smtp, et_security_smtp, et_server_imap, et_security_imap, et_port_smtp, et_port_imap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_nauta);
 
 
-
         et_email = (EditText) findViewById(R.id.et_settings_email);
-        if(new PrefsManager().getData("user", Settings_nauta.this).equals("")){
-            prefsManager.change_value(Settings_nauta.this ,"user" , et_email);
+        if (new PrefsManager().getData("user", Settings_nauta.this).equals("")) {
+            prefsManager.change_value(Settings_nauta.this, "user", et_email);
         }
         et_password = (EditText) findViewById(R.id.et_settings_password);
         et_server_imap = (EditText) findViewById(R.id.et_settings_server_imap);
@@ -51,14 +51,14 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
         et_security_smtp = (EditText) findViewById(R.id.et_settings_security_smtp);
         et_security_imap = (EditText) findViewById(R.id.et_settings_security_imap);
 
-        final CharSequence[] sslOptions=new CharSequence[]{SSL, SIN_SEGURIDAD};
-        View.OnClickListener sslListener=new View.OnClickListener() {
+        final CharSequence[] sslOptions = new CharSequence[]{SSL, SIN_SEGURIDAD};
+        View.OnClickListener sslListener = new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 new AlertDialog.Builder(Settings_nauta.this).setItems(sslOptions, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((EditText)v).setText(sslOptions[which]);
+                        ((EditText) v).setText(sslOptions[which]);
                     }
                 }).setTitle(OPCIONES_DE_SEGURIDAD).show();
             }
@@ -66,21 +66,21 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
         et_security_smtp.setOnClickListener(sslListener);
         et_security_imap.setOnClickListener(sslListener);
 
-        prefsManager.show_value(this,et_email,"user","");
-        prefsManager.show_value(this,et_password,PASS,"");
+        prefsManager.show_value(this, et_email, "user", "");
+        prefsManager.show_value(this, et_password, PASS, "");
 
-        prefsManager.show_value(this,et_server_imap,IMAP_SERVER,IMAP_NAUTA_CU);
-        prefsManager.show_value(this,et_port_imap,IMAP_PORT,"143");
-        prefsManager.show_value(this,et_security_imap,IMAP_SSL,SIN_SEGURIDAD);
+        prefsManager.show_value(this, et_server_imap, IMAP_SERVER, IMAP_NAUTA_CU);
+        prefsManager.show_value(this, et_port_imap, IMAP_PORT, "143");
+        prefsManager.show_value(this, et_security_imap, IMAP_SSL, SIN_SEGURIDAD);
 
-        prefsManager.show_value(this,et_server_smtp,SMTP_SERVER,SMTP_NAUTA_CU);
-        prefsManager.show_value(this,et_port_smtp,SMTP_PORT,"25");
-        prefsManager.show_value(this,et_security_smtp,SMTP_SSL,SIN_SEGURIDAD);
+        prefsManager.show_value(this, et_server_smtp, SMTP_SERVER, SMTP_NAUTA_CU);
+        prefsManager.show_value(this, et_port_smtp, SMTP_PORT, "25");
+        prefsManager.show_value(this, et_security_smtp, SMTP_SSL, SIN_SEGURIDAD);
 
         findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (    et_email.getText().toString().isEmpty() ||
+                if (et_email.getText().toString().isEmpty() ||
                         et_password.getText().toString().isEmpty() ||
 
                         et_server_imap.getText().toString().isEmpty() ||
@@ -89,29 +89,28 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
 
                         et_server_smtp.getText().toString().isEmpty() ||
                         et_port_smtp.getText().toString().isEmpty() ||
-                        et_security_smtp.getText().toString().isEmpty()){
-                    Toast.makeText(getBaseContext(),"Rellene todos los campos",Toast.LENGTH_SHORT).show();
-                }else{
-                    prefsManager.change_value(Settings_nauta.this ,"pass" , et_password);
-                    prefsManager.change_value(Settings_nauta.this ,"user" , et_email);
+                        et_security_smtp.getText().toString().isEmpty()) {
+                    Toast.makeText(getBaseContext(), "Rellene todos los campos", Toast.LENGTH_SHORT).show();
+                } else {
+                    prefsManager.change_value(Settings_nauta.this, "pass", et_password);
+                    prefsManager.change_value(Settings_nauta.this, "user", et_email);
                     //Imap
-                    prefsManager.change_value(Settings_nauta.this ,"imap_server" , et_server_imap);
-                    prefsManager.change_value(Settings_nauta.this ,"imap_port" , et_port_imap);
-                    prefsManager.change_value(Settings_nauta.this ,"imap_ssl" , et_security_imap);
+                    prefsManager.change_value(Settings_nauta.this, "imap_server", et_server_imap);
+                    prefsManager.change_value(Settings_nauta.this, "imap_port", et_port_imap);
+                    prefsManager.change_value(Settings_nauta.this, "imap_ssl", et_security_imap);
 
                     //Smtp
-                    prefsManager.change_value(Settings_nauta.this ,"smtp_server" , et_server_smtp);
-                    prefsManager.change_value(Settings_nauta.this ,"smtp_port" , et_port_smtp);
-                    prefsManager.change_value(Settings_nauta.this ,"smtp_ssl" , et_security_smtp);
+                    prefsManager.change_value(Settings_nauta.this, "smtp_server", et_server_smtp);
+                    prefsManager.change_value(Settings_nauta.this, "smtp_port", et_port_smtp);
+                    prefsManager.change_value(Settings_nauta.this, "smtp_ssl", et_security_smtp);
 
-                    Log.e("user",new PrefsManager().getData("user",Settings_nauta.this));
-                    Log.e("pass",new PrefsManager().getData("pass",Settings_nauta.this));
-                    Mailer mailer=new Mailer(Settings_nauta.this, null,"PERFIL IMAGEN "+ new PrefsManager().getData("type_img",Settings_nauta.this), true, null, Settings_nauta.this,true);
+                    Log.e("user", new PrefsManager().getData("user", Settings_nauta.this));
+                    Log.e("pass", new PrefsManager().getData("pass", Settings_nauta.this));
+                    Mailer mailer = new Mailer(Settings_nauta.this, null, "PERFIL IMAGEN " + new PrefsManager().getData("type_img", Settings_nauta.this), true, null, Settings_nauta.this, true);
                     mailer.execute();
                 }
             }
         });
-
 
 
     }
@@ -120,17 +119,17 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
     public void onMailSent() {
 
 
-        prefsManager.change_value(Settings_nauta.this ,"pass" , et_password);
-        prefsManager.change_value(Settings_nauta.this ,"user" , et_email);
+        prefsManager.change_value(Settings_nauta.this, "pass", et_password);
+        prefsManager.change_value(Settings_nauta.this, "user", et_email);
         //Imap
-        prefsManager.change_value(Settings_nauta.this ,"imap_server" , et_server_imap);
-        prefsManager.change_value(Settings_nauta.this ,"imap_port" , et_port_imap);
-        prefsManager.change_value(Settings_nauta.this ,"imap_ssl" , et_security_imap);
+        prefsManager.change_value(Settings_nauta.this, "imap_server", et_server_imap);
+        prefsManager.change_value(Settings_nauta.this, "imap_port", et_port_imap);
+        prefsManager.change_value(Settings_nauta.this, "imap_ssl", et_security_imap);
 
         //Smtp
-        prefsManager.change_value(Settings_nauta.this ,"smtp_server" , et_server_smtp);
-        prefsManager.change_value(Settings_nauta.this ,"smtp_port" , et_port_smtp);
-        prefsManager.change_value(Settings_nauta.this ,"smtp_ssl" , et_security_smtp);
+        prefsManager.change_value(Settings_nauta.this, "smtp_server", et_server_smtp);
+        prefsManager.change_value(Settings_nauta.this, "smtp_port", et_port_smtp);
+        prefsManager.change_value(Settings_nauta.this, "smtp_ssl", et_security_smtp);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -145,10 +144,10 @@ public class Settings_nauta extends AppCompatActivity implements Mailerlistener 
     @Override
     public void onError(Exception e) {
 
-        Log.e("error",e.toString());
+        Log.e("error", e.toString());
 
-        prefsManager.change_value2(Settings_nauta.this ,"user" , "");
-        prefsManager.change_value2(Settings_nauta.this ,"pass" , "");
+        prefsManager.change_value2(Settings_nauta.this, "user", "");
+        prefsManager.change_value2(Settings_nauta.this, "pass", "");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -20,7 +20,10 @@ public class ComunicationJson {
     public String ostype;
     public String method;
 
-    public void setMethod(String method) {this.method = method;}
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
     public void setOstype() {
         this.ostype = "android";
     }
@@ -45,9 +48,6 @@ public class ComunicationJson {
     public void setVersion(String version) {
         this.appversion = version;
     }
-
-
-
 
 
 }

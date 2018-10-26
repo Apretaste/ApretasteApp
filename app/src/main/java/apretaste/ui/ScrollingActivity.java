@@ -24,7 +24,7 @@ public class ScrollingActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        final AppBarLayout bl=(AppBarLayout)findViewById(R.id.app_bar);
+        final AppBarLayout bl = (AppBarLayout) findViewById(R.id.app_bar);
 
         bl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override

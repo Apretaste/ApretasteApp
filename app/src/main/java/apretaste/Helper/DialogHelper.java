@@ -13,8 +13,7 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 public class DialogHelper {
 
 
-
-    public void simpleAlert(Context context , String title, String msg){
+    public void simpleAlert(Context context, String title, String msg) {
         new AlertDialog.Builder(context)
 
                 .setMessage(msg)
@@ -23,7 +22,7 @@ public class DialogHelper {
                 .show();
     }
 
-    public KProgressHUD DialogRequest(Activity activity){
+    public KProgressHUD DialogRequest(Activity activity) {
         KProgressHUD alert;
         alert = new KProgressHUD(activity);
         alert.setStyle(KProgressHUD.Style.SPIN_INDETERMINATE);

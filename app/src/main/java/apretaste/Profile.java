@@ -25,30 +25,29 @@ public class Profile implements Cloneable {
     public String sexual_orientation;
     public String religion;
     public String picture;
-    public String[] interests=new String[]{};
-
+    public String[] interests = new String[]{};
 
 
     @Override
-    public Profile clone(){
-        Profile clon=new Profile();
-        clon.full_name=full_name;
-        clon.date_of_birth=date_of_birth;
-        clon.gender=gender;
+    public Profile clone() {
+        Profile clon = new Profile();
+        clon.full_name = full_name;
+        clon.date_of_birth = date_of_birth;
+        clon.gender = gender;
         clon.phone = phone;
-        clon.eyes=eyes;
-        clon.skin=skin;
-        clon.body_type=body_type;
-        clon.hair=hair;
-        clon.province=province;
-        clon.city=city;
-        clon.highest_school_level=highest_school_level;
-        clon.occupation=occupation;
-        clon.marital_status=marital_status;
-        clon.sexual_orientation=sexual_orientation;
-        clon.religion=religion;
-        clon.picture=picture;
-        clon.interests=interests;
+        clon.eyes = eyes;
+        clon.skin = skin;
+        clon.body_type = body_type;
+        clon.hair = hair;
+        clon.province = province;
+        clon.city = city;
+        clon.highest_school_level = highest_school_level;
+        clon.occupation = occupation;
+        clon.marital_status = marital_status;
+        clon.sexual_orientation = sexual_orientation;
+        clon.religion = religion;
+        clon.picture = picture;
+        clon.interests = interests;
         return clon;
     }
 }

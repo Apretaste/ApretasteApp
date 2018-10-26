@@ -7,18 +7,13 @@ import android.provider.Settings;
  */
 
 public class StringHelper {
-    public  String clearString(String str1){
+    public String clearString(String str1) {
 
         return str1.toLowerCase().trim().replaceAll("\\s+", " ");
     }
 
 
-
-
-
-
-    public String removeFirstAndLastChar(String s)
-    {
+    public String removeFirstAndLastChar(String s) {
         return s.substring(1, s.length() - 1);
     }
 

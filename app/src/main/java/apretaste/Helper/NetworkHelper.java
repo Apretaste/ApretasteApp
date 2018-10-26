@@ -12,14 +12,14 @@ import java.io.IOException;
 
 public class NetworkHelper {
 
-        public boolean haveConn(final Context context){
-            ConnectivityManager conManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo i = conManager.getActiveNetworkInfo();
-            if ((i == null)||(!i.isConnected())||(!i.isAvailable())) {
-               return false;
-            }
-            return true;
+    public boolean haveConn(final Context context) {
+        ConnectivityManager conManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo i = conManager.getActiveNetworkInfo();
+        if ((i == null) || (!i.isConnected()) || (!i.isAvailable())) {
+            return false;
         }
+        return true;
+    }
 
     public static boolean isOnline(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -28,5 +28,5 @@ public class NetworkHelper {
     }
 
 
-    }
+}
 

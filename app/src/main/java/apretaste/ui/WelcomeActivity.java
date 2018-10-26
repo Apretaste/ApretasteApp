@@ -45,7 +45,7 @@ public class WelcomeActivity extends AppCompatActivity {
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();
-        }else{
+        } else {
             ClearAllDates(WelcomeActivity.this);
         }
 
@@ -210,7 +210,7 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
-    public void ClearAllDates(Context context){
+    public void ClearAllDates(Context context) {
         HistoryManager.getSingleton().entries.clear();
         context.deleteDatabase(DbHelper.DB_NAME);
         FileHelper.delete(getCacheDir(), false);
