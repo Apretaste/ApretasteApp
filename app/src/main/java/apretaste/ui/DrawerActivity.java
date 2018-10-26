@@ -19,7 +19,9 @@ import android.net.Uri;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Helper.InputTypeHelper;
 import apretaste.ProfileInfo;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -53,6 +55,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -106,16 +109,14 @@ import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
 
 
-
-
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener  , HistoryManager.HistoryListener, Mailerlistener,Httplistener {
+        implements InputTypeHelper.InputTypeInterface, NavigationView.OnNavigationItemSelectedListener, HistoryManager.HistoryListener, Mailerlistener, Httplistener {
     public static boolean pressed = false;
     public static ProfileInfo pro;
     public static final String PASS = "pass";
     public static final String USER = "user";
     public static boolean needsReload = false;
-    public  String pref;
+    public String pref;
     DbHelper dbh;
     FloatingActionButton fabSync;
     public static final String COMMAND = "command";
@@ -128,12 +129,12 @@ public class DrawerActivity extends AppCompatActivity
     AlertHelper alertHelper = new AlertHelper();
     DataHelper dataHelper = new DataHelper();
     ImageView profilePict;
-    public  ServiceAdapter serviceAdapter;
+    public ServiceAdapter serviceAdapter;
     String mailbox, user, password;
     public static final String MAILBOX = "mailbox";
     private int count;
     public static final String PERFIL_STATUS = "status ";
-    private WebView wv;
+    public WebView wv;
     ViewSwitcher vsw;
 
     public static final String NO_HEMOS_PODIDO_ESTABLECER_COMUNICACION_ASEGURESE_QUE_SUS_DATOS_SON_CORRECTOS_E_INTENTE_NUEVAMENTE = "No hemos podido establecer comunicación , asegurese que los datos moviles esten encendidos , de lo contrario es problema de conexion con los servidores nauta , intentelo más tarde nuevamente";
@@ -152,7 +153,7 @@ public class DrawerActivity extends AppCompatActivity
     Comunication comunication = new Comunication();
     double latest;
     private GridView gridView;
-    EditText  etSearchview;
+    EditText etSearchview;
     private int laststate = 0;
     public static final String IMAGE = "image/*";
     private final static int REQUEST_STORAGE_PERMISSION = 1;
@@ -167,7 +168,7 @@ public class DrawerActivity extends AppCompatActivity
         setContentView(R.layout.activity_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        dbh =    DbHelper.getSingleton(this);
+        dbh = DbHelper.getSingleton(this);
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
 
         fabSync.setOnClickListener(new View.OnClickListener() {
@@ -180,11 +181,11 @@ public class DrawerActivity extends AppCompatActivity
                                         comunication.setSaveInternal(true);
                                         comunication.setReturnContent(true);
                                         comunication.execute(DrawerActivity.this, null, PERFIL_STATUS, false, null,
-                                                DrawerActivity.this,DrawerActivity.this);
+                                                DrawerActivity.this, DrawerActivity.this);
 
                                     }
                                 }
-                        ).setNegativeButton("Cancelar",null).show();
+                        ).setNegativeButton("Cancelar", null).show();
             }
         });
 
@@ -195,25 +196,20 @@ public class DrawerActivity extends AppCompatActivity
         toggle.syncState();
 
 
+        appbar = (Toolbar) findViewById(R.id.tb);
+        vsw = (ViewSwitcher) findViewById(R.id.homeSwitcher);
+        mailbox = PreferenceManager.getDefaultSharedPreferences(this).getString(MAILBOX, "interweb+ap@gmail.com");
+        user = PreferenceManager.getDefaultSharedPreferences(this).getString(USER, "");
+        password = PreferenceManager.getDefaultSharedPreferences(this).getString(PASS, "");
+        if ((pref = PreferenceManager.getDefaultSharedPreferences(this).getString("resp", null)) != null) {
+            try {
+                pro = new Gson().fromJson(pref, ProfileInfo.class);
 
-        appbar=(Toolbar)findViewById(R.id.tb);
-        vsw=(ViewSwitcher)findViewById(R.id.homeSwitcher);
-        mailbox= PreferenceManager.getDefaultSharedPreferences(this).getString(MAILBOX, "interweb+ap@gmail.com");
-        user=PreferenceManager.getDefaultSharedPreferences(this).getString(USER,"");
-        password=PreferenceManager.getDefaultSharedPreferences(this).getString(PASS,"");
-        if((pref=PreferenceManager.getDefaultSharedPreferences(this).getString("resp",null))!=null)
-        {
-            try
-            {
-                pro=new Gson().fromJson(pref,ProfileInfo.class);
-
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Toast.makeText(this, "Ha ocurrido un error en el servidor.", Toast.LENGTH_SHORT).show();
                 PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
-                SettingsActivity.terminating=true;
-                startActivity(new Intent(this,LoginActivity.class));
+                SettingsActivity.terminating = true;
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return;
             }
@@ -223,9 +219,9 @@ public class DrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-         hView = navigationView.getHeaderView(0);
+        hView = navigationView.getHeaderView(0);
 
-        count_noti=(TextView) MenuItemCompat.getActionView(navigationView.getMenu().
+        count_noti = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
                 findItem(R.id.nav_noti));
 
 
@@ -233,68 +229,65 @@ public class DrawerActivity extends AppCompatActivity
 
 
        /*Accin para abrir la activity perfil desde el header */
-        profilePict=(ImageView)hView.findViewById(R.id.ivProfile);
+        profilePict = (ImageView) hView.findViewById(R.id.ivProfile);
         profilePict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                comunication.execute(DrawerActivity.this,"PERFIL","PERFIL EDITAR",false,"",DrawerActivity.this,DrawerActivity.this);
+                comunication.execute(DrawerActivity.this, "PERFIL", "PERFIL EDITAR", false, "", DrawerActivity.this, DrawerActivity.this);
 
             }
         });
 
-        showProfileInfo(hView,false);
-        String history=PreferenceManager.getDefaultSharedPreferences(this).getString(HISTORY,null);
-        List<LinkedTreeMap<String,String>> enties=new Gson().fromJson(history,List.class);
-        hm= HistoryManager.getSingleton();
-        if(enties!=null)
-        {
+        showProfileInfo(hView, false);
+        String history = PreferenceManager.getDefaultSharedPreferences(this).getString(HISTORY, null);
+        List<LinkedTreeMap<String, String>> enties = new Gson().fromJson(history, List.class);
+        hm = HistoryManager.getSingleton();
+        if (enties != null) {
             hm.entries.clear();
             for (Map<String, String> val :
                     enties) {
-                hm.entries.add(new HistoryEntry(val.get(SERVICE),val.get(COMMAND),val.get(PATH),new Date(val.get(DATE))));
+                hm.entries.add(new HistoryEntry(val.get(SERVICE), val.get(COMMAND), val.get(PATH), new Date(val.get(DATE))));
             }
         }
 
 
         /*Accion para mostrar los servicios en el gridview*/
 
-        serviceAdapter = new ServiceAdapter(DrawerActivity.this,dbh.getAllServices());
+        serviceAdapter = new ServiceAdapter(DrawerActivity.this, dbh.getAllServices());
         gridView = (GridView) findViewById(R.id.gridview);
         gridView.setAdapter(serviceAdapter);
         gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            boolean ismaximized=true;
+            boolean ismaximized = true;
+
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-                if(scrollState==SCROLL_STATE_IDLE)
-                {
+                if (scrollState == SCROLL_STATE_IDLE) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        AnimatorSet as=new AnimatorSet();
+                        AnimatorSet as = new AnimatorSet();
                         as.setDuration(200);
                         as.playTogether(
-                                ObjectAnimator.ofFloat(fabSync,"scaleY",0,1),
-                                ObjectAnimator.ofFloat(fabSync,"scaleX",0,1)
+                                ObjectAnimator.ofFloat(fabSync, "scaleY", 0, 1),
+                                ObjectAnimator.ofFloat(fabSync, "scaleX", 0, 1)
 
                         );
                         as.start();
                     }
 
 
-                }
-                else
-                {
-                    if(laststate==SCROLL_STATE_IDLE)
+                } else {
+                    if (laststate == SCROLL_STATE_IDLE)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                            AnimatorSet as=new AnimatorSet();
+                            AnimatorSet as = new AnimatorSet();
                             as.setDuration(200);
                             as.playTogether(
-                                    ObjectAnimator.ofFloat(fabSync,"scaleY",1,0),
-                                    ObjectAnimator.ofFloat(fabSync,"scaleX",1,0));
+                                    ObjectAnimator.ofFloat(fabSync, "scaleY", 1, 0),
+                                    ObjectAnimator.ofFloat(fabSync, "scaleX", 1, 0));
                             as.start();
 
                         }
                 }
-                laststate=scrollState;
+                laststate = scrollState;
             }
 
             @Override
@@ -308,9 +301,9 @@ public class DrawerActivity extends AppCompatActivity
                 new AlertDialog.Builder(DrawerActivity.this).setItems(new CharSequence[]{"Abrir", "Buscar", "Detalles"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dlg, int which) {
-                        switch (which){
-                            case 0:{
-                                if(serviceAdapter.sevList.get(position).getUsed().equals("0")) {
+                        switch (which) {
+                            case 0: {
+                                if (serviceAdapter.sevList.get(position).getUsed().equals("0")) {
                                     dbh.setUsed(serviceAdapter.sevList.get(position).getId());
                                     serviceAdapter.sevList.get(position).setUsed("1");
                                     serviceAdapter.notifyDataSetChanged();
@@ -318,11 +311,11 @@ public class DrawerActivity extends AppCompatActivity
 
                                 }
                                 String peticion = new StringHelper().clearString(serviceAdapter.sevList.get(position).getName());
-                                if (!dbh.getAllCache(peticion,"peticion").equals("")){
+                                if (!dbh.getAllCache(peticion, "peticion").equals("")) {
                                     try {
-                                        if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),dbh.getAllCache(peticion,"cache"))){
-                                            Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
-                                            final HistoryEntry entry = new HistoryEntry(peticion, null,dbh.getAllCache(peticion,"path"),  null);
+                                        if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(), dbh.getAllCache(peticion, "cache"))) {
+                                            Log.i("llamar", "abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                            final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion, "path"), null);
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -333,27 +326,26 @@ public class DrawerActivity extends AppCompatActivity
                                                 }
                                             });
 
-                                        }else{
-                                            Log.i("llamar","llamar servicios y borra el cache");
-                                            dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
+                                        } else {
+                                            Log.i("llamar", "llamar servicios y borra el cache");
+                                            dbh.delBy("cache", "_id", dbh.getAllCache(peticion, "id"));
 
-                                            comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName(),false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
+                                            comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName(), false, serviceAdapter.sevList.get(position).getDescription(), DrawerActivity.this, DrawerActivity.this);
                                         }
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                }else {
+                                } else {
 
 
-                                    comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName(),false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
+                                    comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName(), false, serviceAdapter.sevList.get(position).getDescription(), DrawerActivity.this, DrawerActivity.this);
 
                                 }
                                 break;
                             }
 
-                            case 1:{
-                                if(serviceAdapter.sevList.get(position).getUsed().equals("0"))
-                                {
+                            case 1: {
+                                if (serviceAdapter.sevList.get(position).getUsed().equals("0")) {
 
                                     serviceAdapter.sevList.get(position).setUsed("1");
                                     dbh.setUsed(serviceAdapter.sevList.get(position).getId());
@@ -362,70 +354,66 @@ public class DrawerActivity extends AppCompatActivity
                                 }
 
 
-                                final View v=getLayoutInflater().inflate(R.layout.dialog_prompt,null);
+                                final View v = getLayoutInflater().inflate(R.layout.dialog_prompt, null);
                                 final AlertDialog alertDialog = new AlertDialog.Builder(DrawerActivity.this).setView(v).setMessage("Escriba un texto para ejecutar dentro del servicio")
                                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                String extra=((EditText)v.findViewById(R.id.command_text)).getText().toString();
+                                                String extra = ((EditText) v.findViewById(R.id.command_text)).getText().toString();
 
 
+                                                String peticion = new StringHelper().clearString(((serviceAdapter.sevList.get(position).getName() + " " + extra)));
 
-                                                String peticion = new StringHelper().clearString(((serviceAdapter.sevList.get(position).getName()+" "+extra)) );
-
-                                                if (!dbh.getAllCache(peticion,"peticion").equals("")){
+                                                if (!dbh.getAllCache(peticion, "peticion").equals("")) {
 
 
                                                     try {
-                                                        if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),dbh.getAllCache(peticion,"cache"))){
-                                                            Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
-                                                            final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion,"path"),  null);
+                                                        if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(), dbh.getAllCache(peticion, "cache"))) {
+                                                            Log.i("llamar", "abrir el cacheado");//Si la fecha de la db es superior a la actual
+                                                            final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion, "path"), null);
                                                             runOnUiThread(new Runnable() {
                                                                 @Override
                                                                 public void run() {
 
                                                                     HistoryManager.getSingleton().setCurrentPage(entry);
-                                                                        open = true;
+                                                                    open = true;
 
                                                                 }
                                                             });
 
-                                                        }else{
-                                                            Log.i("llamar","llamar servicios y borra el cache");
-                                                            dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
+                                                        } else {
+                                                            Log.i("llamar", "llamar servicios y borra el cache");
+                                                            dbh.delBy("cache", "_id", dbh.getAllCache(peticion, "id"));
 
 
-
-                                                            comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra,false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
+                                                            comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra, false, serviceAdapter.sevList.get(position).getDescription(), DrawerActivity.this, DrawerActivity.this);
 
                                                         }
                                                     } catch (ParseException e) {
                                                         e.printStackTrace();
                                                     }
-                                                }else{
-                                                    Log.i("llamar","El servicio no esta en cache");
+                                                } else {
+                                                    Log.i("llamar", "El servicio no esta en cache");
                                                     if (extra.equals("")) {
                                                         Toast.makeText(DrawerActivity.this, "Rellene el campo antes de enviar", Toast.LENGTH_SHORT).show();
-                                                    }else{
+                                                    } else {
 
-                                                        comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra,false, serviceAdapter.sevList.get(position).getDescription(),DrawerActivity.this,DrawerActivity.this);
+                                                        comunication.execute(DrawerActivity.this, serviceAdapter.sevList.get(position).getName(), serviceAdapter.sevList.get(position).getName() + " " + extra, false, serviceAdapter.sevList.get(position).getDescription(), DrawerActivity.this, DrawerActivity.this);
                                                     }
                                                 }
 
 
-
                                             }
-                                        }).setNegativeButton("Cancelar",null).show();
+                                        }).setNegativeButton("Cancelar", null).show();
                                 break;
                             }
 
-                            case 2:{
-                                  idservice = serviceAdapter.sevList.get(position).getId();
+                            case 2: {
+                                idservice = serviceAdapter.sevList.get(position).getId();
                                 startActivity(new Intent(DrawerActivity.this, ServiceDetails.class));
                                 finish();
                                 break;
                             }
-
 
 
                         }
@@ -435,27 +423,20 @@ public class DrawerActivity extends AppCompatActivity
         });
 
 
-
-
-        wv=(WebView)findViewById(R.id.mainWebView);
+        wv = findViewById(R.id.mainWebView);
         wv.getSettings().setSupportZoom(true);
         wv.getSettings().setDisplayZoomControls(true);
 
         wv.getSettings().setJavaScriptEnabled(true);
-        wv.setOnKeyListener(new View.OnKeyListener()
-        {
+        wv.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event)
-            {
-                if(event.getAction() == KeyEvent.ACTION_DOWN)
-                {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     WebView wv = (WebView) v;
 
-                    switch(keyCode)
-                    {
+                    switch (keyCode) {
                         case KeyEvent.KEYCODE_BACK:
-                            if(wv.canGoBack())
-                            {
+                            if (wv.canGoBack()) {
                                 wv.goBack();
                                 return true;
                             }
@@ -468,15 +449,8 @@ public class DrawerActivity extends AppCompatActivity
         });
 
 
-
-
-
-
-
-
-
-        wv.addJavascriptInterface(new JSI(),"apretaste");
-        if(HistoryManager.getSingleton().currentUrl==null) {
+        wv.addJavascriptInterface(new JSI(), "apretaste");
+        if (HistoryManager.getSingleton().currentUrl == null) {
 
             HistoryManager.getSingleton().addListener(this);
         }
@@ -487,10 +461,10 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        if(SettingsActivity.terminating)
+        if (SettingsActivity.terminating)
             return;
-        String enties=new Gson().toJson(HistoryManager.getSingleton().entries);
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(HISTORY,enties).apply();
+        String enties = new Gson().toJson(HistoryManager.getSingleton().entries);
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(HISTORY, enties).apply();
 
 
     }
@@ -498,80 +472,71 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        if(SettingsActivity.terminating)
+        if (SettingsActivity.terminating)
             return;
-        if(needsReload)
-            showProfileInfo(hView,true);
+        if (needsReload)
+            showProfileInfo(hView, true);
     }
 
     @SuppressLint("SetTextI18n")
-    private void showProfileInfo(View view , boolean reloadServices) {
+    private void showProfileInfo(View view, boolean reloadServices) {
 
-        ((TextView)view.findViewById(R.id.tvUsername)).setText("@"+pro.username);
-        ((TextView)view.findViewById(R.id.tvcredit)).setText("§"+String.format("%.2f", pro.credit));
-        profilePict=(ImageView)view.findViewById(R.id.ivProfile);
-        if(reloadServices) {
+        ((TextView) view.findViewById(R.id.tvUsername)).setText("@" + pro.username);
+        ((TextView) view.findViewById(R.id.tvcredit)).setText("§" + String.format("%.2f", pro.credit));
+        profilePict = (ImageView) view.findViewById(R.id.ivProfile);
+        if (reloadServices) {
             serviceAdapter.notifyDataSetChanged();
         }
-        if(pro.profile.picture!=null && !pro.profile.picture.isEmpty())
-        {
+        if (pro.profile.picture != null && !pro.profile.picture.isEmpty()) {
             try {
                 File file = new File(getFilesDir(), pro.profile.picture);
 
-                RoundedBitmapDrawable dr= RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeFile(file.getPath()));
+                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeFile(file.getPath()));
                 dr.setCircular(true);
                 profilePict.setImageDrawable(dr);
-            }
-            catch (Exception ignored)
-            {
+            } catch (Exception ignored) {
 
             }
-        }
-        else {
+        } else {
             profilePict.setImageResource(R.drawable.ic_person_black_24dp);
         }
 
 
-
     }
-
 
 
     @Override
     public void onBackPressed() {
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
 
+        } else {
+            if (open) {
+                isShowingHome = true;
             } else {
-                if (open) {
-                    isShowingHome = true;
+                if (!pressed) {
+                    Toast.makeText(getBaseContext(), PRESIONE_NUEVAMENTE_PARA_SALIR, Toast.LENGTH_SHORT).show();
+                    pressed = true;
                 } else {
-                    if (!pressed) {
-                        Toast.makeText(getBaseContext(), PRESIONE_NUEVAMENTE_PARA_SALIR, Toast.LENGTH_SHORT).show();
-                        pressed = true;
-                    } else {
-                        super.onBackPressed();
-                    }
+                    super.onBackPressed();
                 }
-                if (isShowingHome) {
-                    HistoryManager.getSingleton().setCurrentPage(null);
-                    open = false;
-                    searchItem.setVisible(true);
-                    donwloadItem.setVisible(false);
-                    updateItem.setVisible(false);
-                    return;
-                }
-
-
+            }
+            if (isShowingHome) {
+                HistoryManager.getSingleton().setCurrentPage(null);
+                open = false;
+                searchItem.setVisible(true);
+                donwloadItem.setVisible(false);
+                updateItem.setVisible(false);
+                return;
             }
 
 
+        }
+
+
     }
-
-
-
 
 
     @Override
@@ -582,20 +547,18 @@ public class DrawerActivity extends AppCompatActivity
         setCountNoti(count_noti);
 
 
-
     }
 
 
     @Override
     protected void onDestroy() {
-        if(SettingsActivity.terminating)
-        {
+        if (SettingsActivity.terminating) {
             super.onDestroy();
             return;
         }
         HistoryManager.getSingleton().removeListener(this);
-        String enties=new Gson().toJson(HistoryManager.getSingleton().entries);
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(HISTORY,enties).apply();
+        String enties = new Gson().toJson(HistoryManager.getSingleton().entries);
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(HISTORY, enties).apply();
         super.onDestroy();
     }
 
@@ -603,11 +566,9 @@ public class DrawerActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.drawer, menu);
-         searchItem = menu.findItem(R.id.action_search);
-         updateItem = menu.findItem(R.id.action_update);
-         donwloadItem = menu.findItem(R.id.action_download);
-
-
+        searchItem = menu.findItem(R.id.action_search);
+        updateItem = menu.findItem(R.id.action_update);
+        donwloadItem = menu.findItem(R.id.action_download);
 
 
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -630,7 +591,7 @@ public class DrawerActivity extends AppCompatActivity
             }
         });
 
-        etSearchview= (EditText) searchView.findViewById(R.id.search_src_text);
+        etSearchview = (EditText) searchView.findViewById(R.id.search_src_text);
 
         return true;
 
@@ -644,14 +605,14 @@ public class DrawerActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
-            case android.R.id.home:{
+            case android.R.id.home: {
 
                 break;
             }
 
-            case R.id.action_download:{
+            case R.id.action_download: {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     PrintManager printManager = (PrintManager) DrawerActivity.this
                             .getSystemService(Context.PRINT_SERVICE);
@@ -667,25 +628,25 @@ public class DrawerActivity extends AppCompatActivity
 
                     printManager.print(jobName, printAdapter,
                             new PrintAttributes.Builder().build());
-                }else{
+                } else {
                     File Directory = new File("/sdcard/Apretaste/");
-                    if (!Directory.exists()){
+                    if (!Directory.exists()) {
                         Directory.mkdirs();
                     }
-                    String name =  "HTML"+wv.getUrl().split("HTML")[1];
-                    copyFile(getExternalFilesDir(null)+"/"+name,"/sdcard/Apretaste/");
-                    if (copyFile(getExternalFilesDir(null)+"/"+name,"/sdcard/Apretaste/")){
-                        Toast.makeText(this, "Pagina guardada  en /sdcard/Apretaste/"+"HTML"+wv.getUrl().split("HTML")[1], Toast.LENGTH_SHORT).show();
+                    String name = "HTML" + wv.getUrl().split("HTML")[1];
+                    copyFile(getExternalFilesDir(null) + "/" + name, "/sdcard/Apretaste/");
+                    if (copyFile(getExternalFilesDir(null) + "/" + name, "/sdcard/Apretaste/")) {
+                        Toast.makeText(this, "Pagina guardada  en /sdcard/Apretaste/" + "HTML" + wv.getUrl().split("HTML")[1], Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             }
 
-            case R.id.action_update:{
+            case R.id.action_update: {
 
-                String path_picado =  wv.getUrl().substring(8);
-                String pathfinal = "file:/"+path_picado;
-                comunication.execute(DrawerActivity.this,  dbh.getHistoryById(pathfinal,"service"), dbh.getHistoryById(pathfinal,"command"),false,null,DrawerActivity.this,DrawerActivity.this);
+                String path_picado = wv.getUrl().substring(8);
+                String pathfinal = "file:/" + path_picado;
+                comunication.execute(DrawerActivity.this, dbh.getHistoryById(pathfinal, "service"), dbh.getHistoryById(pathfinal, "command"), false, null, DrawerActivity.this, DrawerActivity.this);
 
 
             }
@@ -703,9 +664,9 @@ public class DrawerActivity extends AppCompatActivity
             if (sd.canWrite()) {
                 int end = from.toString().lastIndexOf("/");
                 String str1 = from.toString().substring(0, end);
-                String str2 = from.toString().substring(end+1, from.length());
+                String str2 = from.toString().substring(end + 1, from.length());
                 File source = new File(str1, str2);
-                File destination= new File(to, str2);
+                File destination = new File(to, str2);
                 if (source.exists()) {
                     FileChannel src = new FileInputStream(source).getChannel();
                     FileChannel dst = new FileOutputStream(destination).getChannel();
@@ -727,7 +688,6 @@ public class DrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-
         switch (id) {
 
             case R.id.nav_home: {
@@ -743,30 +703,30 @@ public class DrawerActivity extends AppCompatActivity
                 break;
             }
 
-            case R.id.nav_profile:{
-                comunication.execute(DrawerActivity.this,"PERFIL","PERFIL EDITAR",false,"",DrawerActivity.this,DrawerActivity.this);
+            case R.id.nav_profile: {
+                comunication.execute(DrawerActivity.this, "PERFIL", "PERFIL EDITAR", false, "", DrawerActivity.this, DrawerActivity.this);
                 break;
             }
 
             case R.id.nav_retos: {
 
-                comunication.execute(DrawerActivity.this, "retos","Retos",false,"des",DrawerActivity.this,DrawerActivity.this);
+                comunication.execute(DrawerActivity.this, "retos", "Retos", false, "des", DrawerActivity.this, DrawerActivity.this);
                 break;
             }
 
             case R.id.nav_cupones: {
 
-                comunication.execute(DrawerActivity.this, "cupones","Cupones",false,"des",DrawerActivity.this,DrawerActivity.this);
+                comunication.execute(DrawerActivity.this, "cupones", "Cupones", false, "des", DrawerActivity.this, DrawerActivity.this);
                 break;
             }
 
             case R.id.nav_invitar: {
 
-               comunication.execute(DrawerActivity.this, "referir","referir",false,"des",DrawerActivity.this,DrawerActivity.this);
+                comunication.execute(DrawerActivity.this, "referir", "referir", false, "des", DrawerActivity.this, DrawerActivity.this);
                 break;
             }
 
-                case R.id.nav_recent: {
+            case R.id.nav_recent: {
                 startActivity(new Intent(this, HistoryActivity.class));
                 break;
             }
@@ -800,15 +760,14 @@ public class DrawerActivity extends AppCompatActivity
 
                 String ERROR = "Error";
                 String OK = "ok";
-                if (!networkHelper.haveConn(DrawerActivity.this)){
-                    alertHelper.simpleAlert(DrawerActivity.this,"Error","Usted debe enceder los datos moviles o conectarse a una red wifi para poder usar nuestra app");
-                }else if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")){
+                if (!networkHelper.haveConn(DrawerActivity.this)) {
+                    alertHelper.simpleAlert(DrawerActivity.this, "Error", "Usted debe enceder los datos moviles o conectarse a una red wifi para poder usar nuestra app");
+                } else if (e.toString().equals("javax.mail.AuthenticationFailedException: [AUTHENTICATIONFAILED] Authentication failed.")) {
 
                     new AlertDialog.Builder(DrawerActivity.this).setTitle(ERROR).setMessage("Su correo electronico o contraseña es incorrecto , verifiquelo y vuelvelo a intentar").setPositiveButton(OK, null).show();
-                }else{
+                } else {
                     new AlertDialog.Builder(DrawerActivity.this).setTitle(ERROR).setMessage("No hemos podido establecer comunicación  , es problema de conexion con los servidores nauta , intentelo más tarde nuevamente").setPositiveButton(OK, null).show();
                 }
-
 
 
             }
@@ -817,23 +776,22 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
-    public  void onResponseArrived(String service, String command, String response, Mailer mailer) {
+    public void onResponseArrived(String service, String command, String response, Mailer mailer) {
 
-        Log.e("pro","rarived");
+        Log.e("pro", "rarived");
         /*Si se manda a actualizar la app*/
-        if(mailer.getReturnContent())
-        {
+        if (mailer.getReturnContent()) {
             comunication.setReturnContent(false);
-            Log.e("update-reply",response);
-            ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
+            Log.e("update-reply", response);
+            ProfileInfo piu = new Gson().fromJson(response, ProfileInfo.class);
 
             updateService(piu);
             workNotifications(piu);
 
-            new PrefsManager(). saveData("mailbox", DrawerActivity.this, piu.mailbox);
-            new PrefsManager(). saveData("type_img", DrawerActivity.this, piu.img_quality);
+            new PrefsManager().saveData("mailbox", DrawerActivity.this, piu.mailbox);
+            new PrefsManager().saveData("type_img", DrawerActivity.this, piu.img_quality);
 
-            new PrefsManager(). saveData("token",    DrawerActivity.this, piu.token);
+            new PrefsManager().saveData("token", DrawerActivity.this, piu.token);
 
             /*Elimina lo servicios que se quitan del servidor*/
             ServiceNoActive(piu.active);
@@ -841,28 +799,27 @@ public class DrawerActivity extends AppCompatActivity
 
             update_info(response);
 
-        }
-        else {
-            open(service, command, response, mailer,null);
+        } else {
+            open(service, command, response, mailer, null);
 
             /*Si vino la cache */
-            if (mailer.mincache !=null) {
-                Log.e("num cache drawer",mailer.mincache);
+            if (mailer.mincache != null) {
+                Log.e("num cache drawer", mailer.mincache);
                 dbh.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(mailer.mincache), new File(response).toURI().toString());
             }
             /*Metodo cuando venga .ext (siempre viene)*/
             if (mailer.ext != null) {
-                Log.i("ext",mailer.ext);
-                ProfileInfo pi = new Gson().fromJson( mailer.ext,ProfileInfo.class);
+                Log.i("ext", mailer.ext);
+                ProfileInfo pi = new Gson().fromJson(mailer.ext, ProfileInfo.class);
 
                 updateService(pi);
                 /*Accion para anadir notifiaciones */
                 workNotifications(pi);
 
-                new PrefsManager(). saveData("mailbox", DrawerActivity.this, pi.mailbox);
-                new PrefsManager(). saveData("type_img", DrawerActivity.this, pi.img_quality);
-                new PrefsManager(). saveData("token",    DrawerActivity.this, pi.token);
-                Log.e("token-response-mailer",pi.token);
+                new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
+                new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
+                new PrefsManager().saveData("token", DrawerActivity.this, pi.token);
+                Log.e("token-response-mailer", pi.token);
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
@@ -874,43 +831,40 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     @Override
-    public void  onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
-        if(multipartHttp.getReturnContent())
-        {
+    public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
+        if (multipartHttp.getReturnContent()) {
             comunication.setReturnContent(false);
-            ProfileInfo piu = new Gson().fromJson(response,ProfileInfo.class);
+            ProfileInfo piu = new Gson().fromJson(response, ProfileInfo.class);
             updateService(piu); /*Actualiza o agrega servicios nuevos*/
             workNotifications(piu);//Muestra las notificaciones en caso de que venga.
-            new PrefsManager(). saveData("mailbox", DrawerActivity.this, piu.mailbox);
-            new PrefsManager(). saveData("type_img", DrawerActivity.this, piu.img_quality);
-            new PrefsManager(). saveData("token",    DrawerActivity.this, piu.token);
+            new PrefsManager().saveData("mailbox", DrawerActivity.this, piu.mailbox);
+            new PrefsManager().saveData("type_img", DrawerActivity.this, piu.img_quality);
+            new PrefsManager().saveData("token", DrawerActivity.this, piu.token);
             ServiceNoActive(piu.active);       /*Elimina lo servicios que se quitan del servidor*/
             update_info(response);
 
 
-        }
-
-        else {
-            open(service, command, response, null,multipartHttp);
+        } else {
+            open(service, command, response, null, multipartHttp);
 
             /*Si vino la cache */
-            if (multipartHttp.mincache !=null) {
-                Log.e("num cache drawer",multipartHttp.mincache);
+            if (multipartHttp.mincache != null) {
+                Log.e("num cache drawer", multipartHttp.mincache);
                 dbh.addCache(new StringHelper().clearString(command), dataHelper.addMinutes(multipartHttp.mincache), new File(response).toURI().toString());
             }
             /*Metodo cuando venga .ext (siempre viene)*/
             if (multipartHttp.ext != null) {
-                Log.i("ext",multipartHttp.ext);
-                ProfileInfo pi = new Gson().fromJson( multipartHttp.ext,ProfileInfo.class);
+                Log.i("ext", multipartHttp.ext);
+                ProfileInfo pi = new Gson().fromJson(multipartHttp.ext, ProfileInfo.class);
 
                 updateService(pi);
                 /*Accion para anadir notifiaciones */
                 workNotifications(pi);
 
-                new PrefsManager(). saveData("mailbox", DrawerActivity.this, pi.mailbox);
-                new PrefsManager(). saveData("type_img", DrawerActivity.this, pi.img_quality);
-                new PrefsManager(). saveData("token",    DrawerActivity.this, pi.token);
-                Log.e("token-response-mailer",pi.token);
+                new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
+                new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
+                new PrefsManager().saveData("token", DrawerActivity.this, pi.token);
+                Log.e("token-response-mailer", pi.token);
 
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
@@ -922,10 +876,10 @@ public class DrawerActivity extends AppCompatActivity
 
     }
 
-    public void updateService(ProfileInfo pi){
-       if (pi.services.length > 0){
+    public void updateService(ProfileInfo pi) {
+        if (pi.services.length > 0) {
             dbh.addService(pi.services);
-            for (int i = 0;i<pi.services.length;i++){
+            for (int i = 0; i < pi.services.length; i++) {
                 Services service = new Services();
                 service.setName(pi.services[i].name);
                 service.setCreator(pi.services[i].creator);
@@ -936,41 +890,40 @@ public class DrawerActivity extends AppCompatActivity
                 service.setId(dbh.getIdByName(pi.services[i].name));
                 service.setFav("0");
                 Log.e("found", String.valueOf(getItemExist(service.getName())));
-                if (!getItemExist(service.getName())){
+                if (!getItemExist(service.getName())) {
                     serviceAdapter.sevList.add(service);
-                Collections.sort(serviceAdapter.sevList, new Comparator<Services>() {
-                    @Override
-                    public int compare(Services o1, Services o2) {
-                        return o1.getName().compareTo(o2.getName());
-                    }
-                });
+                    Collections.sort(serviceAdapter.sevList, new Comparator<Services>() {
+                        @Override
+                        public int compare(Services o1, Services o2) {
+                            return o1.getName().compareTo(o2.getName());
+                        }
+                    });
                 }
 
             }
-           runOnUiThread(new Runnable() {
-               @Override
-               public void run() {
-                   showProfileInfo(hView,true);
-               }
-           });
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showProfileInfo(hView, true);
+                }
+            });
         }
 
 
-
-
     }
-    public void ServiceNoActive(String[] active){
+
+    public void ServiceNoActive(String[] active) {
         Services[] sev = serviceAdapter.sevList.toArray(new Services[serviceAdapter.sevList.size()]);
-        for (int i = 0;i<sev.length;i++){
+        for (int i = 0; i < sev.length; i++) {
             boolean found = false;
-            for (int j = 0;j<active.length;j++){
-                if (sev[i].getName().equals(active[j])){
+            for (int j = 0; j < active.length; j++) {
+                if (sev[i].getName().equals(active[j])) {
                     found = true;
                     break;
                 }
             }
-            if (!found){
-                dbh.delBy("services","service",sev[i].getName());
+            if (!found) {
+                dbh.delBy("services", "service", sev[i].getName());
                 serviceAdapter.sevList.remove(getIndexByname(sev[i].getName()));
                 laststate = 3;
                 runOnUiThread(new Runnable() {
@@ -985,32 +938,30 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-    public int getIndexByname(String sName)
-    {
-        for(Services _item : serviceAdapter.sevList)
-        {
-            if(_item.getName().equals(sName))
+    public int getIndexByname(String sName) {
+        for (Services _item : serviceAdapter.sevList) {
+            if (_item.getName().equals(sName))
                 return serviceAdapter.sevList.indexOf(_item);
         }
         return -1;
     }
 
-    public boolean getItemExist(String sName)
-    {  boolean exists = false;
-        for(Services _item : serviceAdapter.sevList)
-        {
+    public boolean getItemExist(String sName) {
+        boolean exists = false;
+        for (Services _item : serviceAdapter.sevList) {
 
-            if(_item.getName().equals(sName))
+            if (_item.getName().equals(sName))
                 exists = true;
         }
-       return  exists;
+        return exists;
     }
-    public void open(final String service, final String command, String response, final Mailer mailer, final MultipartHttp multiparthttp){
+
+    public void open(final String service, final String command, String response, final Mailer mailer, final MultipartHttp multiparthttp) {
         Date time = null;
 
-        if (mailer!=null){
+        if (mailer != null) {
             time = mailer.getResponseTimestamp();
-        }else{
+        } else {
             time = multiparthttp.getResponseTimestamp();
         }
 
@@ -1021,7 +972,7 @@ public class DrawerActivity extends AppCompatActivity
             @Override
             public void run() {
                 HistoryManager.getSingleton().addToHistory(entry);
-                dbh.addHistory(service,command,file.toURI().toString(), String.valueOf(finalTime));
+                dbh.addHistory(service, command, file.toURI().toString(), String.valueOf(finalTime));
                 HistoryManager.getSingleton().setCurrentPage(entry);
                 open = true;
 
@@ -1029,12 +980,12 @@ public class DrawerActivity extends AppCompatActivity
         });
     }
 
-    public void workNotifications(ProfileInfo pi){
+    public void workNotifications(ProfileInfo pi) {
         /*Accion para anadir notifiaciones */
-        if (pi.notifications.length > 0){
+        if (pi.notifications.length > 0) {
             dbh.addNotification(pi.notifications);
-            for (int i = 0;i<pi.notifications.length;i++ ){
-                alertHelper.newNotification(DrawerActivity.this,(int) Calendar.getInstance().getTimeInMillis(),pi.notifications[i].service,pi.notifications[i].text);
+            for (int i = 0; i < pi.notifications.length; i++) {
+                alertHelper.newNotification(DrawerActivity.this, (int) Calendar.getInstance().getTimeInMillis(), pi.notifications[i].service, pi.notifications[i].text);
             }
             runOnUiThread(new Runnable() {
                 @Override
@@ -1047,39 +998,36 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-    public void update_info(String response){
-        Log.i("response",response);
+    public void update_info(String response) {
+        Log.i("response", response);
 
-        Log.e("pro","retcontent");
+        Log.e("pro", "retcontent");
         ProfileInfo pinfo;
-        try
-        {
-            pinfo =new Gson().fromJson(response,ProfileInfo.class);
+        try {
+            pinfo = new Gson().fromJson(response, ProfileInfo.class);
 
-            Log.e("pro","pinfo jsoned");
-        }
-        catch (Exception e)
-        {
+            Log.e("pro", "pinfo jsoned");
+        } catch (Exception e) {
             Toast.makeText(this, "Ha ocurrido un error en el servidor.", Toast.LENGTH_SHORT).show();
-            Log.e("pro","error jsoning pinfo");
+            Log.e("pro", "error jsoning pinfo");
             return;
         }
-        Log.e("pro","updating");
+        Log.e("pro", "updating");
 
         pro.update(pinfo);
 
-        Log.e("pro","jsoning");
-        String prof=new Gson().toJson( DrawerActivity.pro);
+        Log.e("pro", "jsoning");
+        String prof = new Gson().toJson(DrawerActivity.pro);
 
-        Log.e("pro","saving");
+        Log.e("pro", "saving");
 
-        PreferenceManager.getDefaultSharedPreferences(DrawerActivity.this).edit().putString("resp",prof).apply();
+        PreferenceManager.getDefaultSharedPreferences(DrawerActivity.this).edit().putString("resp", prof).apply();
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.e("pro","refreshing");
-                showProfileInfo(hView,true);
+                Log.e("pro", "refreshing");
+                showProfileInfo(hView, true);
             }
         });
         return;
@@ -1087,8 +1035,7 @@ public class DrawerActivity extends AppCompatActivity
     /*Metodo que abre las web*/
 
     public void onHistoryChange(HistoryEntry newUrl) {
-        if(newUrl!=null)
-        {
+        if (newUrl != null) {
             toolbar.setTitle(newUrl.service.split(" ")[0].toLowerCase());
             wv.loadUrl(newUrl.path);
             fabSync.setVisibility(View.GONE);
@@ -1099,7 +1046,7 @@ public class DrawerActivity extends AppCompatActivity
             vsw.setDisplayedChild(1);
 
             return;
-        }else{
+        } else {
             vsw.setDisplayedChild(0);
             fabSync.setVisibility(View.VISIBLE);
             toolbar.setTitle("Apretaste");
@@ -1107,19 +1054,16 @@ public class DrawerActivity extends AppCompatActivity
         }
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         setCountNoti(count_noti);
-        if(SettingsActivity.terminating)
-        {
-            SettingsActivity.terminating=false;
+        if (SettingsActivity.terminating) {
+            SettingsActivity.terminating = false;
             Toast.makeText(this, "Su sesión ha sido cerrada.", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-
-
 
 
     }
@@ -1132,10 +1076,8 @@ public class DrawerActivity extends AppCompatActivity
     /*Metodo que gestiona la respuesta de peticiones simple*/
     @Override
     public void onResponseSimpleHttp(String response) {
-    Log.e("response drawe",response);
+        Log.e("response drawe", response);
     }
-
-
 
 
     /*Adaptador de los servicios */
@@ -1176,19 +1118,17 @@ public class DrawerActivity extends AppCompatActivity
             if (convertView == null)
 
 
-
                 ((ImageView) convertView.findViewById(R.id.service_image)).setImageResource(R.drawable.noicon);
             ImageView im = (ImageView) convertView.findViewById(R.id.iVstart);
             ImageView srvice_new = (ImageView) convertView.findViewById(R.id.srvice_new);
 
-            if (sevList.get(position).getFav().equals("0")){
+            if (sevList.get(position).getFav().equals("0")) {
                 im.setVisibility(View.INVISIBLE);
             }
 
-            if (sevList.get(position).getUsed().equals("1")){
-                srvice_new.setVisibility(View.INVISIBLE);}
-
-
+            if (sevList.get(position).getUsed().equals("1")) {
+                srvice_new.setVisibility(View.INVISIBLE);
+            }
 
 
             ((TextView) convertView.findViewById(R.id.service_name)).setText((sevList.get(position).getName()));
@@ -1204,8 +1144,6 @@ public class DrawerActivity extends AppCompatActivity
                 ((ImageView) convertView.findViewById(R.id.service_image)).setImageResource(R.drawable.noicon);
 
 
-
-
             return convertView;
 
         }
@@ -1218,7 +1156,7 @@ public class DrawerActivity extends AppCompatActivity
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
                     final FilterResults oReturn = new FilterResults();
-                    final ArrayList<Services>  results = new ArrayList<Services>();
+                    final ArrayList<Services> results = new ArrayList<Services>();
                     if (orig == null)
                         orig = sevList;
                     if (constraint != null) {
@@ -1248,167 +1186,24 @@ public class DrawerActivity extends AppCompatActivity
     }
 
     /*Clase que maneja el webview*/
-    private class JSI
-    {
-        public static final String CANCELAR = "Cancelar";
-        public static final String INFLATE_PARAMS = "InflateParams";
+    private class JSI {
         public static final String TRUE = "true";
         public static final String DOACTION = "doaction";
 
         @JavascriptInterface
-        public void doaction(final String command, final String type, final String help, final boolean waiting)
-        {
-            Log.e(DOACTION,type+" "+String.valueOf(waiting)+" "+command+" "+help);
+        public void doaction(final String command, final String type, final String help, final boolean waiting, final String callback) {
+            Log.e(DOACTION, type + " " + String.valueOf(waiting) + " " + command + " " + help + " " + callback.toString());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if(type.equalsIgnoreCase(TRUE))
-                    {
-                        final View v=getLayoutInflater().inflate(R.layout.various,null);
-                        final LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.ll_demo);
+                    if (type.equalsIgnoreCase(TRUE)) {
+                        final View v = getLayoutInflater().inflate(R.layout.various, null);
+                        final LinearLayout linearLayout = v.findViewById(R.id.ll_demo);
 
-                        final String[] parts = help.split("\\|");
-                        final int cant = parts.length;
+                        final InputTypeHelper inputTypeHelper = new InputTypeHelper(DrawerActivity.this, linearLayout, help, DrawerActivity.this);
+                        inputTypeHelper.showInputs();
 
-                        final EditText ed[] = new EditText[cant];
-                        for (int i = 0; i < cant; i++) {
-
-                            String typeDates = parts[i].substring(0,2);
-                            ed[i] = new EditText(DrawerActivity.this);
-
-                            switch (typeDates){
-
-                                case "t:":
-                                    ed[i].setHint(parts[i].substring(2));
-                                    break;
-                                case "a:":
-                                    ed[i].setHint(parts[i].substring(2));
-                                    break;
-
-                                case "u:":
-                                    ed[i].setFocusableInTouchMode(false);
-                                    ed[i].setHint("Click para escojer la imagen");
-                                    ed[i].setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Log.e("prof","imagepick");
-                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                                                int checkpermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
-                                                if(checkpermission!= PackageManager.PERMISSION_GRANTED)
-                                                {
-                                                    requestPermissions(new String[]{
-                                                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                    },REQUEST_STORAGE_PERMISSION);
-
-                                                }
-                                                else
-                                                    picPict();
-                                            }
-                                            else
-                                                picPict();
-                                        }
-                                    });
-                                    break;
-
-                                case "p:":
-
-                                    ed[i].setHint(parts[i].substring(2));
-                                    ed[i].setTransformationMethod(PasswordTransformationMethod.getInstance());
-                                    break;
-                                case "d:":
-                                    ed[i].setFocusableInTouchMode(false);
-                                    ed[i].setHint(parts[i].substring(2));
-                                    ed[i].setInputType(InputType.TYPE_CLASS_DATETIME );
-                                    ed[i].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_date_range_black_24dp, 0);
-                                    final Calendar myCalendar = Calendar.getInstance();
-                                    final int finalI = i;
-                                    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-                                        @Override
-                                        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                                              int dayOfMonth) {
-                                            // TODO Auto-generated method stub
-                                            myCalendar.set(Calendar.YEAR, year);
-                                            myCalendar.set(Calendar.MONTH, monthOfYear);
-                                            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                                            updateLabel(ed[finalI],myCalendar);
-                                        }
-
-                                    };
-                                    ed[i].setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            new DatePickerDialog(DrawerActivity.this, date, myCalendar
-                                                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                                                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                                        }
-                                    });
-
-                                    break;
-                                case "e:":
-                                    ed[i].setHint(parts[i].substring(2));
-                                    break;
-                                case "n:":
-                                    ed[i].setInputType(InputType.TYPE_CLASS_PHONE);
-                                    ed[i].setHint(parts[i].substring(2));
-                                    break;
-                                case "m:":
-                                    ed[i].setFocusableInTouchMode(false);
-                                    if (parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1).equals("*")){
-
-                                        ed[i].setHint(parts[i].split("\\[")[0].substring(2)+parts[i].split("\\[")[1].substring(parts[i].split("\\[")[1].length() -1));
-                                    }else{
-
-                                        ed[i].setHint(parts[i].split("\\[")[0].substring(2));
-                                    }
-
-
-                                    ed[i].setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down_black_24dp, 0);
-                                    final int finalI1 = i;
-                                    ed[i].setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            final String[] item =  parts[finalI1].split("\\[")[1].split("\\]")[0].split(",");
-
-                                            AlertDialog.Builder di = new AlertDialog.Builder(DrawerActivity.this);
-                                            di.setItems(item, new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    for (int j = 0; j < item.length; j++) {
-                                                        if (which == j) {
-                                                            ed[finalI1].setText(item[j]);
-                                                            break;
-                                                        }
-                                                    }
-
-                                                    }});
-                                            di.show();
-                                        }
-
-                                    });
-
-                                    break;
-                                default:
-                                    ed[i].setHint(parts[i]);
-                                    break;
-                            }
-
-
-
-
-                            linearLayout.addView(ed[i]);
-                        }
-
-
-
-
-                        final AlertDialog alertDialog = new AlertDialog.Builder(DrawerActivity.this)
-                                .setView(v)
-                                .setCancelable(false)
-                                .setPositiveButton("Aceptar",null)
-                                .setNegativeButton("Cancelar",null)
-                                .create();
+                        final AlertDialog alertDialog = alertHelper.AlertView(DrawerActivity.this, v);
                         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                             @Override
                             public void onShow(DialogInterface dialog) {
@@ -1416,153 +1211,27 @@ public class DrawerActivity extends AppCompatActivity
                                 b.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-
-
-                                                String f = "";
-                                                int cantFieldRequeried = 0;
-                                                for(int i = 0; i < ed.length; i++){
-
-                                            /*Verificando cuantos campos son obligatorios*/
-                                                    if (parts[i].substring(parts[i].length()-1).equals("*")){
-                                                        cantFieldRequeried=cantFieldRequeried+1;
-
-                                                    }
-
-                                                    String  values = (ed[i].getText().toString());
-
-                                                    f= f + "|"+ values;
-
-                                                    String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
-
-
-
-                                                }
-                                                Log.e("cantidad", String.valueOf(cantFieldRequeried));
-                                                int fieldRequeriedValid=0;
-
-                                        /*Comprobacion de los campos que son obligatorios*/
-                                        for (int j = 0;j<cantFieldRequeried;j++){
-
-                                            if (newBitmap!=null){
-                                                fieldRequeriedValid = fieldRequeriedValid+1;
-                                            }else{
-
-                                                if (ed[j].getText().toString().equals("")){
-                                                    Log.e("campo por llenar", String.valueOf(j));
-                                                }else{
-                                                    Log.e("campo","campo lleno");
-
-                                                    fieldRequeriedValid = fieldRequeriedValid+1;
-
-                                                }
+                                        if (inputTypeHelper.checkInputRequire(newBitmap)) {
+                                            comunication.setAttachedbitmap(newBitmap);
+                                            comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + inputTypeHelper.getCommand().substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
+                                            alertDialog.dismiss();
+                                            if (!callback.equals("") || !callback.isEmpty()){
+                                                String js = "javascript:" + callback + "(" + inputTypeHelper.getParamsCallBack() + ")";
+                                                wv.loadUrl(js);
                                             }
+
+
+
+                                        } else {
+                                            Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
                                         }
-
-
-                                                String peticion = new StringHelper().clearString((command+" "+f.substring(1)));
-
-
-                                                Log.i("peticion",peticion);
-
-                                                if (!dbh.getAllCache(peticion,"peticion").equals("")){
-
-
-
-                                                    try {
-                                                        if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),dbh.getAllCache(peticion,"cache"))){
-                                                            Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
-                                                            final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion,"path"),  null);
-                                                            runOnUiThread(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-
-                                                                    HistoryManager.getSingleton().setCurrentPage(entry);
-                                                                    open = true;
-
-
-
-                                                                }
-                                                            });
-
-
-                                                        }else{
-                                                            Log.i("llamar","llamar servicios y borra el cache");
-                                                            dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
-
-
-                                                            comunication.execute(DrawerActivity.this, command.split(" ")[0], command+" "+f.substring(1),!waiting, help,DrawerActivity.this,DrawerActivity.this);
-                                                        }
-                                                    } catch (ParseException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }else {
-                                                    Log.i("llamar", "El servicio no esta en cache");
-
-                                                    if (fieldRequeriedValid==cantFieldRequeried){
-                                                        comunication.setAttachedbitmap(newBitmap);
-                                                        comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + f.substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
-                                                        alertDialog.dismiss();
-                                                    }else{
-                                                        Toast.makeText(DrawerActivity.this, "Por favor rellene todos los campos mandatarios", Toast.LENGTH_SHORT).show();
-                                                    }
-
-
-
-
-
-                                                }
-
-
-
-
-
                                     }
                                 });
                             }
                         });
                         alertDialog.show();
-                    }
-                    else
-                    {
-
-                        String peticion =  new StringHelper().clearString( command);
-
-
-                        if (!dbh.getAllCache(peticion,"peticion").equals("")){
-
-
-
-                            try {
-                                if (dataHelper.compareTwoDates(dataHelper.getNowDateTime(),dbh.getAllCache(peticion,"cache"))){
-                                    Log.i("llamar","abrir el cacheado");//Si la fecha de la db es superior a la actual
-                                    final HistoryEntry entry = new HistoryEntry(peticion, null, dbh.getAllCache(peticion,"path"),  null);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            HistoryManager.getSingleton().setCurrentPage(entry);
-                                            open = true;
-
-                                        }
-                                    });
-
-
-                                }else{
-                                    Log.i("llamar","llamar servicios y borra el cache");
-                                    dbh.delBy("cache","_id",dbh.getAllCache(peticion,"id"));
-
-                                    comunication.execute(DrawerActivity.this, command.split(" ")[0], command,!waiting, help,DrawerActivity.this,DrawerActivity.this);
-                                }
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            Log.i("llamar","El servicio no esta en cache");
-
-                            comunication.execute(DrawerActivity.this, command.split(" ")[0], command,!waiting, help,DrawerActivity.this,DrawerActivity.this);
-
-                        }
-
+                    } else {
+                        comunication.execute(DrawerActivity.this, command.split(" ")[0], command, !waiting, help, DrawerActivity.this, DrawerActivity.this);
 
                     }
                 }
@@ -1573,25 +1242,21 @@ public class DrawerActivity extends AppCompatActivity
     }
 
 
-
-
-    private void setCountNoti(TextView notifCount){
+    private void setCountNoti(TextView notifCount) {
         notifCount.setGravity(Gravity.CENTER_VERTICAL);
         notifCount.setTypeface(null, Typeface.BOLD);
         notifCount.setTextColor(getResources().getColor(R.color.negro));
-        if( dbh.getCountNoRead()>0  && count==0)
-        {
+        if (dbh.getCountNoRead() > 0 && count == 0) {
             notifCount.setVisibility(View.VISIBLE);
 
-            notifCount.setText(String.valueOf( dbh.getCountNoRead()));
-        } else{
+            notifCount.setText(String.valueOf(dbh.getCountNoRead()));
+        } else {
             notifCount.setVisibility(View.GONE);
         }
     }
 
 
-
-    public void setMargins (View view, int left, int top, int right, int bottom) {
+    public void setMargins(View view, int left, int top, int right, int bottom) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
             p.setMargins(left, top, right, bottom);
@@ -1600,14 +1265,29 @@ public class DrawerActivity extends AppCompatActivity
     }
 
 
-    private void updateLabel(EditText editText , Calendar myCalendar) {
+    @Override
+    public void onClickInputUpload() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int checkpermission = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (checkpermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                }, REQUEST_STORAGE_PERMISSION);
+
+            } else
+                picPict();
+        } else
+            picPict();
+    }
+
+    @Override
+    public void updateLabel(EditText editText, Calendar myCalendar) {
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         editText.setText(sdf.format(myCalendar.getTime()));
     }
 
-    private void picPict()
-    {
+    private void picPict() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(IMAGE);
 
@@ -1618,16 +1298,12 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==REQUEST_STORAGE_PERMISSION)
-        {
-            if(grantResults.length>0
-                    && grantResults[0]==PackageManager.PERMISSION_GRANTED)
-            {
+        if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 picPict();
-            }
-            else
-            {
-                Toast.makeText(this,"Permiso no autorizado",Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Permiso no autorizado", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1636,11 +1312,11 @@ public class DrawerActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK) {
             fullPhotoUri = data.getData();
-            BitmapFactory.Options opts=new BitmapFactory.Options();
-            opts.outHeight=256;
-            opts.outWidth=256;
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.outHeight = 256;
+            opts.outWidth = 256;
             try {
-                String[] filePathColumn = { MediaStore.Images.Media.DATA};
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
                 Cursor cursor = getContentResolver().query(fullPhotoUri,
                         filePathColumn, null, null, null);
@@ -1650,7 +1326,7 @@ public class DrawerActivity extends AppCompatActivity
                 cursor.close();
 
 
-                newBitmap=decodeSampledBitmapFromFile(path,250,250);
+                newBitmap = decodeSampledBitmapFromFile(path, 250, 250);
                 RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
                 roundedBitmapDrawable.setCircular(true);
                 // profilePict.setImageDrawable(roundedBitmapDrawable);
@@ -1691,23 +1367,22 @@ public class DrawerActivity extends AppCompatActivity
 
 
         options.inJustDecodeBounds = false;
-        Bitmap bmp= BitmapFactory.decodeFile(path, options);
+        Bitmap bmp = BitmapFactory.decodeFile(path, options);
 
         int w = bmp.getWidth();
         int h = bmp.getHeight();
-        if (w > reqHeight)
-        {
-            float ratio = (float)w / reqHeight;
+        if (w > reqHeight) {
+            float ratio = (float) w / reqHeight;
             w = reqWidth;
             h = (int) ((float) h / ratio);
         }
         if (h > reqHeight) {
-            float ratio = (float)h / reqWidth;
+            float ratio = (float) h / reqWidth;
             w = (int) ((float) w / ratio);
             h = reqHeight;
         }
 
-        return Bitmap.createScaledBitmap(bmp,w,h,true);
+        return Bitmap.createScaledBitmap(bmp, w, h, true);
     }
 
 }

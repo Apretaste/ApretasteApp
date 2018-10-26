@@ -1,5 +1,6 @@
 package apretaste.Helper;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 
 import com.example.apretaste.R;
@@ -32,6 +34,17 @@ public class AlertHelper {
                 .setNegativeButton("OK", null)
                 .setCancelable(false)
                 .show();
+    }
+
+    public AlertDialog AlertView(Activity activity, View v) {
+        AlertDialog alertDialog = new AlertDialog.Builder(activity)
+                .setView(v)
+                .setCancelable(false)
+                .setPositiveButton("Aceptar", null)
+                .setNegativeButton("Cancelar", null)
+                .create();
+
+        return alertDialog;
     }
 
     public void newNotification(Context context,int when,String service, String text){

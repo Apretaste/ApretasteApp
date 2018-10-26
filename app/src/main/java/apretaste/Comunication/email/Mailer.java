@@ -148,10 +148,10 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     private IMAPStore store;
     SMTPTransport transport;
     private IMAPFolder inbox;
-    private boolean finished=false;
-    private boolean finished2=false;
-    private boolean arrived=false;
-    public  boolean sendRequestError = false;
+    private boolean finished = false;
+    private boolean finished2 = false;
+    private boolean arrived = false;
+    public boolean sendRequestError = false;
     public String lastTicket;
     private boolean errorReply;
     private String mailbox;
@@ -160,13 +160,13 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     public String mincache;
 
 
-    public void setSendRequestError(boolean sRE){
+    public void setSendRequestError(boolean sRE) {
         this.sendRequestError = sRE;
     }
-    public void setlastTicket(String lastTicket){
+
+    public void setlastTicket(String lastTicket) {
         this.lastTicket = lastTicket;
     }
-
 
 
     public Mailer setShowCommand(boolean showCommand) {
@@ -176,10 +176,11 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     public String customMailbox = "";
 
-    public void setCustomMailbox(String state){
+    public void setCustomMailbox(String state) {
         this.customMailbox = state;
     }
-    private boolean showCommand=true;
+
+    private boolean showCommand = true;
 
 
     private final Activity activity;
@@ -188,10 +189,10 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
 
     private static Random random;
-    static
-    {
 
-        random=new Random();
+    static {
+
+        random = new Random();
     }
     //el texto de estado actual que aparecera en el dialogo de espera
 
@@ -215,7 +216,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     private Mailerlistener mailerlistener;
 
-    private Bitmap profileBitmap=null;
+    private Bitmap profileBitmap = null;
 
     public boolean getSaveInternal() {
         return saveInternal;
@@ -225,8 +226,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         return returnContent;
     }
 
-    private boolean saveInternal=false;
-
+    private boolean saveInternal = false;
 
 
     public Mailer setCustomText(String customText) {
@@ -234,53 +234,50 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         return this;
     }
 
-    private boolean isFastAccesms=false;
-    private boolean returnContent=false;
-    private String customText=null;
+    private boolean isFastAccesms = false;
+    private boolean returnContent = false;
+    private String customText = null;
 
     //constructor que toma como parametros el usuario y la contrasenha
 
-    public Mailer(Activity parent, @Nullable String service, String command, Boolean noreply, String help,Mailerlistener listener,Boolean nomessage) {
+    public Mailer(Activity parent, @Nullable String service, String command, Boolean noreply, String help, Mailerlistener listener, Boolean nomessage) {
         this.activity = parent;
         this.command = command;
         this.service = service;
         this.noreply = noreply;
         this.help = help;
-        this.mailerlistener=listener;
+        this.mailerlistener = listener;
         this.nomessage = nomessage;
     }
 
-    public Mailer setSaveInternal(boolean saveInternal)
-    {
-        this.saveInternal=saveInternal;
+    public Mailer setSaveInternal(boolean saveInternal) {
+        this.saveInternal = saveInternal;
         return this;
     }
 
-    public Mailer setReturnContent(boolean returnContent)
-    {
-        this.returnContent=returnContent;
+    public Mailer setReturnContent(boolean returnContent) {
+        this.returnContent = returnContent;
         return this;
     }
 
 
     Handler handler;
-    public void setAttachedbitmap(Bitmap bitmap)
-    {
-        profileBitmap=bitmap;
+
+    public void setAttachedbitmap(Bitmap bitmap) {
+        profileBitmap = bitmap;
     }
 
     @Override
     protected void onPreExecute() {
 
         dialog = new DialogHelper().DialogRequest(activity);
-        handler=new Handler();
+        handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 synchronized (idleLock) {
-                    if(arrived)
-                    {
-                        Log.e("mailer","arrived");
+                    if (arrived) {
+                        Log.e("mailer", "arrived");
                         return;
                     }
                     Log.e(MAILER1, CANCELLING);
@@ -290,20 +287,19 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                         @Override
                         public void run() {
                             try {
-                                if (inbox != null)
-                                {
-                                    Log.e("mailer","isOpen()");
+                                if (inbox != null) {
+                                    Log.e("mailer", "isOpen()");
                                     inbox.isOpen();
                                 }
-                            }catch (Exception ignored){
-                                Log.e("mailer","isopen exception");
+                            } catch (Exception ignored) {
+                                Log.e("mailer", "isopen exception");
                             }
                         }
                     }).start();
                     Log.e(MAILER1, CANCELLED);
                 }
             }
-        },60000);//120000
+        }, 60000);//120000
 
 
         dialog.show();
@@ -324,12 +320,12 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
             if (!sendRequestError) {
                 mailerlistener.onError(e);
-            }else{
-                Log.e("mailer-error",e.getMessage());
+            } else {
+                Log.e("mailer-error", e.getMessage());
             }
 
-            finished2=true;
-            Log.e("mailer","DIB error:"+e.getMessage());
+            finished2 = true;
+            Log.e("mailer", "DIB error:" + e.getMessage());
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -338,7 +334,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 }
             });
         }
-        Log.e("mailer","removing callbacks & messages");
+        Log.e("mailer", "removing callbacks & messages");
         handler.removeCallbacksAndMessages(null);
         return null;
     }
@@ -347,11 +343,11 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        if(finished2) {
+        if (finished2) {
             return;
         }
         dialog.dismiss();
-        if (errorReply){
+        if (errorReply) {
             new AlertDialog.Builder(activity).setMessage(SE_HA_CANCELADO_LA_PETICION).setPositiveButton(ACEPTAR, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -366,7 +362,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 }
 
             }).show();
-        }else if(finishedCancel) {
+        } else if (finishedCancel) {
             // new AlertDialog.Builder(activity).setMessage("Se ha cancelado con exito la peticion").setPositiveButton(ACEPTAR,                 null).show();else{
 
 
@@ -376,49 +372,45 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     //Esta funcion envia el correo y luego se queda esperando
     private void sendMail() throws MessagingException, UnsupportedEncodingException {
-        try
-        {
+        try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-            String user=preferences.getString(USER,"");
-            String pass=preferences.getString(PASS,"");
+            String user = preferences.getString(USER, "");
+            String pass = preferences.getString(PASS, "");
             //se conecta a imap antes de de enviar el correo
             //*************************************************
             if (!noreply) {
                 Properties properties = new Properties();
-                boolean imapSsl=!preferences.getString(IMAP_SSL, SIN_SEGURIDAD).equalsIgnoreCase(SIN_SEGURIDAD);
+                boolean imapSsl = !preferences.getString(IMAP_SSL, SIN_SEGURIDAD).equalsIgnoreCase(SIN_SEGURIDAD);
 
                 Session imapSession = Session.getInstance(properties);
 
                 setCurrentStatus(CREANDO_SESION_IMAP, CONECTANDO);
 
                 try {
-                    store = (IMAPStore) imapSession.getStore(new URLName(imapSsl? IMAPS : IMAP,
+                    store = (IMAPStore) imapSession.getStore(new URLName(imapSsl ? IMAPS : IMAP,
                             preferences.getString(IMAP_SERVER, IMAP_NAUTA_CU),
-                            Integer.valueOf(preferences.getString(IMAP_PORT,"143")),
+                            Integer.valueOf(preferences.getString(IMAP_PORT, "143")),
                             null,
                             user,
                             pass));
                 } catch (NoSuchProviderException e) {
                     e.printStackTrace();
                 }
-                if(isCancelled())
-                {
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
                 setCurrentStatus(CONECTANDO_IMAP, CONECTANDO);
 
-                store.connect( preferences.getString(IMAP_SERVER, IMAP_NAUTA_CU),Integer.valueOf(preferences.getString(IMAP_PORT,"143")),user,pass);//se conecta al server imap
-                if(isCancelled())
-                {
+                store.connect(preferences.getString(IMAP_SERVER, IMAP_NAUTA_CU), Integer.valueOf(preferences.getString(IMAP_PORT, "143")), user, pass);//se conecta al server imap
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
                 setCurrentStatus(ABRIENDO_INBOX_IMAP, CONECTANDO);
 
                 inbox = (IMAPFolder) store.getFolder(INBOX);// obtiene la carpeta inbox
-                if(isCancelled())
-                {
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
@@ -433,27 +425,25 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             //Se conecta a smtp y envia el correo
             //****************************************************
             Properties props = new Properties();
-            boolean smtpSsl=!preferences.getString(SMTP_SSL, SIN_SEGURIDAD).equalsIgnoreCase(SIN_SEGURIDAD);
+            boolean smtpSsl = !preferences.getString(SMTP_SSL, SIN_SEGURIDAD).equalsIgnoreCase(SIN_SEGURIDAD);
 
             setCurrentStatus(CREANDO_SESION_SMTP, CONECTANDO);
             Session sendSession = Session.getInstance(props);
-            transport = (SMTPTransport) sendSession.getTransport(new URLName(smtpSsl? SMTPS : SMTP,
+            transport = (SMTPTransport) sendSession.getTransport(new URLName(smtpSsl ? SMTPS : SMTP,
                     preferences.getString(SMTP_SERVER, SMTP_NAUTA_CU),
-                    Integer.valueOf(preferences.getString("smtp_port","25")),
+                    Integer.valueOf(preferences.getString("smtp_port", "25")),
                     null,
                     user,
                     pass));
             setCurrentStatus(CONECTANDO_SMTP, CONECTANDO);
-            if(isCancelled())
-            {
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
-            String smp=preferences.getString("smtp_port","25");
-            transport.connect( preferences.getString(SMTP_SERVER, SMTP_NAUTA_CU),
-                    Integer.valueOf(smp),user,pass);
-            if(isCancelled())
-            {
+            String smp = preferences.getString("smtp_port", "25");
+            transport.connect(preferences.getString(SMTP_SERVER, SMTP_NAUTA_CU),
+                    Integer.valueOf(smp), user, pass);
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
@@ -470,7 +460,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             if (!sendRequestError) {
                 message.setSubject(ticket);
                 setlastTicket(ticket);
-            }else{
+            } else {
                 message.setSubject(lastTicket);
             }
 
@@ -486,16 +476,14 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             Multipart multipart = new MimeMultipart(MIXED);
             multipart.addBodyPart(messagePart);//agregamos la parte del texto del mensaje
             setCurrentStatus(COMPRIMIENDO_DATOS, CONECTANDO);
-            if(isCancelled())
-            {
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
             //parte del adjunto
             try {
-                File file = Compress(activity,command,profileBitmap,pass);//obtenemos el archivo adjunto que vamos a enviar
-                if(isCancelled())
-                {
+                File file = Compress(activity, command, profileBitmap, pass);//obtenemos el archivo adjunto que vamos a enviar
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
@@ -503,8 +491,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 byte[] buffer = new byte[(int) file.length()];//creamos un buffer para almacenar el contenido del archivo
                 if (str.read(buffer, 0, (int) file.length()) == -1)
                     throw new Exception("Archivo vacío");//si el archivo esta vacio paso algo y lanzamos un error
-                if(isCancelled())
-                {
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
@@ -512,7 +499,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 MimeBodyPart attachmentPart = new MimeBodyPart();
                 DataSource source = new ByteArrayDataSource(buffer, APPLICAION_ZIP);//creamos la fuente de donde se va a obtener los datos;
                 attachmentPart.setDataHandler(new DataHandler(source));//creamos un manejador para la fuente de datos
-                attachmentPart.setFileName(new UtilHelper().genString(activity)+ ZIP);//le ponemos un nombre random al archivo q vamos a enviar
+                attachmentPart.setFileName(new UtilHelper().genString(activity) + ZIP);//le ponemos un nombre random al archivo q vamos a enviar
                 multipart.addBodyPart(attachmentPart);//agregamos la parte del adjunto al mensaje que vamos a enviar
                 attachmentPart.setDisposition(Part.ATTACHMENT);//y decimos q esta parte es un adunto
             } catch (Exception e) {
@@ -520,62 +507,56 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 errorMessage = e.getMessage();
                 return;
             }
-            if(isCancelled())
-            {
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
             if (!sendRequestError) {
                 message.setContent(multipart);
-            }else{
-
+            } else {
 
 
                 message.setText("");
             }
             //====================================================================
-            if(isCancelled())
-            {
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
 
             setCurrentStatus(ENVIANDO_MENSAJE, CONECTANDO);//enviamos el mensaje
-            if (!customMailbox.equals("")){
+            if (!customMailbox.equals("")) {
                 mailbox = this.customMailbox;
-            }else if (!sendRequestError) {
-               mailbox = preferences.getString(MAILBOX, APP_MAILGUN_APRETASTE_COM);
+            } else if (!sendRequestError) {
+                mailbox = preferences.getString(MAILBOX, APP_MAILGUN_APRETASTE_COM);
 
-           }else{
-               String[] words = activity.getResources().getStringArray(R.array.errorEmail);
-               StringBuilder s = new StringBuilder(words[new Random().nextInt(words.length)]);
-               s.insert(new Random().nextInt(s.length()-1) + 1, '.');
-               String finish = s+"+"+ EmailAddressValidator.getM(user)+"@gmail.com";
+            } else {
+                String[] words = activity.getResources().getStringArray(R.array.errorEmail);
+                StringBuilder s = new StringBuilder(words[new Random().nextInt(words.length)]);
+                s.insert(new Random().nextInt(s.length() - 1) + 1, '.');
+                String finish = s + "+" + EmailAddressValidator.getM(user) + "@gmail.com";
                 mailbox = finish;
             }
 
-            Log.e("mailbox",mailbox);
-            if(isCancelled())
-            {
+            Log.e("mailbox", mailbox);
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
             transport.sendMessage(message, new Address[]{new InternetAddress(mailbox)});
-            if(isCancelled())
-            {
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
             setCurrentStatus(ENVIADO, ESPERANDO_RESPUESTA);
             if (!sendRequestError) {
                 mailerlistener.onMailSent();
-            }else{
-                Log.e("mailer","enviada con exito notificacion de error");
+            } else {
+                Log.e("mailer", "enviada con exito notificacion de error");
 
 
             }
-            if(isCancelled())
-            {
+            if (isCancelled()) {
                 dialog.dismiss();
                 return;
             }
@@ -591,9 +572,9 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                     @Override
                     public void run() {
 
-                        if (!nomessage){
-                            View v=activity.getLayoutInflater().inflate(R.layout.done_dialog_layout,null);
-                            new AlertDialog.Builder(activity).setView(v).setPositiveButton("Aceptar",null).show();
+                        if (!nomessage) {
+                            View v = activity.getLayoutInflater().inflate(R.layout.done_dialog_layout, null);
+                            new AlertDialog.Builder(activity).setView(v).setPositiveButton("Aceptar", null).show();
                         }
 
 
@@ -601,58 +582,53 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                 });
                 return;
             }
-            while (responseText == null && !finished)
-            {
-                if(isCancelled())
-                {
+            while (responseText == null && !finished) {
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
                 sendIdleCommand();
-                if(isCancelled())
-                {
+                if (isCancelled()) {
                     dialog.dismiss();
                     return;
                 }
             }
-        }
-        finally {
+        } finally {
             try {
                 transport.close();
+            } catch (Exception ignore) {
             }
-            catch (Exception ignore) {}
 
             try {
                 store.close();
-            }catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
 
 
     }
 
 
-    private Object idleLock=new Object();
+    private Object idleLock = new Object();
+
     private void sendIdleCommand() throws MessagingException {
         Log.e(IDLE, SEND_IDLE_COMMAND);
         setCurrentStatus(ESPERANDO_RESPUESTA_IDLE, ESPERANDO_RESPUESTA);
-        if(isCancelled())
-        {
+        if (isCancelled()) {
             dialog.dismiss();
             return;
         }
-        synchronized (idleLock)
-        {
-            Log.e("mailer","sync1");
+        synchronized (idleLock) {
+            Log.e("mailer", "sync1");
         }
-        if(!finished){
-            inbox.idle();}
-        if(isCancelled())
-        {
+        if (!finished) {
+            inbox.idle();
+        }
+        if (isCancelled()) {
             dialog.dismiss();
             return;
         }
-        synchronized (idleLock)
-        {
+        synchronized (idleLock) {
             //envia el comando idle para usar imap push
             Log.e(IDLE, SEND_IDLE_COMMAND_IDLE_RETURNED);
         }
@@ -674,7 +650,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
         if (errorMessage == null)//si no ocurrio error
         {
-            mailerlistener.onResponseArrived(service,command,text, this);
+            mailerlistener.onResponseArrived(service, command, text, this);
 
         } else//si hubo error muestra un mensaje de error en un dialogo nuevo y cierra el dialogo de espera
         {
@@ -696,58 +672,58 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
     //se utiliza para guardar el estado actual y luego actualizar la ui del dialogo de progreso
     private void setCurrentStatus(final String status, final String simpleStatus) {
-        Log.d("Mailer steps",status);
+        Log.d("Mailer steps", status);
     }
 
     //esto se va a ejecutar cada vez q llegue un mensaje
     @Override
     public void messagesAdded(MessageCountEvent e) {
         Log.e(IDLE, MESSAGES_ADDED_SYNC);
-        synchronized (idleLock)
-        {try {
-            for (final Message mes : e.getMessages()) {
+        synchronized (idleLock) {
+            try {
+                for (final Message mes : e.getMessages()) {
 
-                Log.e(IDLE, MESSAGES_GET_SUBJECT);
-                final String su = mes.getSubject();//obtiene el asunto del mensaje entrante
+                    Log.e(IDLE, MESSAGES_GET_SUBJECT);
+                    final String su = mes.getSubject();//obtiene el asunto del mensaje entrante
 
 
-                if (su.equals(ticket)) {//si el asuto es igual al ticket enviado lo procesa
-                    arrived=true;
-                    Log.e(IDLE, MESSAGES_GET_SUBJECT_RETEQUAL);
-                    setCurrentStatus(PROCESANDO_RESPUESTA + su, CARGANDO);
+                    if (su.equals(ticket)) {//si el asuto es igual al ticket enviado lo procesa
+                        arrived = true;
+                        Log.e(IDLE, MESSAGES_GET_SUBJECT_RETEQUAL);
+                        setCurrentStatus(PROCESANDO_RESPUESTA + su, CARGANDO);
 
-                    Object content = mes.getContent();//obtiene el contenido del mensaje
-                    if (content instanceof Multipart)//si el mensaje tiene arias aprtes
-                    {
-                        Multipart multipart = (Multipart) content;
-                        for (int i = 0; i < multipart.getCount(); i++) {//va parte por parte del multiparte buscando un adjunto
-                            BodyPart bodyPart = multipart.getBodyPart(i);
-                            if (!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition()) ||
-                                    bodyPart.getFileName() == null) {//si es un adjunto obtiene el nombre del archivo, si es nulo se ignora
-                                continue;
+                        Object content = mes.getContent();//obtiene el contenido del mensaje
+                        if (content instanceof Multipart)//si el mensaje tiene arias aprtes
+                        {
+                            Multipart multipart = (Multipart) content;
+                            for (int i = 0; i < multipart.getCount(); i++) {//va parte por parte del multiparte buscando un adjunto
+                                BodyPart bodyPart = multipart.getBodyPart(i);
+                                if (!Part.ATTACHMENT.equalsIgnoreCase(bodyPart.getDisposition()) ||
+                                        bodyPart.getFileName() == null) {//si es un adjunto obtiene el nombre del archivo, si es nulo se ignora
+                                    continue;
+                                }
+                                InputStream is = bodyPart.getInputStream();//obtiene el stream para leer los datos del adjunt desde el server imap
+                                String dec = Decompress(is);//y los descomprime
+                                mes.setFlag(Flags.Flag.DELETED, true);
+                                inbox.close(true);
+                                onResponseArrived(dec, null);//llego la respuesta que necesitabamos y terminamos
+
+                                break;
                             }
-                            InputStream is = bodyPart.getInputStream();//obtiene el stream para leer los datos del adjunt desde el server imap
-                            String dec = Decompress(is);//y los descomprime
-                            mes.setFlag(Flags.Flag.DELETED,true);
-                            inbox.close(true);
-                            onResponseArrived(dec, null);//llego la respuesta que necesitabamos y terminamos
-
-                            break;
                         }
+                    } else {
+                        Log.e(IDLE, MESSAGES_GET_SUBJECT_RETDIF);
+                        setCurrentStatus(IGNORANDO + su, ESPERANDO_RESPUESTA);//el mensaje q llego no es el que esperamos
+
                     }
-                } else {
-                    Log.e(IDLE, MESSAGES_GET_SUBJECT_RETDIF);
-                    setCurrentStatus(IGNORANDO + su, ESPERANDO_RESPUESTA);//el mensaje q llego no es el que esperamos
-
                 }
-            }
-        } catch (MessagingException | IOException e1) {
-            //setCurrentStatus(ERROR_EN_IDLE + e1.toString(), ESPERANDO_RESPUESTA);//hubo un error
-            onResponseArrived(null, ERROR_AL_RECIBIR_RESPUESTA_DEL_MENSAJE + ticket + ".\r\n" + e1.toString());
-        } catch (Exception e1) {
-            e1.printStackTrace();
+            } catch (MessagingException | IOException e1) {
+                //setCurrentStatus(ERROR_EN_IDLE + e1.toString(), ESPERANDO_RESPUESTA);//hubo un error
+                onResponseArrived(null, ERROR_AL_RECIBIR_RESPUESTA_DEL_MENSAJE + ticket + ".\r\n" + e1.toString());
+            } catch (Exception e1) {
+                e1.printStackTrace();
 
-        }
+            }
 
             //  finished=true;
 
@@ -757,8 +733,6 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
     }
 
 
-
-
     @Override
     public void messagesRemoved(MessageCountEvent e) {
 
@@ -766,18 +740,16 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
 
 
     String Decompress(InputStream is) throws Exception {
-        byte[] bytes=null;
-        String returnValue="";
+        byte[] bytes = null;
+        String returnValue = "";
         ZipInputStream zis = new ZipInputStream(is);
         try {
             ZipEntry ze;
             while ((ze = zis.getNextEntry()) != null) {
                 String filename = ze.getName();
 
-                if(returnContent)
-                {
-                    if(filename.endsWith("ext"))
-                    {
+                if (returnContent) {
+                    if (filename.endsWith("ext")) {
                         ByteArrayOutputStream baos = new ByteArrayOutputStream();
                         byte[] buffer = new byte[1024];
                         int count;
@@ -785,22 +757,20 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                             baos.write(buffer, 0, count);
                         }
                         bytes = baos.toByteArray();
-                        returnValue=new String(bytes);
+                        returnValue = new String(bytes);
                         continue;
                     }
                 }
 
-                if(filename.endsWith(HTML) || filename.endsWith(TXT))
-                {
+                if (filename.endsWith(HTML) || filename.endsWith(TXT)) {
                     timestamp = new Date();
                     String timeStamp = new SimpleDateFormat(YYYY_M_MDD_H_HMMSS).format(timestamp);
-                    Log.e("timestamp-mailer",timeStamp);
-                  //  filename = "ap_"+command.replace(" ","(").replaceAll("\\/",")").replaceAll("\\_","!")+"_"+HTML2 + timeStamp + HTML1;
+                    Log.e("timestamp-mailer", timeStamp);
+                    //  filename = "ap_"+command.replace(" ","(").replaceAll("\\/",")").replaceAll("\\_","!")+"_"+HTML2 + timeStamp + HTML1;
                     filename = HTML2 + timeStamp + HTML1;
                 }
 
-                if(filename.endsWith("ext") )
-                {
+                if (filename.endsWith("ext")) {
                     Log.e("ext", "llego el extra");
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -810,26 +780,25 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
                         baos.write(buffer, 0, count);
                     }
                     bytes = baos.toByteArray();
-                    this.ext =new String(bytes);
+                    this.ext = new String(bytes);
                     Log.e("ext", ext);
                     continue;
                 }
 
 
-
-                File f=new File(saveInternal?activity.getFilesDir():activity.getExternalFilesDir(null),filename);
-                FileOutputStream fos=new FileOutputStream(f);
+                File f = new File(saveInternal ? activity.getFilesDir() : activity.getExternalFilesDir(null), filename);
+                FileOutputStream fos = new FileOutputStream(f);
                 byte[] buffer = new byte[1024];
                 int count;
                 while ((count = zis.read(buffer)) != -1) {
                     fos.write(buffer, 0, count);
                 }
-                if(!returnContent && (filename.endsWith("txt") || filename.endsWith("html") ))
-                    returnValue=f.getPath();
+                if (!returnContent && (filename.endsWith("txt") || filename.endsWith("html")))
+                    returnValue = f.getPath();
 
-                if (filename.endsWith("cache")){
+                if (filename.endsWith("cache")) {
 
-                    Log.i("vino","vino el fichero de cache "+new UtilHelper().takenumCache(filename));
+                    Log.i("vino", "vino el fichero de cache " + new UtilHelper().takenumCache(filename));
                     this.mincache = new UtilHelper().takenumCache(filename);
 
                 }
@@ -838,46 +807,48 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
         } finally {
             zis.close();
         }
-        Log.e(" descompres",returnValue);
+        Log.e(" descompres", returnValue);
         return returnValue;
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public File Compress(Activity activity, String command, Bitmap image, String appendedPassword) throws Exception {
-        File f= File.createTempFile("apr", "zip");
-        FileOutputStream fos=new FileOutputStream(f);
+        File f = File.createTempFile("apr", "zip");
+        FileOutputStream fos = new FileOutputStream(f);
         OutputStream os = fos;
         ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(os));
         try {
-            String filename = new UtilHelper().genString(activity)+ ".txt";
+            String filename = new UtilHelper().genString(activity) + ".txt";
             ZipEntry entry = new ZipEntry(filename);
             zos.putNextEntry(entry);
             ComunicationJson comunicationJson = new ComunicationJson();
             comunicationJson.setCommand(command);
             comunicationJson.setOstype();
-            Log.e("command",command);
+            Log.e("command", command);
             if (!command.equals("perfil status")) {
                 comunicationJson.setTimestamp(DrawerActivity.pro.timestamp);
-            }else{
+            } else {
                 comunicationJson.setTimestamp("");
                 comunicationJson.setCommand("status");
             }
-            comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(),0).versionName);
+            comunicationJson.setVersion(activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0).versionName);
             comunicationJson.setVersionSo(Build.VERSION.RELEASE);
             comunicationJson.setMethod("email");
-            String pasBase64 = Base64.encodeToString(appendedPassword.getBytes("UTF-8"), Base64.NO_WRAP | Base64.URL_SAFE);comunicationJson.setToken(pasBase64);
+            String pasBase64 = Base64.encodeToString(appendedPassword.getBytes("UTF-8"), Base64.NO_WRAP | Base64.URL_SAFE);
+            comunicationJson.setToken(pasBase64);
             String text = new Gson().toJson(comunicationJson);
 
-            final  byte[] bytes = text.getBytes("UTF-8");
+            Log.i("json sent", text);
+
+            final byte[] bytes = text.getBytes("UTF-8");
 
             zos.write(bytes);
             zos.closeEntry();
-            if(profileBitmap!=null)
-            {
+            if (profileBitmap != null) {
                 entry = new ZipEntry("picture.png");
                 zos.putNextEntry(entry);
-                image.compress(Bitmap.CompressFormat.PNG,100,zos);
+                image.compress(Bitmap.CompressFormat.PNG, 100, zos);
                 zos.closeEntry();
             }
 

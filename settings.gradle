@@ -1,1 +1,1 @@
-include ':app', ':javaMailAndroid', ':gson-2.5'
+include ':app', ':javaMailAndroid'
