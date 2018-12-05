@@ -34,5 +34,22 @@ public class PrefsManager {
 
     }
 
+    public void saveInt(Context ctx, String key, int value) {
+        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putInt(key, value).apply();
 
+    }
+
+    public int getInt(Context ctx, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(ctx).getInt(key, 0);
+    }
+
+    public boolean getBoolean(Context ctx, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean(key, false);
+    }
+
+
+
+    public void saveBoolean(Context ctx, String key, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean(key, value).apply();
+    }
 }

@@ -4,10 +4,12 @@ import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
+
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -19,11 +21,13 @@ import android.net.Uri;
 import android.os.Build;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Comunication.ServicePsiphon;
 import apretaste.Helper.InputTypeHelper;
 import apretaste.ProfileInfo;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -91,6 +95,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import apretaste.Helper.DataHelper;
 import apretaste.Helper.DbHelper;
@@ -161,15 +167,42 @@ public class DrawerActivity extends AppCompatActivity
     Uri fullPhotoUri = null;
     Bitmap newBitmap = null;
 
+    ServicePsiphon servicePsiphon;
+    boolean mBound = false;
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
+        if( new PrefsManager().getData("type_conn",DrawerActivity.this).equals("internet") && !servicePsiphon.isConnected()){
+            startService(new Intent(this, ServicePsiphon.class));
+        }
+        final Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      if (servicePsiphon.isConnected()) {
+                                          runOnUiThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  comunication.setConnectedPsiphon();
+                                                  t.purge();
+                                              }
+                                          });
+
+                                      }
+                                  }
+                              },
+                0,
+
+                1000);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         dbh = DbHelper.getSingleton(this);
         fabSync = (FloatingActionButton) findViewById(R.id.fab);
+
 
         fabSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,7 +261,7 @@ public class DrawerActivity extends AppCompatActivity
 
 
 
-       /*Accin para abrir la activity perfil desde el header */
+        /*Accin para abrir la activity perfil desde el header */
         profilePict = (ImageView) hView.findViewById(R.id.ivProfile);
         profilePict.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -538,7 +571,22 @@ public class DrawerActivity extends AppCompatActivity
 
     }
 
+    private ServiceConnection mConnection = new ServiceConnection() {
 
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            ServicePsiphon.ServicePsiphonBinder binder = (ServicePsiphon.ServicePsiphonBinder) service;
+            servicePsiphon = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
     @Override
     public void onStart() {
         super.onStart();
@@ -546,8 +594,20 @@ public class DrawerActivity extends AppCompatActivity
         pressed = false;
         setCountNoti(count_noti);
 
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(DrawerActivity.this, ServicePsiphon.class);
+                bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            }
+        });
     }
+
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+
+
 
 
     @Override
@@ -559,6 +619,7 @@ public class DrawerActivity extends AppCompatActivity
         HistoryManager.getSingleton().removeListener(this);
         String enties = new Gson().toJson(HistoryManager.getSingleton().entries);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(HISTORY, enties).apply();
+        new  PrefsManager().saveBoolean(this,"connect-psiphon",false);
         super.onDestroy();
     }
 
@@ -889,7 +950,7 @@ public class DrawerActivity extends AppCompatActivity
                 service.setUsed("0");
                 service.setId(dbh.getIdByName(pi.services[i].name));
                 service.setFav("0");
-                Log.e("found", String.valueOf(getItemExist(service.getName())));
+                //Log.e("found", String.valueOf(getItemExist(service.getName())));
                 if (!getItemExist(service.getName())) {
                     serviceAdapter.sevList.add(service);
                     Collections.sort(serviceAdapter.sevList, new Comparator<Services>() {
@@ -1218,6 +1279,8 @@ public class DrawerActivity extends AppCompatActivity
                                             if (!callback.equals("") || !callback.isEmpty()) {
                                                 String js = "javascript:" + callback + "(" + inputTypeHelper.getParamsCallBack() + ")";
                                                 wv.loadUrl(js);
+
+                                                Log.i("params callback", inputTypeHelper.getParamsCallBack());
                                             }
 
 

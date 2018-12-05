@@ -1,7 +1,10 @@
 package apretaste.ui;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 
+import apretaste.Comunication.ServicePsiphon;
 import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.DbHelper;
 import apretaste.Helper.PrefsManager;
@@ -27,10 +31,14 @@ import apretaste.Comunication.http.MultipartHttp;
 public class CodeVerificationActivity extends AppCompatActivity implements Httplistener {
     Button btn_code;
     EditText et_code;
-
+    ServicePsiphon servicePsiphon;
+    boolean mBound = false;
     DbHelper db;
     HttpInfo httpInfo;
     Gson gson;
+    int port;
+
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,32 +48,28 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
         db = DbHelper.getSingleton(this);
         httpInfo = new HttpInfo();
         gson = new Gson();
-        btn_code = (Button) findViewById(R.id.btn_code);
-        et_code = (EditText) findViewById(R.id.et_code);
+        btn_code = findViewById(R.id.btn_code);
+        et_code = findViewById(R.id.et_code);
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
 
         findViewById(R.id.btn_code).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (et_code.getText().toString().equals("")) {
-
-
                     et_code.setError("Entre el código de verificacion");
 
                 } else if (et_code.getText().toString().length() > 4) {
                     et_code.setError("El código de verificacion solo permite 4 numeros");
                 } else {
-                    String email = new PrefsManager().getData("email", CodeVerificationActivity.this);
-                    // String url = new Comunication().domain+"auth?email="+email+"&pin="+et_code.getText().toString()+"+&appname=apretaste&platform=android";
 
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(CodeVerificationActivity.this);
-                    String urlsaved = preferences.getString("domain", "cubaworld.info");
-                    String url = "http://" + urlsaved + "/api/auth?email=" + email + "&pin=" + et_code.getText().toString() + "+&appname=apretaste&platform=android";
-                    Log.e("url", url);
-
+                    String urlsaved = "apretaste.com";
+                    String url = "https://" + urlsaved + "/api/auth?email=" + email + "&pin=" + et_code.getText().toString() + "+&appname=apretaste&platform=android";
 
                     SimpleHttp simpleHttp = new SimpleHttp(CodeVerificationActivity.this, url, CodeVerificationActivity.this);
-                    simpleHttp.setMessageDialog("Verificando");
+                    port = servicePsiphon.getmLocalHttpProxyPort();
                     simpleHttp.execute();
+
 
                 }
             }
@@ -84,19 +88,29 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
     public void onResponseSimpleHttp(String response) {
         Log.e("respuesta-code", response);
 
+        Log.e("port code verification", String.valueOf(servicePsiphon.getmLocalHttpProxyPort()));
         httpInfo = gson.fromJson(response, HttpInfo.class);
 
-        //Log.e("token",httpInfo.message);
         if (httpInfo.code.equals("ok")) {
             new PrefsManager().saveData("token", CodeVerificationActivity.this, httpInfo.token);
-            MultipartHttp multipartHttp = new MultipartHttp(CodeVerificationActivity.this, "perfil status", "perfil status", false, "texto help", CodeVerificationActivity.this);
+
+            final MultipartHttp multipartHttp = new MultipartHttp(CodeVerificationActivity.this, "status", "status", false, "texto help", CodeVerificationActivity.this);
             multipartHttp.setReturnContent(true);
             multipartHttp.setSaveInternal(true);
-            multipartHttp.execute();
+
+           // multipartHttp.setPortProxy(servicePsiphon.getmLocalHttpProxyPort());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    multipartHttp.execute();
+                }
+            });
+
+
 
         } else {
             Toast.makeText(this, "Codigo de verificacion incorrecto", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(CodeVerificationActivity.this, LoginHttp.class));
+            //startActivity(new Intent(CodeVerificationActivity.this, LoginHttp.class));
         }
 
 
@@ -119,5 +133,49 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
         finish();
     }
 
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            ServicePsiphon.ServicePsiphonBinder binder = (ServicePsiphon.ServicePsiphonBinder) service;
+            servicePsiphon = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(CodeVerificationActivity.this, ServicePsiphon.class);
+                bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
 
 }

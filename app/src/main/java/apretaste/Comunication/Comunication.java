@@ -35,6 +35,12 @@ public class Comunication implements Httplistener {
     boolean reponseOk;
     private Bitmap bitmap = null;
 
+    private Boolean connectedPsiphon = false;
+
+    public void setConnectedPsiphon() {
+        this.connectedPsiphon = true;
+    }
+
     public void setAttachedbitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
@@ -118,6 +124,7 @@ public class Comunication implements Httplistener {
 
     public void sendViaHttp(String service, String command, Boolean noreply, String help, Httplistener htpplistener) {
         MultipartHttp multipartHttp = new MultipartHttp(activity, service, command, noreply, help, htpplistener);
+
         if (returnContent) {
             multipartHttp.setReturnContent(true);
         }
@@ -128,7 +135,12 @@ public class Comunication implements Httplistener {
             multipartHttp.setAttachedbitmap(this.bitmap);
         }
 
-        multipartHttp.execute();
+        if (this.connectedPsiphon){
+            multipartHttp.execute();
+        }else{
+            Toast.makeText(activity, "Estamos conectando al servidor , intentelo en unos segundos...", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void sendViaEmail(String service, String command, Boolean noreply, String help, Mailerlistener mailerListener) {

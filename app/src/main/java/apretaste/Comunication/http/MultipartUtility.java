@@ -1,5 +1,7 @@
 package apretaste.Comunication.http;
 
+import android.app.Activity;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +18,8 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 
+import apretaste.Helper.PrefsManager;
+
 /**
  * This utility class provides an abstraction layer for sending multipart HTTP
  * POST requests to a web server.
@@ -30,21 +34,16 @@ public class MultipartUtility {
     private String charset;
     private OutputStream outputStream;
     private PrintWriter writer;
-    public boolean useProxy = false;
-    public String hostProxy = "localhost";
     public int portProxy;
 
-    public void setHostProxy(String hostProxy) {
-        this.hostProxy = hostProxy;
-    }
+
+
 
     public void setPortProxy(int portProxy) {
         this.portProxy = portProxy;
     }
 
-    public void setUseProxy(boolean useProxy) {
-        this.useProxy = useProxy;
-    }
+
 
 
     /**
@@ -55,19 +54,18 @@ public class MultipartUtility {
      * @param charset
      * @throws IOException
      */
-    public MultipartUtility(String requestURL, String charset)
+    public MultipartUtility(String requestURL, String charset, Activity activity)
             throws IOException {
         this.charset = charset;
 
         // creates a unique boundary based on time stamp
         boundary = "===" + System.currentTimeMillis() + "===";
         URL url = new URL(requestURL);
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(this.hostProxy, this.portProxy));
-        if (!useProxy) {
-            httpConn = (HttpURLConnection) url.openConnection();
-        } else {
-            httpConn = (HttpURLConnection) new URL(requestURL).openConnection(proxy);
-        }
+
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().getInt(activity,"portProxy")));
+
+        httpConn = (HttpURLConnection) new URL(requestURL).openConnection(proxy);
+
         httpConn.setUseCaches(false);
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);

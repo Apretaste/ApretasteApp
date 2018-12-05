@@ -1,45 +1,75 @@
 package apretaste.ui;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 
-import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import apretaste.Comunication.ServicePsiphon;
 import apretaste.Comunication.http.SimpleHttp;
 import apretaste.Helper.EmailAddressValidator;
-import apretaste.Helper.PrefsManager;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
 
 
 public class LoginHttp extends AppCompatActivity implements Httplistener {
-
+    ServicePsiphon servicePsiphon;
+    boolean mBound = false;
     EditText etMail;
     HttpInfo httpInfo;
     Gson gson;
     String email;
+    Button btn_n_http;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_http);
+        btn_n_http = findViewById(R.id.btn_n_http);
 
+        btn_n_http.setEnabled(false);
+        final Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      if (servicePsiphon.isConnected()) {
+                                          runOnUiThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  btn_n_http.setEnabled(true);
+                                                  t.purge();
+                                              }
+                                          });
+
+                                      }
+                                  }
+                              },
+                0,
+
+                3000);
+
+        startService(new Intent(this, ServicePsiphon.class));
         gson = new Gson();
-        etMail = (EditText) findViewById(R.id.etMail);
+        etMail = findViewById(R.id.etMail);
 
 
-        findViewById(R.id.btn_b_http).setOnClickListener(new View.OnClickListener() {
+        btn_n_http.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginHttp.this, StartActivity.class));
@@ -51,16 +81,16 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
             @Override
             public void onClick(View v) {
                 if (EmailAddressValidator.isValidAddress(etMail.getText().toString())) {
-                    PreferenceManager.getDefaultSharedPreferences(LoginHttp.this).edit().putString("domain", getDomain()).apply();
 
-                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginHttp.this);
-                    String urlsaved = preferences.getString("domain", "cubaworld.info");
-                    String url = "http://" + urlsaved + "/api/start?email=" + etMail.getText().toString();
+
+                    String urlsaved = "apretaste.com";
+                    String url = "https://" + urlsaved + "/api/start?email=" + etMail.getText().toString();
                     Log.e("url", url);
                     SimpleHttp simpleHttp = new SimpleHttp(LoginHttp.this, url, LoginHttp.this);
-                    simpleHttp.setMessageDialog("Conectando");
                     simpleHttp.execute();
+
                     email = etMail.getText().toString();
+
 
                 } else {
                     etMail.setError("Email incorrecto");
@@ -84,8 +114,11 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
         Log.e("Login-Http", response);
         httpInfo = gson.fromJson(response, HttpInfo.class);
         if (httpInfo.code.equals("ok")) {
-            startActivity(new Intent(LoginHttp.this, CodeVerificationActivity.class));
-            new PrefsManager().saveData("email", LoginHttp.this, email);
+
+            Intent intent = new Intent(LoginHttp.this, CodeVerificationActivity.class);
+            intent.putExtra("email", email);
+            startActivity(intent);
+
             finish();
 
 
@@ -98,10 +131,49 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     }
 
 
-    public String getDomain() {
-        String[] words = {"cubaworld.info", "cubazone.info", "cubanow.xyz"};
-        String domain = String.valueOf(new StringBuilder(words[new Random().nextInt(words.length)]));
+    /**
+     * Defines callbacks for service binding, passed to bindService()
+     */
+    private ServiceConnection mConnection = new ServiceConnection() {
 
-        return domain;
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            ServicePsiphon.ServicePsiphonBinder binder = (ServicePsiphon.ServicePsiphonBinder) service;
+            servicePsiphon = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(LoginHttp.this, ServicePsiphon.class);
+                bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            }
+        });
+
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
 }

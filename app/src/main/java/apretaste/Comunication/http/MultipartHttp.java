@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,6 +66,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     private Bitmap profileBitmap = null;
     private String service;
     private String command;
+
 
     public boolean getReturnContent() {
         return returnContent;
@@ -131,10 +134,11 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     protected Void doInBackground(Void... params) {
         try {
             setCurrentStatus("Abriendo conexion http", CONECTANDO);
-            SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(activity);
-            String urlsaved = pre.getString("domain", "cubaworld.info");
-            MultipartUtility multipartUtility = new MultipartUtility("http://" + urlsaved + "/run/app", "UTF-8");
 
+            String urlsaved = "apretaste.com";
+
+            MultipartUtility multipartUtility = new MultipartUtility("https://" + urlsaved + "/run/app", "UTF-8",activity);
+           // multipartUtility.setPortProxy(8080);
             setCurrentStatus("Comprimiendo", CONECTANDO);
             multipartUtility.addFilePart("attachments", Compress(activity, command, profileBitmap, ""), new UtilHelper().genString(activity) + ".zip");
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -186,7 +190,9 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     public void downloadFile(String fileURL)
             throws IOException {
         URL url = new URL(fileURL);
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().getInt(activity,"portProxy")));
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection(proxy);
+
         int responseCode = httpConn.getResponseCode();
 
         // always check HTTP response code first

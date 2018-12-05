@@ -1,11 +1,14 @@
 package apretaste.ui;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import apretaste.Comunication.Comunication;
+import apretaste.Comunication.ServicePsiphon;
 import apretaste.Comunication.http.Httplistener;
 import apretaste.Comunication.http.MultipartHttp;
 import apretaste.Helper.FileHelper;
@@ -28,6 +32,9 @@ import apretaste.HistoryManager;
 
 
 import com.example.apretaste.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import apretaste.Helper.DbHelper;
 import apretaste.Comunication.email.Mailer;
@@ -46,10 +53,8 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     NetworkHelper networkHelper = new NetworkHelper();
     AlertHelper dialog = new AlertHelper();
     public static final String SI_TERMINA_SU_SESION_NO_RECIBIRA_MAS_NOTIFICACIONES_Y_OTROS_USUARIOS_NO_PODRAN_CONTACTARLE = "Si termina su sesión no recibira más notificaciones, y otros usuarios no podrán contactarle.";
-
-    ViewSwitcher vss;
-    Switch toggle;
-    WebView wvs;
+    ServicePsiphon servicePsiphon;
+    boolean mBound = false;
     public static boolean terminating = false;
     public boolean task = false;
     TextView type_conn;
@@ -60,6 +65,28 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_list);
 
+        if( new PrefsManager().getData("type_conn",SettingsActivity.this).equals("internet") && !servicePsiphon.isConnected()){
+            startService(new Intent(this, ServicePsiphon.class));
+        }
+        final Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+                                  @Override
+                                  public void run() {
+                                      if (servicePsiphon.isConnected()) {
+                                          runOnUiThread(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  comunication.setConnectedPsiphon();
+                                                  t.purge();
+                                              }
+                                          });
+
+                                      }
+                                  }
+                              },
+                0,
+
+                1000);
         preferences = getSharedPreferences("pref", MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
 
@@ -116,7 +143,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         /*Coje el valor actual del switch*/
         final boolean active = preferences.getBoolean("active", true);
         final boolean done = preferences.getBoolean("done", true);
-      /*Metodo que detecta el estado del swithc*/
+        /*Metodo que detecta el estado del swithc*/
         sw.setChecked(active);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -124,7 +151,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
                 if (isChecked) {
 
-            /*Guarda el estado del switch en prefernce(en este caso true pq esta en on el switch*/
+                    /*Guarda el estado del switch en prefernce(en este caso true pq esta en on el switch*/
                     if (networkHelper.haveConn(SettingsActivity.this)) {
                         editor.putBoolean("active", true);
                         editor.apply();
@@ -144,7 +171,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
                 } else {
 
-/*Guarda el estado del switch en prefernce(en este caso false pq esta en on el switch*/
+                    /*Guarda el estado del switch en prefernce(en este caso false pq esta en on el switch*/
                     if (networkHelper.haveConn(SettingsActivity.this)) {
                         editor.putBoolean("active", false);
                         editor.apply();
@@ -394,6 +421,33 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                 return true;
         }
         return false;
+    }
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance
+            ServicePsiphon.ServicePsiphonBinder binder = (ServicePsiphon.ServicePsiphonBinder) service;
+            servicePsiphon = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+    @Override
+    protected void onStart() {
+        super.onStart();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(SettingsActivity.this, ServicePsiphon.class);
+                bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            }
+        });
     }
 }
 
