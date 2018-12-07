@@ -39,7 +39,7 @@ public class PrefsManager {
 
     }
 
-    public int getInt(Context ctx, String key) {
+    public int readInt(Context ctx, String key) {
         return PreferenceManager.getDefaultSharedPreferences(ctx).getInt(key, 0);
     }
 

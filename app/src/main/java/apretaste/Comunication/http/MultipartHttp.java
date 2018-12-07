@@ -1,7 +1,6 @@
 package apretaste.Comunication.http;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -10,12 +9,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 
-import com.example.apretaste.R;
 import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
@@ -37,12 +32,10 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import apretaste.Comunication.ComunicationJson;
-import apretaste.Helper.AlertHelper;
 import apretaste.Helper.DialogHelper;
 import apretaste.Helper.PrefsManager;
 import apretaste.Helper.UtilHelper;
 import apretaste.Comunication.email.Mailer;
-import apretaste.Comunication.email.Mailerlistener;
 
 /**
  * Created by cjam on 8/2/2018.
@@ -180,7 +173,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     public void downloadFile(String fileURL)
             throws IOException {
         URL url = new URL(fileURL);
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", new PrefsManager().getInt(activity, "portProxy")));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", new PrefsManager().readInt(activity, "portProxy")));
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection(proxy);
 
         int responseCode = httpConn.getResponseCode();

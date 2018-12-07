@@ -15,8 +15,6 @@ import android.view.View;
 
 import com.example.apretaste.R;
 
-import apretaste.ui.NotificationsActivity;
-
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
@@ -50,11 +48,11 @@ public class AlertHelper {
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         int icono = R.mipmap.ic_launcher_new;
-        Intent intent = new Intent(context, NotificationsActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        //Intent intent = new Intent(context, NotificationsActivity.class);
+       // PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
-                .setContentIntent(pendingIntent)
+               // .setContentIntent(pendingIntent)
 
                 .setSmallIcon(getNotificationIcon())
                 .setContentTitle(service)

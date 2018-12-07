@@ -77,7 +77,7 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
 
         HttpURLConnection con = null;
 
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().getInt(activity,"portProxy")));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().readInt(activity,"portProxy")));
 
         con = (HttpURLConnection) new URL(url).openConnection(proxy);
         con.setConnectTimeout(2000);

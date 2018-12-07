@@ -169,13 +169,14 @@ public class DrawerActivity extends AppCompatActivity
 
     ServicePsiphon servicePsiphon;
     boolean mBound = false;
+
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
 
-        if( new PrefsManager().getData("type_conn",DrawerActivity.this).equals("internet") && !servicePsiphon.isConnected()){
+        if (new PrefsManager().getData("type_conn", DrawerActivity.this).equals("internet") && !servicePsiphon.isConnected()) {
             startService(new Intent(this, ServicePsiphon.class));
         }
         final Timer t = new Timer();
@@ -587,12 +588,13 @@ public class DrawerActivity extends AppCompatActivity
             mBound = false;
         }
     };
+
     @Override
     public void onStart() {
         super.onStart();
 
         pressed = false;
-        setCountNoti(count_noti);
+        setCountNoti(count_noti, false);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -608,8 +610,6 @@ public class DrawerActivity extends AppCompatActivity
      */
 
 
-
-
     @Override
     protected void onDestroy() {
         if (SettingsActivity.terminating) {
@@ -619,7 +619,7 @@ public class DrawerActivity extends AppCompatActivity
         HistoryManager.getSingleton().removeListener(this);
         String enties = new Gson().toJson(HistoryManager.getSingleton().entries);
         PreferenceManager.getDefaultSharedPreferences(this).edit().putString(HISTORY, enties).apply();
-        new  PrefsManager().saveBoolean(this,"connect-psiphon",false);
+        new PrefsManager().saveBoolean(this, "connect-psiphon", false);
         super.onDestroy();
     }
 
@@ -760,7 +760,8 @@ public class DrawerActivity extends AppCompatActivity
                 break;
             }
             case R.id.nav_noti: {
-                startActivity(new Intent(this, NotificationsActivity.class));
+                comunication.execute(DrawerActivity.this, "Notificaciones", "notificaciones", false, "", DrawerActivity.this, DrawerActivity.this);
+                setCountNoti(count_noti, true);
                 break;
             }
 
@@ -1047,11 +1048,13 @@ public class DrawerActivity extends AppCompatActivity
             dbh.addNotification(pi.notifications);
             for (int i = 0; i < pi.notifications.length; i++) {
                 alertHelper.newNotification(DrawerActivity.this, (int) Calendar.getInstance().getTimeInMillis(), pi.notifications[i].service, pi.notifications[i].text);
+                int count = new PrefsManager().readInt(DrawerActivity.this, "count_noti");
+                new PrefsManager().saveInt(DrawerActivity.this, "count_noti", count + 1);
             }
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    setCountNoti(count_noti);
+                    setCountNoti(count_noti, false);
                 }
             });
 
@@ -1119,7 +1122,7 @@ public class DrawerActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        setCountNoti(count_noti);
+
         if (SettingsActivity.terminating) {
             SettingsActivity.terminating = false;
             Toast.makeText(this, "Su sesión ha sido cerrada.", Toast.LENGTH_SHORT).show();
@@ -1304,15 +1307,18 @@ public class DrawerActivity extends AppCompatActivity
     }
 
 
-    private void setCountNoti(TextView notifCount) {
+    private void setCountNoti(TextView notifCount, boolean readed) {
         notifCount.setGravity(Gravity.CENTER_VERTICAL);
         notifCount.setTypeface(null, Typeface.BOLD);
         notifCount.setTextColor(getResources().getColor(R.color.negro));
-        if (dbh.getCountNoRead() > 0 && count == 0) {
+        int count = new PrefsManager().readInt(DrawerActivity.this, "count_noti");
+        if (count > 0 && !readed) {
             notifCount.setVisibility(View.VISIBLE);
-
-            notifCount.setText(String.valueOf(dbh.getCountNoRead()));
+            notifCount.setText(String.valueOf(count));
         } else {
+            if (readed) {
+                new PrefsManager().saveInt(DrawerActivity.this, "count_noti", 0);
+            }
             notifCount.setVisibility(View.GONE);
         }
     }

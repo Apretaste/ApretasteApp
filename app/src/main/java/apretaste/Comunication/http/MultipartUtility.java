@@ -62,7 +62,7 @@ public class MultipartUtility {
         boundary = "===" + System.currentTimeMillis() + "===";
         URL url = new URL(requestURL);
 
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().getInt(activity,"portProxy")));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().readInt(activity,"portProxy")));
 
         httpConn = (HttpURLConnection) new URL(requestURL).openConnection(proxy);
 
