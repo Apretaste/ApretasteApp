@@ -1,8 +1,10 @@
 package apretaste.Helper;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -16,6 +18,8 @@ import android.widget.LinearLayout;
 import com.example.apretaste.R;
 
 import java.util.Calendar;
+
+import apretaste.ui.DrawerActivity;
 
 /**
  * Created by cjam on 20/09/18.
@@ -192,16 +196,24 @@ public class InputTypeHelper {
         int fieldRequeriedValid = 0;
         /*Comprobacion de los campos que son obligatorios*/
 
+        /*Comprobacion de los campos que son obligatorios*/
         for (int j = 0; j < this.cantFieldRequeried; j++) {
-            if (inputs[j].getText().toString().equals("") && !getTypeInput(j).equals("u:")) {
-                Log.e("campo por llenar", String.valueOf(j));
+
+            if (newBitmap != null) {
+                fieldRequeriedValid = fieldRequeriedValid + 1;
             } else {
-                if (newBitmap != null) {
+
+                if (inputs[j].getText().toString().equals("")) {
+                    Log.e("campo por llenar", String.valueOf(j));
+                } else {
                     Log.e("campo", "campo lleno");
+
                     fieldRequeriedValid = fieldRequeriedValid + 1;
+
                 }
             }
         }
+
 
         if (fieldRequeriedValid == cantFieldRequeried) {
             return true;
@@ -227,16 +239,6 @@ public class InputTypeHelper {
         return command;
     }
 
-    public String getParamsCallBack() {
-        String params = "";
-        for (int i = 0; i < cantInput; i++) {
-            String values = (inputs[i].getText().toString());
-            params = params + "," + "'" + values + "'";
-        }
-
-        return "[" + params.substring(1) + "]";
-    }
-
     public String getTypeInput(int i) {
         return parts[i].substring(0, 2);
     }
@@ -245,5 +247,15 @@ public class InputTypeHelper {
         void onClickInputUpload();
 
         void updateLabel(EditText editText, Calendar myCalendar);
+    }
+
+    public String getParamsCallBack() {
+        String params = "";
+        for (int i = 0; i < cantInput; i++) {
+            String values = (inputs[i].getText().toString());
+            params = params + "," + "'" + values + "'";
+        }
+
+        return "[" + params.substring(1) + "]";
     }
 }
