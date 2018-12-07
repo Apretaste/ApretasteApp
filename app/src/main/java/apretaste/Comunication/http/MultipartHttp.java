@@ -137,8 +137,8 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
 
             String urlsaved = "apretaste.com";
 
-            MultipartUtility multipartUtility = new MultipartUtility("https://" + urlsaved + "/run/app", "UTF-8",activity);
-           // multipartUtility.setPortProxy(8080);
+            MultipartUtility multipartUtility = new MultipartUtility("https://" + urlsaved + "/run/app", "UTF-8", activity);
+            // multipartUtility.setPortProxy(8080);
             setCurrentStatus("Comprimiendo", CONECTANDO);
             multipartUtility.addFilePart("attachments", Compress(activity, command, profileBitmap, ""), new UtilHelper().genString(activity) + ".zip");
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -161,16 +161,6 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
             setCurrentStatus("Descargando", CARGANDO);
 
             Log.e("link descarga", httpInfo.file);
-            if (noreply) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        View v = activity.getLayoutInflater().inflate(R.layout.done_dialog_layout, null);
-                        new AlertDialog.Builder(activity).setView(v).setPositiveButton("Aceptar", null).show();
-                    }
-                });
-            }
             if (!noreply) {
                 downloadFile(httpInfo.file);
             }
@@ -190,7 +180,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
     public void downloadFile(String fileURL)
             throws IOException {
         URL url = new URL(fileURL);
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost",new PrefsManager().getInt(activity,"portProxy")));
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", new PrefsManager().getInt(activity, "portProxy")));
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection(proxy);
 
         int responseCode = httpConn.getResponseCode();

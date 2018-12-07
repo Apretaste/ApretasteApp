@@ -567,21 +567,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             // Una vez q haya respuesta se rompe el ciclo y se cierra
 
             /*Verifica si la peticion llevaba respuesta en caso de que no da un mensaje */
-            if (noreply) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
 
-                        if (!nomessage) {
-                            View v = activity.getLayoutInflater().inflate(R.layout.done_dialog_layout, null);
-                            new AlertDialog.Builder(activity).setView(v).setPositiveButton("Aceptar", null).show();
-                        }
-
-
-                    }
-                });
-                return;
-            }
             while (responseText == null && !finished) {
                 if (isCancelled()) {
                     dialog.dismiss();
