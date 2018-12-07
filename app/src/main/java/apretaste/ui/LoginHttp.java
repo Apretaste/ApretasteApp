@@ -16,12 +16,14 @@ import android.widget.Toast;
 
 import com.example.apretaste.R;
 import com.google.gson.Gson;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import apretaste.Comunication.ServicePsiphon;
 import apretaste.Comunication.http.SimpleHttp;
+import apretaste.Helper.DialogHelper;
 import apretaste.Helper.EmailAddressValidator;
 import apretaste.Comunication.http.HttpInfo;
 import apretaste.Comunication.http.Httplistener;
@@ -36,15 +38,18 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     Gson gson;
     String email;
     Button btn_n_http;
-
+    KProgressHUD dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_http);
         btn_n_http = findViewById(R.id.btn_n_http);
 
-        btn_n_http.setEnabled(false);
+
         final Timer t = new Timer();
+
+        dialog = new DialogHelper().DialogRequest(LoginHttp.this);
+        dialog.show();
         t.scheduleAtFixedRate(new TimerTask() {
                                   @Override
                                   public void run() {
@@ -52,7 +57,8 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
                                           runOnUiThread(new Runnable() {
                                               @Override
                                               public void run() {
-                                                  btn_n_http.setEnabled(true);
+
+                                                  dialog.dismiss();
                                                   t.purge();
                                               }
                                           });

@@ -22,6 +22,7 @@ import android.os.Build;
 
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.ServicePsiphon;
+import apretaste.Helper.DialogHelper;
 import apretaste.Helper.InputTypeHelper;
 import apretaste.ProfileInfo;
 
@@ -79,6 +80,7 @@ import android.widget.ViewSwitcher;
 import com.example.apretaste.R;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -166,7 +168,7 @@ public class DrawerActivity extends AppCompatActivity
     private static final int REQUEST_IMAGE_GET = 0;
     Uri fullPhotoUri = null;
     Bitmap newBitmap = null;
-
+    KProgressHUD dialog;
     ServicePsiphon servicePsiphon;
     boolean mBound = false;
 
@@ -178,6 +180,8 @@ public class DrawerActivity extends AppCompatActivity
 
         if (new PrefsManager().getData("type_conn", DrawerActivity.this).equals("internet") && !servicePsiphon.isConnected()) {
             startService(new Intent(this, ServicePsiphon.class));
+            dialog = new DialogHelper().DialogRequest(DrawerActivity.this);
+            dialog.show();
         }
         final Timer t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
@@ -187,6 +191,7 @@ public class DrawerActivity extends AppCompatActivity
                                           runOnUiThread(new Runnable() {
                                               @Override
                                               public void run() {
+                                                  dialog.dismiss();
                                                   comunication.setConnectedPsiphon();
                                                   t.purge();
                                               }

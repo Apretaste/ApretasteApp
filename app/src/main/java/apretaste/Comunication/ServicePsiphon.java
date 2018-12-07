@@ -185,7 +185,7 @@ public class ServicePsiphon extends Service implements PsiphonTunnel.HostService
 
         setConnected();
 
-        new PrefsManager().saveBoolean(this, "connect-psiphon", true);
+
 
 
     }
