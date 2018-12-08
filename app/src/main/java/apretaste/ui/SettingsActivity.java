@@ -125,7 +125,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                 }
 
                 case "email": {
-                    type_conn.setText(" (correo electrónico)");
+                    type_conn.setText(" (email)");
                     break;
                 }
 

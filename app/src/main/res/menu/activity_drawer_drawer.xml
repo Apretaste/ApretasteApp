@@ -24,7 +24,7 @@
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/settings"
-            android:title="Opciones" />
+            android:title="Ajustes" />
 
     </group>
 
