@@ -29,24 +29,38 @@ public class InputTypeHelper {
     private String text;
     private int cantInput;
     private String[] parts;
+    private String callback;
     private EditText[] inputs;
     private Activity activity;
     private int cantFieldRequeried;
     private LinearLayout linearLayout;
     InputTypeInterface inputTypeInterface;
 
-    public InputTypeHelper(Activity activity, LinearLayout linearLayout, String text, InputTypeInterface inputTypeInterface) {
+    public InputTypeHelper(Activity activity, LinearLayout linearLayout, String text, String callback, InputTypeInterface inputTypeInterface) {
         this.activity = activity;
         this.linearLayout = linearLayout;
         this.text = text;
         this.cantInput = getCantInput();
         this.parts = getPartsInput();
-        this.inputs = getInput();
+        if (linearLayout != null) {
+            this.inputs = getInput();
+        } else {
+            this.inputs = null;
+        }
+
         this.cantFieldRequeried = countInputRequire();
         this.inputTypeInterface = inputTypeInterface;
+        this.callback = callback;
 
     }
 
+    public InputTypeHelper(Activity activity, String text, String callback, InputTypeInterface inputTypeInterface) {
+        this.activity = activity;
+        this.text = text;
+        this.inputTypeInterface = inputTypeInterface;
+        this.callback = callback;
+
+    }
 
     public EditText[] getInput() {
 
@@ -194,7 +208,6 @@ public class InputTypeHelper {
 
     public boolean checkInputRequire(Bitmap newBitmap) {
         int fieldRequeriedValid = 0;
-        /*Comprobacion de los campos que son obligatorios*/
 
         /*Comprobacion de los campos que son obligatorios*/
         for (int j = 0; j < this.cantFieldRequeried; j++) {
@@ -249,13 +262,83 @@ public class InputTypeHelper {
         void updateLabel(EditText editText, Calendar myCalendar);
     }
 
-    public String getParamsCallBack() {
+
+    public String getFunctionCallBackLink() {
+        String js = "";
+        String function = getFunctionByCallBack();
+
+        String params = "[" + getParamsCallBackComplejo().substring(1) + "]";
+        js = "javascript:" + function + "(" + params + ")";
+
+
+        return js;
+    }
+
+
+    public String getFunctionCallBack() {
+        String js = "";
+        String function = getFunctionByCallBack();
+
+        String params = "[" + (getParamsCallBackFields() + getParamsCallBackComplejo()).substring(1) + "]";
+        js = "javascript:" + function + "(" + params + ")";
+
+
+        return js;
+    }
+
+    public String getFunctionByCallBack() {
+        String[] parts = this.callback.split(":");
+        String function = "";
+
+        if (parts.length > 0) {
+            function = parts[0];
+
+        } else {
+            function = callback;
+        }
+
+        return function;
+    }
+
+    public String getParamsCallBackFields() {
+
         String params = "";
         for (int i = 0; i < cantInput; i++) {
             String values = (inputs[i].getText().toString());
             params = params + "," + "'" + values + "'";
         }
 
-        return "[" + params.substring(1) + "]";
+
+        return params;
+    }
+
+    public String getParamsCallBackComplejo() {
+        String params = "";
+        String[] parts = this.callback.split(":");
+        String function = this.getFunctionByCallBack();
+
+        String[] partsFinal = removeItemFromArray(parts, function);
+        for (int i = 0; i < partsFinal.length; i++) {
+            Log.e("parts callback", partsFinal[i]);
+            params = params + "," + "'" + partsFinal[i] + "'";
+        }
+        return params;
+    }
+
+    public static String[] removeItemFromArray(String[] input, String item) {
+        if (input == null) {
+            return null;
+        } else if (input.length <= 0) {
+            return input;
+        } else {
+            String[] output = new String[input.length - 1];
+            int count = 0;
+            for (String i : input) {
+                if (!i.equals(item)) {
+                    output[count++] = i;
+                }
+            }
+            return output;
+        }
     }
 }

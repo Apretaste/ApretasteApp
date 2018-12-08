@@ -42,8 +42,6 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -60,12 +58,10 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -171,23 +167,25 @@ public class DrawerActivity extends AppCompatActivity
     KProgressHUD dialog;
     ServicePsiphon servicePsiphon;
     boolean mBound = false;
+    boolean runninDialog = false;
+    boolean testPsiphon = false;
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-
+        testPsiphon = true;
+        dialog = new DialogHelper().DialogRequest(DrawerActivity.this);
         if (new PrefsManager().getData("type_conn", DrawerActivity.this).equals("internet") && !servicePsiphon.isConnected()) {
             startService(new Intent(this, ServicePsiphon.class));
-            dialog = new DialogHelper().DialogRequest(DrawerActivity.this);
             dialog.show();
         }
         final Timer t = new Timer();
         t.scheduleAtFixedRate(new TimerTask() {
                                   @Override
                                   public void run() {
-                                      if (servicePsiphon.isConnected()) {
+                                      if (testPsiphon) {
                                           runOnUiThread(new Runnable() {
                                               @Override
                                               public void run() {
@@ -1269,7 +1267,7 @@ public class DrawerActivity extends AppCompatActivity
                         final View v = getLayoutInflater().inflate(R.layout.various, null);
                         final LinearLayout linearLayout = v.findViewById(R.id.ll_demo);
 
-                        final InputTypeHelper inputTypeHelper = new InputTypeHelper(DrawerActivity.this, linearLayout, help, DrawerActivity.this);
+                        final InputTypeHelper inputTypeHelper = new InputTypeHelper(DrawerActivity.this, linearLayout, help,callback, DrawerActivity.this);
                         inputTypeHelper.showInputs();
 
                         final AlertDialog alertDialog = alertHelper.AlertView(DrawerActivity.this, v);
@@ -1285,10 +1283,11 @@ public class DrawerActivity extends AppCompatActivity
                                             comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + inputTypeHelper.getCommand().substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
                                             alertDialog.dismiss();
                                             if (!callback.equals("") || !callback.isEmpty()) {
-                                                String js = "javascript:" + callback + "(" + inputTypeHelper.getParamsCallBack() + ")";
+                                                String js = inputTypeHelper.getFunctionCallBack();
                                                 wv.loadUrl(js);
 
-                                                Log.i("params callback", inputTypeHelper.getParamsCallBack());
+                                                Log.i("js link",js);
+                                                Log.i("params callback", inputTypeHelper.getParamsCallBackFields());
                                             }
 
 
@@ -1301,7 +1300,14 @@ public class DrawerActivity extends AppCompatActivity
                         });
                         alertDialog.show();
                     } else {
+                        final InputTypeHelper inputTypeHelperLink = new InputTypeHelper(DrawerActivity.this, help,callback, DrawerActivity.this);
                         comunication.execute(DrawerActivity.this, command.split(" ")[0], command, !waiting, help, DrawerActivity.this, DrawerActivity.this);
+                        if (!callback.equals("") || !callback.isEmpty()) {
+                            String jsLink = inputTypeHelperLink.getFunctionCallBackLink();
+                            wv.loadUrl(jsLink);
+                            Log.i("js link",jsLink);
+
+                        }
 
                     }
                 }
