@@ -12,5 +12,7 @@ public interface Httplistener {
 
     void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp);
 
+    void onHttpSent();
+
 
 }

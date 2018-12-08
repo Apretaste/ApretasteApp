@@ -136,6 +136,11 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
 
     }
 
+    @Override
+    public void onHttpSent() {
+
+    }
+
 
     /**
      * Defines callbacks for service binding, passed to bindService()

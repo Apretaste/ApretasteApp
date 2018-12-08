@@ -139,6 +139,7 @@ public class MultipartHttp extends AsyncTask<Void, String, Void> {
             multipartUtility.addFormField("token", preferences.getString("token", null));
             setCurrentStatus("Enviado peticion", CONECTANDO);
             String response = multipartUtility.finish();
+            httplistener.onHttpSent();
             if (isCancelled()) {
 
                 dialog.dismiss();

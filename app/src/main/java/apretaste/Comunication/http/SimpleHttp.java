@@ -90,6 +90,7 @@ public class SimpleHttp extends AsyncTask<Void, Void, Void> {
             response.append(inputLine);
         }
         in.close();
+        httplistener.onHttpSent();
         if (requestCheck) {
             httplistener.onResponseSimpleHttp(String.valueOf(responseCode));
         } else {

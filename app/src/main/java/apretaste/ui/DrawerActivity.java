@@ -941,6 +941,11 @@ public class DrawerActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onHttpSent() {
+
+    }
+
     public void updateService(ProfileInfo pi) {
         if (pi.services.length > 0) {
             dbh.addService(pi.services);

@@ -133,6 +133,11 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
         finish();
     }
 
+    @Override
+    public void onHttpSent() {
+
+    }
+
     /**
      * Defines callbacks for service binding, passed to bindService()
      */

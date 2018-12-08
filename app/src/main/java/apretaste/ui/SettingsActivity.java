@@ -15,12 +15,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import apretaste.Comunication.Comunication;
 import apretaste.Comunication.ServicePsiphon;
@@ -56,7 +54,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     ServicePsiphon servicePsiphon;
     boolean mBound = false;
     public static boolean terminating = false;
-    public boolean task = false;
+    public boolean logout = false;
     TextView type_conn;
 
     @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -65,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_list);
 
-        if( new PrefsManager().getData("type_conn",SettingsActivity.this).equals("internet") && !servicePsiphon.isConnected()){
+        if (new PrefsManager().getData("type_conn", SettingsActivity.this).equals("internet") && !servicePsiphon.isConnected()) {
             startService(new Intent(this, ServicePsiphon.class));
         }
         final Timer t = new Timer();
@@ -218,7 +216,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
                         comunication.setNoMessage(true);
                         comunication.execute(SettingsActivity.this, null, "SUSCRIPCION EXCLUYEME", true, "Sus Datos privados han sido borrados", SettingsActivity.this, SettingsActivity.this);
 
-                        task = true;
+                        logout = true;
 
                     }
                 }).setNegativeButton(CANCELAR, null).show();
@@ -346,7 +344,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
     @Override
     public void onMailSent() {
 
-        if (task) {
+        if (logout) {
 
             ClearAllDates(SettingsActivity.this);
             terminating = true;
@@ -396,6 +394,15 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
 
     }
 
+    @Override
+    public void onHttpSent() {
+        if (logout) {
+            ClearAllDates(SettingsActivity.this);
+            terminating = true;
+            finish();
+        }
+    }
+
     public void ClearAllDates(Context context) {
         HistoryManager.getSingleton().entries.clear();
         new DbHelper(SettingsActivity.this).deleteAllTable("cache");
@@ -422,6 +429,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
         }
         return false;
     }
+
     private ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
@@ -438,6 +446,7 @@ public class SettingsActivity extends AppCompatActivity implements Mailerlistene
             mBound = false;
         }
     };
+
     @Override
     protected void onStart() {
         super.onStart();

@@ -26,11 +26,11 @@ public class Settings_buzon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_buzon);
         et_buzon = (EditText) findViewById(R.id.et_buzon);
-        et_domain = (EditText) findViewById(R.id.et_domain);
+
         // PrefsWatcher.bindWatcher(this,et_buzon,"mailbox","app@mailgun.apretaste.com");
 
-        prefsManager.show_value(this, et_buzon, "mailbox", "app@mailgun.apretaste.com");
-        prefsManager.show_value(this, et_domain, "domain", "apretaste.com");
+        prefsManager.show_value(this, et_buzon, "mailbox", "interweb@gmail.com");
+
 
         findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +40,6 @@ public class Settings_buzon extends AppCompatActivity {
 
                 } else {
                     prefsManager.change_value(Settings_buzon.this, "mailbox", et_buzon);
-                    prefsManager.change_value(Settings_buzon.this, "domain", et_domain);
                     Toast.makeText(getBaseContext(), "Se han guardado los cambios", Toast.LENGTH_SHORT).show();
 
                 }

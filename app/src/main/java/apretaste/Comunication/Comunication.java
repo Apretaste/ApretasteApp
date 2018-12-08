@@ -196,4 +196,9 @@ public class Comunication implements Httplistener {
     public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
     }
+
+    @Override
+    public void onHttpSent() {
+
+    }
 }
