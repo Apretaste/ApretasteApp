@@ -567,6 +567,9 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             // Una vez q haya respuesta se rompe el ciclo y se cierra
 
             /*Verifica si la peticion llevaba respuesta en caso de que no da un mensaje */
+            if (noreply) {
+                return;
+            }
 
             while (responseText == null && !finished) {
                 if (isCancelled()) {
@@ -813,7 +816,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             comunicationJson.setOstype();
             Log.e("command", command);
             if (!command.equals("perfil status")) {
-                comunicationJson.setTimestamp(new PrefsManager().getData("timestamp",activity));
+                comunicationJson.setTimestamp(new PrefsManager().getData("timestamp", activity));
             } else {
                 comunicationJson.setTimestamp("");
                 comunicationJson.setCommand("status");
