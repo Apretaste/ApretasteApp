@@ -167,7 +167,7 @@ public class DrawerActivity extends AppCompatActivity
     KProgressHUD dialog;
     ServicePsiphon servicePsiphon;
     boolean mBound = false;
-    boolean runninDialog = false;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -518,15 +518,17 @@ public class DrawerActivity extends AppCompatActivity
     @SuppressLint("SetTextI18n")
     private void showProfileInfo(View view, boolean reloadServices) {
 
-        ((TextView) view.findViewById(R.id.tvUsername)).setText("@" + pro.username);
-        ((TextView) view.findViewById(R.id.tvcredit)).setText("§" + String.format("%.2f", pro.credit));
+        PrefsManager prefsManager = new PrefsManager();
+
+        ((TextView) view.findViewById(R.id.tvUsername)).setText("@" + prefsManager.getData("username",DrawerActivity.this));
+        ((TextView) view.findViewById(R.id.tvcredit)).setText("§" + String.format("%.2f", prefsManager.getFloat(DrawerActivity.this,"credit")));
         profilePict = (ImageView) view.findViewById(R.id.ivProfile);
         if (reloadServices) {
             serviceAdapter.notifyDataSetChanged();
         }
-        if (pro.profile.picture != null && !pro.profile.picture.isEmpty()) {
+        if (prefsManager.getData("picture",DrawerActivity.this) != null && !prefsManager.getData("picture",DrawerActivity.this).isEmpty()) {
             try {
-                File file = new File(getFilesDir(), pro.profile.picture);
+                File file = new File(getFilesDir(), prefsManager.getData("picture",DrawerActivity.this));
 
                 RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeFile(file.getPath()));
                 dr.setCircular(true);
@@ -853,11 +855,8 @@ public class DrawerActivity extends AppCompatActivity
             updateService(piu);
             workNotifications(piu);
 
-            new PrefsManager().saveData("mailbox", DrawerActivity.this, piu.mailbox);
-            new PrefsManager().saveData("type_img", DrawerActivity.this, piu.img_quality);
 
-            new PrefsManager().saveData("token", DrawerActivity.this, piu.token);
-
+            new PrefsManager().SaveSettingsApp(DrawerActivity.this, piu);
             /*Elimina lo servicios que se quitan del servidor*/
             ServiceNoActive(piu.active);
 
@@ -881,9 +880,7 @@ public class DrawerActivity extends AppCompatActivity
                 /*Accion para anadir notifiaciones */
                 workNotifications(pi);
 
-                new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
-                new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
-                new PrefsManager().saveData("token", DrawerActivity.this, pi.token);
+                new PrefsManager().SaveSettingsApp(DrawerActivity.this, pi);
                 Log.e("token-response-mailer", pi.token);
 
                 /*Elimina lo servicios que se quitan del servidor*/
@@ -902,11 +899,9 @@ public class DrawerActivity extends AppCompatActivity
             ProfileInfo piu = new Gson().fromJson(response, ProfileInfo.class);
             updateService(piu); /*Actualiza o agrega servicios nuevos*/
             workNotifications(piu);//Muestra las notificaciones en caso de que venga.
-            new PrefsManager().saveData("mailbox", DrawerActivity.this, piu.mailbox);
-            new PrefsManager().saveData("type_img", DrawerActivity.this, piu.img_quality);
-            new PrefsManager().saveData("token", DrawerActivity.this, piu.token);
+            new PrefsManager().SaveSettingsApp(DrawerActivity.this, piu);
             ServiceNoActive(piu.active);       /*Elimina lo servicios que se quitan del servidor*/
-            update_info(response);
+//            update_info(response);
 
 
         } else {
@@ -926,9 +921,8 @@ public class DrawerActivity extends AppCompatActivity
                 /*Accion para anadir notifiaciones */
                 workNotifications(pi);
 
-                new PrefsManager().saveData("mailbox", DrawerActivity.this, pi.mailbox);
-                new PrefsManager().saveData("type_img", DrawerActivity.this, pi.img_quality);
-                new PrefsManager().saveData("token", DrawerActivity.this, pi.token);
+
+                new PrefsManager().SaveSettingsApp(DrawerActivity.this, pi);
                 Log.e("token-response-mailer", pi.token);
 
                 /*Elimina lo servicios que se quitan del servidor*/
@@ -1285,6 +1279,7 @@ public class DrawerActivity extends AppCompatActivity
                                     public void onClick(View view) {
                                         if (inputTypeHelper.checkInputRequire(newBitmap)) {
                                             comunication.setAttachedbitmap(newBitmap);
+
                                             comunication.execute(DrawerActivity.this, command.split(" ")[0], command + " " + inputTypeHelper.getCommand().substring(1), !waiting, help, DrawerActivity.this, DrawerActivity.this);
                                             alertDialog.dismiss();
                                             if (!callback.equals("") || !callback.isEmpty()) {
@@ -1413,7 +1408,7 @@ public class DrawerActivity extends AppCompatActivity
                 newBitmap = decodeSampledBitmapFromFile(path, 250, 250);
                 RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), newBitmap);
                 roundedBitmapDrawable.setCircular(true);
-                // profilePict.setImageDrawable(roundedBitmapDrawable);
+                profilePict.setImageDrawable(roundedBitmapDrawable);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(this, "No se pudo cargar la imagen", Toast.LENGTH_SHORT).show();

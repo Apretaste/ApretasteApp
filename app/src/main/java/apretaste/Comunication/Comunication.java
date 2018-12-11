@@ -130,6 +130,9 @@ public class Comunication implements Httplistener {
         }
 
 
+        multipartHttp.setSaveInternal(true);
+
+
         if (this.bitmap != null) {
             Log.e("Comunication ", "hay img");
             multipartHttp.setAttachedbitmap(this.bitmap);

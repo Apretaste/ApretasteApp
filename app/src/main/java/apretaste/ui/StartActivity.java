@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.apretaste.R;
+import com.facebook.stetho.Stetho;
 
+
+import apretaste.Helper.PrefsManager;
 
 import static apretaste.ui.LoginActivity.RESP;
 
@@ -24,10 +27,10 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
+        Stetho.initializeWithDefaults(this);
 
         ///Comprueba que si ya hay datos de un usuario , si hay entra directo al main
-        if (PreferenceManager.getDefaultSharedPreferences(this).getString(RESP, null) != null) {
+        if (new PrefsManager().getBoolean(StartActivity.this,"login")) {
             startActivity(new Intent(StartActivity.this, DrawerActivity.class));//e inicia la activity principal
             finish();
             return;

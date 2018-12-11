@@ -38,6 +38,8 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
     Gson gson;
     int port;
 
+    PrefsManager prefsManager;
+
     String email;
 
     @Override
@@ -45,6 +47,7 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_code_verification);
 
+        prefsManager = new PrefsManager();
         db = DbHelper.getSingleton(this);
         httpInfo = new HttpInfo();
         gson = new Gson();
@@ -98,14 +101,13 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
             multipartHttp.setReturnContent(true);
             multipartHttp.setSaveInternal(true);
 
-           // multipartHttp.setPortProxy(servicePsiphon.getmLocalHttpProxyPort());
+            // multipartHttp.setPortProxy(servicePsiphon.getmLocalHttpProxyPort());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     multipartHttp.execute();
                 }
             });
-
 
 
         } else {
@@ -119,16 +121,20 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
     @Override
     public void onResponseArrivedHttp(String service, String command, String response, MultipartHttp multipartHttp) {
 
-        new PrefsManager().saveData("type_conn", CodeVerificationActivity.this, "internet");
-        new PrefsManager().saveData("mailbox", CodeVerificationActivity.this, "alexandergiogustino+ap@gmail.com");
-        Log.e("res", response);
-        PreferenceManager.getDefaultSharedPreferences(CodeVerificationActivity.this).edit().putString(LoginActivity.RESP, response).apply();
-
         ProfileInfo profileInfo;
         profileInfo = gson.fromJson(response, ProfileInfo.class);
+
         db.addService(profileInfo.services);
-        new PrefsManager().saveData("type_img", CodeVerificationActivity.this, profileInfo.img_quality);
-        db.addNotification(profileInfo.notifications);
+
+        for (int i = 0; i < profileInfo.notifications.length; i++) {
+            int count = new PrefsManager().readInt(CodeVerificationActivity.this, "count_noti");
+            new PrefsManager().saveInt(CodeVerificationActivity.this, "count_noti", count + 1);
+        }
+
+        prefsManager.SaveSettingsApp(CodeVerificationActivity.this, profileInfo);
+        prefsManager.saveBoolean(CodeVerificationActivity.this,"login",true);
+        prefsManager.saveData("type_conn",CodeVerificationActivity.this,"internet");
+
         startActivity(new Intent(CodeVerificationActivity.this, DrawerActivity.class));
         finish();
     }

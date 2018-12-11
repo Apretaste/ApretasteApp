@@ -813,7 +813,7 @@ public class Mailer extends AsyncTask<Void, String, Void> implements MessageCoun
             comunicationJson.setOstype();
             Log.e("command", command);
             if (!command.equals("perfil status")) {
-                comunicationJson.setTimestamp(DrawerActivity.pro.timestamp);
+                comunicationJson.setTimestamp(new PrefsManager().getData("timestamp",activity));
             } else {
                 comunicationJson.setTimestamp("");
                 comunicationJson.setCommand("status");

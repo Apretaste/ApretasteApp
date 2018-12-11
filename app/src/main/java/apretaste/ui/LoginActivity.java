@@ -65,7 +65,8 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ///Comprueba que si ya hay datos de un usuario , si hay entra directo al main
-        if (PreferenceManager.getDefaultSharedPreferences(this).getString(RESP, null) != null) {
+
+        if (new PrefsManager().getBoolean(LoginActivity.this,"login")) {
             startActivity(new Intent(LoginActivity.this, DrawerActivity.class));//e inicia la activity principal
             finish();
             return;
@@ -206,22 +207,25 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
 
     @Override
     public void onResponseArrived(String service, String command, String response, Mailer mailer) {
-        //Mailer.dialog.dismiss();
-        new PrefsManager().saveData("type_conn", LoginActivity.this, "email");
 
-        needsNormalization = true;
-        PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString(RESP, response).apply();
-        //guarda los datos recibidos en una sharedprefference
+        PrefsManager prefsManager = new PrefsManager();
         ProfileInfo profileInfo;
         profileInfo = new Gson().fromJson(response, ProfileInfo.class);
+
         db.addService(profileInfo.services);
 
-        new PrefsManager().saveData("type_img", LoginActivity.this, profileInfo.img_quality);
-        new PrefsManager().saveData("token", LoginActivity.this, profileInfo.token);
+        for (int i = 0; i < profileInfo.notifications.length; i++) {
+            int count = new PrefsManager().readInt(LoginActivity.this, "count_noti");
+            new PrefsManager().saveInt(LoginActivity.this, "count_noti", count + 1);
+        }
 
-        Log.e("token-login", profileInfo.token);
+        prefsManager.SaveSettingsApp(LoginActivity.this, profileInfo);
+        prefsManager.saveBoolean(LoginActivity.this, "login", true);
+        prefsManager.saveData("type_conn", LoginActivity.this, "email");
 
-        db.addNotification(profileInfo.notifications);
+        startActivity(new Intent(LoginActivity.this, DrawerActivity.class));
+        finish();
+
         startActivity(new Intent(LoginActivity.this, DrawerActivity.class));
         finish();
     }
