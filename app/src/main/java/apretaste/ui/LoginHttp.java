@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -37,13 +38,13 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
     HttpInfo httpInfo;
     Gson gson;
     String email;
-    Button btn_n_http;
+    ImageButton btn_b_http;
     KProgressHUD dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_http);
-        btn_n_http = findViewById(R.id.btn_n_http);
+        btn_b_http = findViewById(R.id.btn_b_http);
 
 
         final Timer t = new Timer();
@@ -75,11 +76,12 @@ public class LoginHttp extends AppCompatActivity implements Httplistener {
         etMail = findViewById(R.id.etMail);
 
 
-        btn_n_http.setOnClickListener(new View.OnClickListener() {
+        btn_b_http.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginHttp.this, StartActivity.class));
                 finish();
+
             }
         });
 

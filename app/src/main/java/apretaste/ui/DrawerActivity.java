@@ -168,14 +168,14 @@ public class DrawerActivity extends AppCompatActivity
     ServicePsiphon servicePsiphon;
     boolean mBound = false;
     boolean runninDialog = false;
-    boolean testPsiphon = false;
+
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
-        testPsiphon = true;
+
         dialog = new DialogHelper().DialogRequest(DrawerActivity.this);
         if (new PrefsManager().getData("type_conn", DrawerActivity.this).equals("internet") && !servicePsiphon.isConnected()) {
             startService(new Intent(this, ServicePsiphon.class));
@@ -185,7 +185,7 @@ public class DrawerActivity extends AppCompatActivity
         t.scheduleAtFixedRate(new TimerTask() {
                                   @Override
                                   public void run() {
-                                      if (testPsiphon) {
+                                      if (servicePsiphon.isConnected()) {
                                           runOnUiThread(new Runnable() {
                                               @Override
                                               public void run() {
