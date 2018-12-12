@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
         super.onCreate(savedInstanceState);
         ///Comprueba que si ya hay datos de un usuario , si hay entra directo al main
 
-        if (new PrefsManager().getBoolean(LoginActivity.this,"login")) {
+        if (new PrefsManager().getBoolean(LoginActivity.this, "login")) {
             startActivity(new Intent(LoginActivity.this, DrawerActivity.class));//e inicia la activity principal
             finish();
             return;
@@ -130,16 +130,16 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
             public void onClick(View v) {
                 if (EmailAddressValidator.isValidAddress(user.getText())) {
 
-                    PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString(MAILBOX, get_email(user.getText().toString())).apply();
+                    PreferenceManager.getDefaultSharedPreferences(LoginActivity.this).edit().putString(MAILBOX, getMailbox()).apply();
                     Mailer mailer = new Mailer(LoginActivity.this, null, PERFIL_STATUS, false, ESTAMOS_CARGANDO_SU_PERFIL_ESTE_PROCESO_DEBE_TOMAR_VARIOS_MINUTOS_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION, LoginActivity.this, false);
                     mailer.setSaveInternal(true);
                     mailer.setReturnContent(true);
                     mailer.setCustomText(ESTAMOS_CARGANDO_SU_PERFIL_ESTE_PROCESO_DEBE_TOMAR_VARIOS_MINUTOS_POR_FAVOR_SEA_PACIENTE_Y_NO_CIERRE_LA_APLICACION);
                     mailer.setShowCommand(false);
-                    if (countClick == 3) {
+                   /* if (countClick == 3) {
                         Log.e("Stage Mailbox", "ok");
                         mailer.setCustomMailbox(custom_mailbox.getText().toString());
-                    }
+                    }*/
                     mailer.execute();//ejecuta la tarea de login
 
 
@@ -230,11 +230,13 @@ public class LoginActivity extends AppCompatActivity implements Mailerlistener {
         finish();
     }
 
-    public String get_email(String username) {
+    public String getMailbox() {
         String[] words = getResources().getStringArray(R.array.email);
         StringBuilder s = new StringBuilder(words[new Random().nextInt(words.length)]);
         s.insert(new Random().nextInt(s.length() - 1) + 1, '.');
-        String finish = s + "+" + EmailAddressValidator.getM(username) + "@gmail.com";
+        String finish = s + "@gmail.com";
+
+        Log.e("LoginActivity", "Mailbox is" + finish);
         return finish;
 
     }
