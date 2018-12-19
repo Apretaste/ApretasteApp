@@ -66,8 +66,8 @@ public class PrefsManager {
     public void SaveSettingsApp(Context context, ProfileInfo pi) {
 
         saveData("username", context, pi.username);
-        if (pi.profile.picture != "") {
-            saveData("picture", context, pi.profile.picture);
+        if (pi.picture != "") {
+            saveData("picture", context, pi.picture);
         }
         saveFloat(context, "credit", pi.credit);
         saveData("mailbox", context, pi.mailbox);

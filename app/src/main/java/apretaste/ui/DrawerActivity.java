@@ -169,7 +169,6 @@ public class DrawerActivity extends AppCompatActivity
     boolean mBound = false;
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -520,15 +519,15 @@ public class DrawerActivity extends AppCompatActivity
 
         PrefsManager prefsManager = new PrefsManager();
 
-        ((TextView) view.findViewById(R.id.tvUsername)).setText("@" + prefsManager.getData("username",DrawerActivity.this));
-        ((TextView) view.findViewById(R.id.tvcredit)).setText("§" + String.format("%.2f", prefsManager.getFloat(DrawerActivity.this,"credit")));
+        ((TextView) view.findViewById(R.id.tvUsername)).setText("@" + prefsManager.getData("username", DrawerActivity.this));
+        ((TextView) view.findViewById(R.id.tvcredit)).setText("§" + String.format("%.2f", prefsManager.getFloat(DrawerActivity.this, "credit")));
         profilePict = (ImageView) view.findViewById(R.id.ivProfile);
         if (reloadServices) {
             serviceAdapter.notifyDataSetChanged();
         }
-        if (prefsManager.getData("picture",DrawerActivity.this) != null && !prefsManager.getData("picture",DrawerActivity.this).isEmpty()) {
+        if (prefsManager.getData("picture", DrawerActivity.this) != null && !prefsManager.getData("picture", DrawerActivity.this).isEmpty()) {
             try {
-                File file = new File(getFilesDir(), prefsManager.getData("picture",DrawerActivity.this));
+                File file = new File(getFilesDir(), prefsManager.getData("picture", DrawerActivity.this));
 
                 RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), BitmapFactory.decodeFile(file.getPath()));
                 dr.setCircular(true);
@@ -861,8 +860,6 @@ public class DrawerActivity extends AppCompatActivity
             ServiceNoActive(piu.active);
 
 
-            update_info(response);
-
         } else {
             open(service, command, response, mailer, null);
 
@@ -886,7 +883,6 @@ public class DrawerActivity extends AppCompatActivity
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
 
-                update_info(mailer.ext);
 
             }
         }
@@ -928,7 +924,7 @@ public class DrawerActivity extends AppCompatActivity
                 /*Elimina lo servicios que se quitan del servidor*/
                 ServiceNoActive(pi.active);
 
-                update_info(multipartHttp.ext);
+
 
             }
         }
@@ -1064,40 +1060,7 @@ public class DrawerActivity extends AppCompatActivity
         }
     }
 
-    public void update_info(String response) {
-        Log.i("response", response);
 
-        Log.e("pro", "retcontent");
-        ProfileInfo pinfo;
-        try {
-            pinfo = new Gson().fromJson(response, ProfileInfo.class);
-
-            Log.e("pro", "pinfo jsoned");
-        } catch (Exception e) {
-            Toast.makeText(this, "Ha ocurrido un error en el servidor.", Toast.LENGTH_SHORT).show();
-            Log.e("pro", "error jsoning pinfo");
-            return;
-        }
-        Log.e("pro", "updating");
-
-        pro.update(pinfo);
-
-        Log.e("pro", "jsoning");
-        String prof = new Gson().toJson(DrawerActivity.pro);
-
-        Log.e("pro", "saving");
-
-        PreferenceManager.getDefaultSharedPreferences(DrawerActivity.this).edit().putString("resp", prof).apply();
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("pro", "refreshing");
-                showProfileInfo(hView, true);
-            }
-        });
-        return;
-    }
     /*Metodo que abre las web*/
 
     public void onHistoryChange(HistoryEntry newUrl) {
@@ -1266,7 +1229,7 @@ public class DrawerActivity extends AppCompatActivity
                         final View v = getLayoutInflater().inflate(R.layout.various, null);
                         final LinearLayout linearLayout = v.findViewById(R.id.ll_demo);
 
-                        final InputTypeHelper inputTypeHelper = new InputTypeHelper(DrawerActivity.this, linearLayout, help,callback, DrawerActivity.this);
+                        final InputTypeHelper inputTypeHelper = new InputTypeHelper(DrawerActivity.this, linearLayout, help, callback, DrawerActivity.this);
                         inputTypeHelper.showInputs();
 
                         final AlertDialog alertDialog = alertHelper.AlertView(DrawerActivity.this, v);
@@ -1286,7 +1249,7 @@ public class DrawerActivity extends AppCompatActivity
                                                 String js = inputTypeHelper.getFunctionCallBack();
                                                 wv.loadUrl(js);
 
-                                                Log.i("js link",js);
+                                                Log.i("js link", js);
                                                 Log.i("params callback", inputTypeHelper.getParamsCallBackFields());
                                             }
 
@@ -1300,12 +1263,12 @@ public class DrawerActivity extends AppCompatActivity
                         });
                         alertDialog.show();
                     } else {
-                        final InputTypeHelper inputTypeHelperLink = new InputTypeHelper(DrawerActivity.this, help,callback, DrawerActivity.this);
+                        final InputTypeHelper inputTypeHelperLink = new InputTypeHelper(DrawerActivity.this, help, callback, DrawerActivity.this);
                         comunication.execute(DrawerActivity.this, command.split(" ")[0], command, !waiting, help, DrawerActivity.this, DrawerActivity.this);
                         if (!callback.equals("") || !callback.isEmpty()) {
                             String jsLink = inputTypeHelperLink.getFunctionCallBackLink();
                             wv.loadUrl(jsLink);
-                            Log.i("js link",jsLink);
+                            Log.i("js link", jsLink);
 
                         }
 

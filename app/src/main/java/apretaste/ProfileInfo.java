@@ -18,17 +18,10 @@ public class ProfileInfo {
     public float credit;
     public String[] active = new String[]{};
     public String mailbox;
-    public String domain;
+    public String picture;
     public String img_quality;
-    public Profile profile = new Profile();
     public Notifications notifications[] = new Notifications[]{};
     public Services services[] = new Services[]{};
-
-
-    public void change_un(String us) {
-        this.username = us;
-
-    }
 
 
     public class Notifications {
@@ -57,19 +50,6 @@ public class ProfileInfo {
         public String updated;
         public String icon;
 
-    }
-
-
-    public void update(ProfileInfo updateInfo) {
-
-        username = updateInfo.username;
-        timestamp = updateInfo.timestamp;
-        credit = updateInfo.credit;
-        if (updateInfo.profile.full_name != null)
-            profile = updateInfo.profile;
-
-
-        Log.e("pro", "finish update 2");
     }
 
 

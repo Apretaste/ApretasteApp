@@ -132,8 +132,8 @@ public class CodeVerificationActivity extends AppCompatActivity implements Httpl
         }
 
         prefsManager.SaveSettingsApp(CodeVerificationActivity.this, profileInfo);
-        prefsManager.saveBoolean(CodeVerificationActivity.this,"login",true);
-        prefsManager.saveData("type_conn",CodeVerificationActivity.this,"internet");
+        prefsManager.saveBoolean(CodeVerificationActivity.this, "login", true);
+        prefsManager.saveData("type_conn", CodeVerificationActivity.this, "internet");
 
         startActivity(new Intent(CodeVerificationActivity.this, DrawerActivity.class));
         finish();
